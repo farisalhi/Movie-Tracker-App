@@ -1,0 +1,5 @@
+list,F,favs
+movie,favs,Blade Runner,4,Science_Fiction
+movie,favs,Dune,5,Science_Fiction
+movie,favs,Avatar: The Way of Water,3,Science_Fiction
+movie,favs,Interstellar,5,Science_Fiction
