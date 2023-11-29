@@ -12,6 +12,7 @@ public class MainGUI extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("movietracker.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        stage.setResizable(false);
         stage.setTitle("Movie Tracker!");
         stage.setScene(scene);
         stage.show();

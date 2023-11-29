@@ -2,12 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
@@ -30,14 +32,19 @@
                   <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Add">
+          <Menu mnemonicParsing="false" text="Movie">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#addList" text="List" />
-                  <MenuItem mnemonicParsing="false" onAction="#addMovie" text="Movie" />
-                  <MenuItem mnemonicParsing="false" onAction="#addGenre" text="Genre" />
+              <MenuItem mnemonicParsing="false" onAction="#addMovie" text="Add movie" />
+                  <MenuItem mnemonicParsing="false" onAction="#addMovie" text="Remove movie" />
                   <MenuItem mnemonicParsing="false" onAction="#addRating" text="Rating" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="List">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#createList" text="Create list" />
+                  <MenuItem mnemonicParsing="false" onAction="#deleteList" text="Delete list" />
+               </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#tutorial" text="Tutorial" />
@@ -61,64 +68,23 @@
          </BorderPane.margin>
       </MenuBar>
    </top>
-   <right>
-      <VBox prefHeight="356.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" layoutY="10.0" prefHeight="50.0" prefWidth="200.0" text="VIEW" textAlignment="CENTER" wrapText="true">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font name="Montserrat Bold" size="18.0" />
-               </font>
-            </Label>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View all lists">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </VBox.margin></Button>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View all movies">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View movies and lists" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View ratings">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View genres">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View top 5 movies">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </Button>
-         </children>
-      </VBox>
-   </right>
    <bottom>
       <Label fx:id="status" alignment="CENTER" text="Status" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
-         </BorderPane.margin></Label>
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="5.0" />
+         </padding></Label>
    </bottom>
    <center>
       <Pane prefHeight="323.0" prefWidth="264.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutY="4.0" prefHeight="50.0" prefWidth="400.0" text="PRINT" textAlignment="CENTER" textFill="#0b0014">
+            <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutY="4.0" prefHeight="50.0" prefWidth="400.0" text="PRINT" textAlignment="CENTER" textFill="#00000080">
                <font>
                   <Font name="Montserrat Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="viewData" layoutX="25.0" layoutY="50.0" text="Print" />
             <Separator orientation="VERTICAL" prefHeight="555.5" prefWidth="3.0">
                <padding>
                   <Insets bottom="25.0" top="25.0" />
@@ -127,16 +93,21 @@
                <padding>
                   <Insets bottom="25.0" top="25.0" />
                </padding></Separator>
-            <Separator layoutX="-200.0" layoutY="555.5" prefHeight="6.0" prefWidth="800.0">
+            <Separator layoutX="-200.0" layoutY="545.0" prefHeight="6.0" prefWidth="800.0">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" />
                </padding></Separator>
+            <TextArea fx:id="viewData" layoutX="30.0" layoutY="50.0" prefHeight="400.0" prefWidth="340.0" style="-fx-background-radius: 10;">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </TextArea>
          </children></Pane>
    </center>
    <left>
       <VBox prefHeight="356.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="50.0" prefWidth="200.0" text="SORT" textAlignment="CENTER">
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="200.0" text="SORT" textAlignment="CENTER" textFill="#00000080">
                <font>
                   <Font name="Montserrat Bold" size="18.0" />
                </font>
@@ -146,11 +117,11 @@
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>
             </Button>
-            <TextField prefHeight="20.0" style="-fx-background-radius: 0 0 10 10;">
+            <ChoiceBox prefWidth="200.0" style="-fx-background-radius: 0 0 10 10;">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>
-            </TextField>
+            </ChoiceBox>
             <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="218.0" style="-fx-background-radius: 10 10 0 0;" text="Top movies by list">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="10.0" />
@@ -171,16 +142,62 @@
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="218.0" style="-fx-background-radius: 10 10 0 0;" text="Most popular genres">
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="Most popular genres">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Separator prefHeight="6.0" prefWidth="800.0">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" />
+               </padding>
+            </Separator>
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="200.0" text="Add" textAlignment="CENTER" textFill="#00000080">
+               <font>
+                  <Font name="Montserrat Bold" size="18.0" />
+               </font>
+            </Label>
+         </children></VBox>
+   </left>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="200.0" text="VIEW" textAlignment="CENTER" textFill="#00000080">
+               <font>
+                  <Font name="Montserrat Bold" size="18.0" />
+               </font>
+            </Label>
+            <Button mnemonicParsing="false" onAction="#viewLists" prefHeight="50.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View all lists">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#viewMovies" prefHeight="50.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View all movies">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <TextField prefHeight="20.0" style="-fx-background-radius: 0 0 10 10;">
+            <Button mnemonicParsing="false" onAction="#viewMovies" prefHeight="50.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View movies and lists">
                <VBox.margin>
-                  <Insets left="5.0" right="5.0" />
+                  <Insets left="5.0" right="5.0" top="10.0" />
                </VBox.margin>
-            </TextField>
-         </children></VBox>
-   </left>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#viewMovies" prefHeight="50.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View ratings">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#viewMovies" prefHeight="50.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View genres">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#viewMovies" prefHeight="50.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View top 5 movies">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </right>
 </BorderPane>
