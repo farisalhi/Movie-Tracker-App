@@ -175,18 +175,18 @@ public class MovieController {
 
     @FXML
     void save(ActionEvent event) {
-        // Get the world.txt file from the directory
+        // Get the save.txt file from the directory
         File saveFile = new File("save.txt");
         FileSaver fs = new FileSaver();
-        // Check if the file wasn't deleted, and is a file and can be written to.
+        // Check if the file wasn't deleted, and if a file and can be written to.
         if (saveFile.exists() && saveFile.isFile() && saveFile.canWrite()) {
-            try { // Try-catch block to attempt saving current world to the file.
-                fs.saveFile(saveFile, data); // invoke saveWorld function in Writer.java
+            try { // Try-catch block to attempt saving current data to the file.
+                fs.saveFile(saveFile, data); // invoke saveFile function in FileSaver.java
                 status.setText(String.format("Saved data to %s", saveFile.getName())); // print success
                 status.setTextFill(Color.GREEN);
                 pause.setOnFinished(event1 -> status.setText(null));
                 pause.play();
-            } catch (Exception e) { // Exception: There was no created world to save.
+            } catch (Exception e) { // Exception: There was no data to save.
                 status.setText("No data to save.");
                 status.setTextFill(Color.RED);
                 pause.setOnFinished(event1 -> status.setText(null));
@@ -202,7 +202,38 @@ public class MovieController {
 
     @FXML
     void saveAs(ActionEvent event) {
-        //TODO
+        // Create a new fileChooser
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Create a text file to save to.");
+        // Set initial directory to current directory
+        fc.setInitialDirectory(new File("."));
+        // Adding extension filter to only accept .txt files.
+        FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Text files  (*.txt)", "*.txt");
+        fc.getExtensionFilters().add(extension);
+
+        FileSaver fs = new FileSaver();
+
+        // Create a new save file named what the user inputs
+        File saveFile = fc.showSaveDialog(new Stage());
+        if (saveFile != null) { // Check if the user cancels the operation (no file is created)
+            try { // try-catch block to attempt saving data to new file
+                fs.saveFile(saveFile, data); // invoke saveFile function in FileSaver.java
+                status.setText(String.format("Saved data to %s", saveFile.getName())); // print success
+                status.setTextFill(Color.GREEN);
+                pause.setOnFinished(event1 -> status.setText(null));
+                pause.play();
+            } catch (Exception e) { // Exception: no data existed to be saved
+                status.setText("No data to save.");
+                status.setTextFill(Color.RED);
+                pause.setOnFinished(event1 -> status.setText(null));
+                pause.play();
+            }
+        } else { // User canceled save
+            status.setText("Canceled save.");
+            status.setTextFill(Color.RED);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
     }
 
     @FXML
