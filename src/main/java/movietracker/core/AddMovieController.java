@@ -6,17 +6,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import movietracker.core.data.Data;
 import movietracker.core.data.Genre;
 import movietracker.core.data.List;
+import movietracker.core.data.Movie;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class AddMovieController implements Initializable {
+public class AddMovieController {
 
-    private static final Data data = new Data();
+    private Data data;
 
     // Static constant for movie counting.
     public static int movieNumber = 0;
@@ -30,33 +32,56 @@ public class AddMovieController implements Initializable {
     @FXML
     private ChoiceBox<Genre.movieGenre> genreChoice;
 
+    public void setData(Data data) {
+        this.data = data;
+        initializeChoices();
+    }
+
+    public Movie getMovie() {
+        return data.getMovie(movieNumber);
+    }
+
     @FXML
     void addMovie(ActionEvent event) {
         List list = listChoice.getValue();
+        Genre.movieGenre genre = genreChoice.getValue();
+        String name = movieName.getText();
+        int rating = 0;
+        if (!name.isEmpty()) {
+            boolean success = data.storeNewMovie(movieNumber, list.getName(), name, rating, genre);
+            if (success) {
+                ((Stage) movieName.getScene().getWindow()).close();
+                movieNumber++;
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("You've already added this movie. Please choose a different movie.");
+                alert.showAndWait();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please type the name of the movie you'd like to add.");
+            alert.showAndWait();
+        }
+
+
+
+
+    }
+
+    private void initializeChoices() {
+        ArrayList<List> lists = data.getLists();
+
+        if (!lists.isEmpty()){
+            listChoice.getItems().addAll(lists);
+            listChoice.setValue(lists.get(0));
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Create a list first!");
+            alert.showAndWait();
+        }
 
         Genre.movieGenre[] genres = Genre.movieGenre.values();
         genreChoice.getItems().addAll(genres);
         genreChoice.setValue(genres[0]);
-        Genre.movieGenre genre = genreChoice.getValue();
-
-        String name = movieName.getText();
-        int rating = 0;
-
-        movieNumber++;
-        // Execute the storeNewMovie function to add the movie to the list.
-        data.storeNewMovie(movieNumber, list.getName(), name, rating, genre);
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        ArrayList<List> lists = data.getLists();
-        if (!lists.isEmpty()) {
-            listChoice.getItems().addAll(lists);
-            listChoice.setValue(lists.get(0));
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Create a list first!");
-            alert.showAndWait();
-        }
     }
 }

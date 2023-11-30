@@ -2,22 +2,18 @@ package movietracker.core;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import movietracker.core.data.Data;
+import movietracker.core.data.List;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class ListController implements Initializable {
+public class ListController {
     private Data data;
+
     public static int listNumber = 0;
-    final String FAVOURITE = "Favourites";
-    final String WATCHED = "Watched";
-    final String WANT_TO_WATCH = "Want-to-watch";
 
     @FXML
     private TextField listName;
@@ -27,10 +23,11 @@ public class ListController implements Initializable {
 
     public void setData(Data data) {
         this.data = data;
+        initializeChoices();
     }
 
-    public String getListName() {
-        return listName.getText();
+    public List getList() {
+        return data.getList(listNumber);
     }
 
     @FXML
@@ -43,7 +40,9 @@ public class ListController implements Initializable {
                 ((Stage) listName.getScene().getWindow()).close();
                 listNumber++;
             } else {
-                System.out.println("This list already exists!");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("This list already exists. Please choose a different name or change the list type.");
+                alert.showAndWait();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -52,9 +51,8 @@ public class ListController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        String[] types = {FAVOURITE, WATCHED, WANT_TO_WATCH};
+    private void initializeChoices() {
+        String[] types = {"Favourites", "Watched", "Want-to-watch"};
         listType.getItems().addAll(types);
         listType.setValue(types[0]);
     }

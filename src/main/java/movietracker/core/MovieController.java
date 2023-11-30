@@ -1,7 +1,7 @@
 package movietracker.core;
 
 import javafx.animation.PauseTransition;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import movietracker.core.data.Data;
@@ -11,8 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import movietracker.core.data.List;
@@ -23,9 +21,12 @@ import java.util.ArrayList;
 
 public class MovieController {
 
-    private static Data data = new Data();
+    private Data data;
 
+    private MovieController movieController;
     private final PauseTransition pause = new PauseTransition(Duration.seconds(2));
+
+    public static int movieNumber = 0;
 
     @FXML
     private Label status;
@@ -33,9 +34,22 @@ public class MovieController {
     @FXML
     private TextArea viewData;
 
+    @FXML
+    private TextField movieName;
+
+    @FXML
+    private TextField movieRating;
+
     public void initialize() {
         data = new Data();
+    }
 
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    public void setMovieController(MovieController movieController) {
+        this.movieController = movieController;
     }
 
     @FXML
@@ -61,21 +75,26 @@ public class MovieController {
     @FXML
     void createList(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("createlist.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("createlist.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 200, 150);
+            Scene scene = new Scene(loader.load(), 200, 150);
             stage.setResizable(false);
+
+            ListController listController = loader.getController();
+            listController.setData(data);
+
             stage.setTitle("Create a list");
-            stage.setScene(scene);
-            ((ListController)fxmlLoader.getController()).setData(data);
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
             stage.showAndWait();
-            String listName = ((ListController)fxmlLoader.getController()).getListName();
-            status.setText(String.format("List '%s' created!", listName));
+
+//            List list = data.getList(ListController.listNumber);
+//            status.setText(String.format("List '%s' created!", list.getName()));
+
+            status.setText("Created list.");
             status.setTextFill(Color.GREEN);
-        } catch (Exception e) {
-            status.setText("Can't launch window for create list!");
-            status.setTextFill(Color.RED);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -87,17 +106,24 @@ public class MovieController {
     @FXML
     void addMovie(ActionEvent event) throws IOException {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("addmovie.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("addmovie.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 200, 150);
+            Scene scene = new Scene(loader.load(), 200, 150);
             stage.setResizable(false);
-            stage.setTitle("Add movie");
-            stage.setScene(scene);
+
+            AddMovieController addMovieController = loader.getController();
+            addMovieController.setData(data);
+
+            stage.setTitle("Add a movie");
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
-        } catch (Exception e) {
-            status.setText("Can't launch window for add movie!");
-            status.setTextFill(Color.RED);
+            stage.setScene(scene);
+            stage.showAndWait();
+            //Movie movie = ((AddMovieController)fxmlLoader.getController()).getMovie();
+            //status.setText(String.format("Movie '%s' added to '%s'!", movie.getName(), movie.getList()));
+            status.setText("Added movie.");
+            status.setTextFill(Color.GREEN);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -150,7 +176,7 @@ public class MovieController {
 
     public void printLists(ArrayList<List> lists) {
         String textData = "";
-        textData += String.format("%-15s\t'%s'\n", "List", "Name");
+        textData += String.format("%-15s\t%s\n", "List", "Name");
         textData += ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         for (List list : lists) {
             textData += String.format("%-15s\t'%s'\n", list.getType(), list.getName());
@@ -168,13 +194,23 @@ public class MovieController {
         ArrayList<Movie> movies = data.getMovies();
         if (!movies.isEmpty()) {
             for (Movie movie : movies) {
-                viewData.setText(movie.getName());
+                printMovies(movies);
             }
         } else {
             status.setText("You haven't added any movies.");
             pause.setOnFinished(event1 -> status.setText(null));
             pause.play();
         }
+    }
+
+    public void printMovies(ArrayList<Movie> movies) {
+        String textData = "";
+        textData += ("Movies:");
+        textData += ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        for (Movie movie : movies) {
+            textData += String.format("\t%s \n", movie.getName());
+        }
+        viewData.setText(textData);
     }
 
     @FXML
@@ -186,5 +222,4 @@ public class MovieController {
     void viewTop5(ActionEvent event) {
 
     }
-
 }
