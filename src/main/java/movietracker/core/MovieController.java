@@ -175,7 +175,29 @@ public class MovieController {
 
     @FXML
     void save(ActionEvent event) {
-        //TODO
+        // Get the world.txt file from the directory
+        File saveFile = new File("save.txt");
+        FileSaver fs = new FileSaver();
+        // Check if the file wasn't deleted, and is a file and can be written to.
+        if (saveFile.exists() && saveFile.isFile() && saveFile.canWrite()) {
+            try { // Try-catch block to attempt saving current world to the file.
+                fs.saveFile(saveFile, data); // invoke saveWorld function in Writer.java
+                status.setText(String.format("Saved data to %s", saveFile.getName())); // print success
+                status.setTextFill(Color.GREEN);
+                pause.setOnFinished(event1 -> status.setText(null));
+                pause.play();
+            } catch (Exception e) { // Exception: There was no created world to save.
+                status.setText("No data to save.");
+                status.setTextFill(Color.RED);
+                pause.setOnFinished(event1 -> status.setText(null));
+                pause.play();
+            }
+        } else { // File not found
+            status.setText("save.txt file doesn't exist.");
+            status.setTextFill(Color.RED);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
     }
 
     @FXML
