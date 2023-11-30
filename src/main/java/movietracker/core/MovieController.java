@@ -4,6 +4,7 @@ import javafx.animation.PauseTransition;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import movietracker.core.data.Data;
 
@@ -16,13 +17,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import movietracker.core.data.List;
 import movietracker.core.data.Movie;
+import movietracker.core.util.FileLoader;
+import movietracker.core.util.FileSaver;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class MovieController {
 
-    private Data data;
+    private static Data data;
 
     private final PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
@@ -80,6 +84,8 @@ public class MovieController {
 
             status.setText("Created list.");
             status.setTextFill(Color.GREEN);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -109,6 +115,8 @@ public class MovieController {
             //status.setText(String.format("Movie '%s' added to '%s'!", movie.getName(), movie.getList()));
             status.setText("Added movie.");
             status.setTextFill(Color.GREEN);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -121,7 +129,43 @@ public class MovieController {
 
     @FXML
     void load(ActionEvent event) {
-        //TODO
+        // Create a new FileChooser and set the title of the file search window
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Choose a text file to load");
+        // Automatically search within the current folder
+        fc.setInitialDirectory(new File("."));
+        // Adding extension filter to only accept .txt files.
+        FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Text files  (*.txt)", "*.txt");
+        fc.getExtensionFilters().add(extension);
+        // Set a File variable to the file selected in the file search window
+        File loadFile = fc.showOpenDialog(new Stage());
+        if (loadFile != null) { // Check if the user cancels the operation (nothing gets selected)
+            // Check if the file exists and if it's a file and if its information is readable
+            if (loadFile.exists() && loadFile.isFile() && loadFile.canRead()) {
+                try {
+                    FileLoader fl = new FileLoader();
+                    data = fl.loadFile(loadFile);
+                    status.setText(String.format("Data loaded from %s", loadFile.getName()));
+                    pause.setOnFinished(event1 -> status.setText(null));
+                    pause.play();
+
+                } catch (Exception e) {
+                    status.setText("File contains no data or unreadable data.");
+                    status.setTextFill(Color.RED);
+                    pause.setOnFinished(event1 -> status.setText(null));
+                    pause.play();
+                }
+            } else {
+                status.setText("File doesn't exist!");
+                status.setTextFill(Color.RED);
+                pause.setOnFinished(event1 -> status.setText(null));
+                pause.play();
+            }
+        } else {
+            status.setText("Canceled load.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
     }
 
     @FXML
