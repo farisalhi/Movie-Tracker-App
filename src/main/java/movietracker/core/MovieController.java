@@ -3,6 +3,7 @@ package movietracker.core;
 import javafx.animation.PauseTransition;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 import movietracker.core.data.Data;
 
@@ -23,10 +24,7 @@ public class MovieController {
 
     private Data data;
 
-    private MovieController movieController;
     private final PauseTransition pause = new PauseTransition(Duration.seconds(2));
-
-    public static int movieNumber = 0;
 
     @FXML
     private Label status;
@@ -34,22 +32,12 @@ public class MovieController {
     @FXML
     private TextArea viewData;
 
-    @FXML
-    private TextField movieName;
-
-    @FXML
-    private TextField movieRating;
-
     public void initialize() {
         data = new Data();
     }
 
     public void setData(Data data) {
         this.data = data;
-    }
-
-    public void setMovieController(MovieController movieController) {
-        this.movieController = movieController;
     }
 
     @FXML
@@ -68,9 +56,8 @@ public class MovieController {
 
     @FXML
     void addGenre(ActionEvent event) {
-
+        //TODO
     }
-
 
     @FXML
     void createList(ActionEvent event) {
@@ -100,7 +87,7 @@ public class MovieController {
 
     @FXML
     void deleteList(ActionEvent event) {
-
+        //TODO
     }
 
     @FXML
@@ -129,12 +116,12 @@ public class MovieController {
 
     @FXML
     void addRating(ActionEvent event) {
-
+        //TODO
     }
 
     @FXML
     void load(ActionEvent event) {
-
+        //TODO
     }
 
     @FXML
@@ -144,22 +131,22 @@ public class MovieController {
 
     @FXML
     void save(ActionEvent event) {
-
+        //TODO
     }
 
     @FXML
     void saveAs(ActionEvent event) {
-
+        //TODO
     }
 
     @FXML
     void tutorial(ActionEvent event) {
-
+        //TODO
     }
 
     @FXML
     void viewGenres(ActionEvent event) {
-
+        //TODO
     }
 
     @FXML
@@ -175,27 +162,44 @@ public class MovieController {
     }
 
     public void printLists(ArrayList<List> lists) {
-        String textData = "";
-        textData += String.format("%-15s\t%s\n", "List", "Name");
-        textData += ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        String textData = String.format("%-15s %-15s\n", "List", "Name");
+        textData += "-----------------------------\n";
+
         for (List list : lists) {
-            textData += String.format("%-15s\t'%s'\n", list.getType(), list.getName());
+            textData += String.format("%-15s %-15s\n", list.getType(), list.getName());
         }
+        viewData.setFont(Font.font("PT Mono"));
         viewData.setText(textData);
     }
 
     @FXML
     void viewMovieLists(ActionEvent event) {
+        ArrayList<Movie> movies = data.getMovies();
+        if (!movies.isEmpty()) {
+            printMoviesLists(movies);
+        } else {
+            status.setText("You haven't added any movies.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
+    }
 
+    public void printMoviesLists(ArrayList<Movie> movies) {
+        String textData = String.format("%-15s %-15s\n", "Name", "List");
+        textData += "-----------------------------\n";
+
+        for (Movie movie : movies) {
+            textData += String.format("%-15s %-15s\n", movie.getName(), movie.getList());
+        }
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
     }
 
     @FXML
     void viewMovies(ActionEvent event) {
         ArrayList<Movie> movies = data.getMovies();
         if (!movies.isEmpty()) {
-            for (Movie movie : movies) {
-                printMovies(movies);
-            }
+            printMovies(movies);
         } else {
             status.setText("You haven't added any movies.");
             pause.setOnFinished(event1 -> status.setText(null));
@@ -204,22 +208,23 @@ public class MovieController {
     }
 
     public void printMovies(ArrayList<Movie> movies) {
-        String textData = "";
-        textData += ("Movies:");
-        textData += ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        String textData = String.format("%-15s\n", "Name");
+        textData += "-----------------------------\n";
+
         for (Movie movie : movies) {
-            textData += String.format("\t%s \n", movie.getName());
+            textData += String.format("%-15s\n", movie.getName());
         }
+        viewData.setFont(Font.font("PT Mono"));
         viewData.setText(textData);
     }
 
     @FXML
     void viewRatings(ActionEvent event) {
-
+        //TODO
     }
 
     @FXML
     void viewTop5(ActionEvent event) {
-
+        //TODO
     }
 }

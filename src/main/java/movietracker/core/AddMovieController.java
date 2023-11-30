@@ -2,7 +2,6 @@ package movietracker.core;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -12,9 +11,7 @@ import movietracker.core.data.Genre;
 import movietracker.core.data.List;
 import movietracker.core.data.Movie;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class AddMovieController {
 
@@ -62,15 +59,10 @@ public class AddMovieController {
             alert.setContentText("Please type the name of the movie you'd like to add.");
             alert.showAndWait();
         }
-
-
-
-
     }
 
     private void initializeChoices() {
         ArrayList<List> lists = data.getLists();
-
         if (!lists.isEmpty()){
             listChoice.getItems().addAll(lists);
             listChoice.setValue(lists.get(0));
@@ -79,7 +71,6 @@ public class AddMovieController {
             alert.setContentText("Create a list first!");
             alert.showAndWait();
         }
-
         Genre.movieGenre[] genres = Genre.movieGenre.values();
         genreChoice.getItems().addAll(genres);
         genreChoice.setValue(genres[0]);
