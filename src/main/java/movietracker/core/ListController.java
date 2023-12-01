@@ -40,8 +40,7 @@ public class ListController {
             boolean success = data.storeNewList(Menu.listNumber++, type, name);
             if (success) {
                 ((Stage) listName.getScene().getWindow()).close();
-               // Menu.listNumber++;
-                System.out.println(Menu.listNumber + "in listController create list");
+
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("This list already exists. Please choose a different name or change the list type.");

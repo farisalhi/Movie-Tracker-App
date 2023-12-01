@@ -17,6 +17,7 @@ import movietracker.core.part2.Menu;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AddMovieController {
 
@@ -51,19 +52,17 @@ public class AddMovieController {
     @FXML
     void addMovie(ActionEvent event) {
         Menu.movieNumber++;
-        System.out.println(data.getLists());
         String listName = listChoice.getValue();
         Genre.movieGenre genre = genreChoice.getValue();
         try {
             String name = movieName.getText();
             String ratingText = movieRating.getText();
-                if (!ratingText.isEmpty()) {
+                if (!Objects.equals(ratingText, null) && !Objects.equals(listName, null) && !Objects.equals(name, null)) {
                     int rating = Integer.parseInt(ratingText);
                     if (rating >= 0 && rating <= 5) {
                         boolean success = data.storeNewMovie(Menu.movieNumber, listName, name, rating, genre);
                         if (success) {
                             ((Stage) movieName.getScene().getWindow()).close();
-                            //Menu.movieNumber++;
                         } else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setContentText("You've already added this movie. Please choose a different movie.");
@@ -76,12 +75,12 @@ public class AddMovieController {
                     }
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("Please enter a rating.");
+                    alert.setContentText("Please enter a name, list, genre and rating.");
                     alert.showAndWait();
                 }
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Please enter the name of the movie.");
+            alert.setContentText("Please enter an integer for the rating.");
             alert.showAndWait();
         }
     }
@@ -99,7 +98,7 @@ public class AddMovieController {
         }
     }
 
-    private void initializeChoices() {
+    protected void initializeChoices() {
         ArrayList<List> lists = data.getLists();
         listChoice.getItems().clear();
         if (!lists.isEmpty()) {

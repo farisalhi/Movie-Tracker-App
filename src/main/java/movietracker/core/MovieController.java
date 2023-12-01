@@ -39,7 +39,6 @@ public class MovieController {
     private TextArea viewData;
 
     public void initialize() {
-        data = new Data();
     }
 
     /*public void setData(Data data) {
@@ -108,6 +107,7 @@ public class MovieController {
 
             AddMovieController addMovieController = loader.getController();
             //addMovieController.setData(data);
+            addMovieController.initializeChoices();
 
             stage.setTitle("Add a movie");
             stage.initModality(Modality.APPLICATION_MODAL);
