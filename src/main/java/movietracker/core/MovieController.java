@@ -17,6 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import movietracker.core.data.List;
 import movietracker.core.data.Movie;
+import movietracker.core.part2.Menu;
 import movietracker.core.util.FileLoader;
 import movietracker.core.util.FileSaver;
 
@@ -26,7 +27,8 @@ import java.util.ArrayList;
 
 public class MovieController {
 
-    private static Data data;
+    //private static Data data;
+    Data data = Menu.getData();
 
     private final PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
@@ -40,9 +42,9 @@ public class MovieController {
         data = new Data();
     }
 
-    public void setData(Data data) {
+    /*public void setData(Data data) {
         this.data = data;
-    }
+    }*/
 
     @FXML
     void about(ActionEvent event) {
@@ -72,8 +74,8 @@ public class MovieController {
             stage.setResizable(false);
 
             ListController listController = loader.getController();
-            listController.setData(data);
-
+            //listController.setData(data);
+            listController.initializeChoices();
             stage.setTitle("Create a list");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
@@ -105,7 +107,7 @@ public class MovieController {
             stage.setResizable(false);
 
             AddMovieController addMovieController = loader.getController();
-            addMovieController.setData(data);
+            //addMovieController.setData(data);
 
             stage.setTitle("Add a movie");
             stage.initModality(Modality.APPLICATION_MODAL);

@@ -9,11 +9,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import movietracker.core.data.Data;
 import movietracker.core.data.List;
+import movietracker.core.part2.Menu;
 
 public class ListController {
-    private Data data;
+    //private Data data;
+    Data data = Menu.getData();
 
-    public static int listNumber = 0;
+    //public static int listNumber = 0;
 
     @FXML
     private TextField listName;
@@ -21,24 +23,25 @@ public class ListController {
     @FXML
     private ChoiceBox<String> listType;
 
-    public void setData(Data data) {
+    /*public void setData(Data data) {
         this.data = data;
         initializeChoices();
-    }
+    }*/
 
-    public List getList() {
+   /* public List getList() {
         return data.getList(listNumber);
-    }
+    }*/
 
     @FXML
     public void createList(ActionEvent event) {
         String type = listType.getValue();
         String name = listName.getText();
         if (!name.isEmpty()) {
-            boolean success = data.storeNewList(listNumber, type, name);
+            boolean success = data.storeNewList(Menu.listNumber++, type, name);
             if (success) {
                 ((Stage) listName.getScene().getWindow()).close();
-                listNumber++;
+               // Menu.listNumber++;
+                System.out.println(Menu.listNumber + "in listController create list");
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("This list already exists. Please choose a different name or change the list type.");
@@ -51,7 +54,7 @@ public class ListController {
         }
     }
 
-    private void initializeChoices() {
+    protected void initializeChoices() {
         String[] types = {"Favourites", "Watched", "Want-to-watch"};
         listType.getItems().addAll(types);
         listType.setValue(types[0]);
