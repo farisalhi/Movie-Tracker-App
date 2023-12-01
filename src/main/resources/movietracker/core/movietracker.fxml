@@ -36,7 +36,6 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#addMovie" text="Add movie" />
                   <MenuItem mnemonicParsing="false" text="Remove movie" />
-                  <MenuItem mnemonicParsing="false" onAction="#addRating" text="Rating" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="List">

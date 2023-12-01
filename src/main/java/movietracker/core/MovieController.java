@@ -101,7 +101,7 @@ public class MovieController {
         try {
             FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("addmovie.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(loader.load(), 200, 150);
+            Scene scene = new Scene(loader.load(), 200, 180);
             stage.setResizable(false);
 
             AddMovieController addMovieController = loader.getController();
@@ -120,11 +120,6 @@ public class MovieController {
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @FXML
-    void addRating(ActionEvent event) {
-        //TODO
     }
 
     @FXML

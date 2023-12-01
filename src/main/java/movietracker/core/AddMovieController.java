@@ -24,6 +24,9 @@ public class AddMovieController {
     private TextField movieName;
 
     @FXML
+    private TextField movieRating;
+
+    @FXML
     private ChoiceBox<List> listChoice;
 
     @FXML
@@ -42,21 +45,34 @@ public class AddMovieController {
     void addMovie(ActionEvent event) {
         List list = listChoice.getValue();
         Genre.movieGenre genre = genreChoice.getValue();
-        String name = movieName.getText();
-        int rating = 0;
-        if (!name.isEmpty()) {
-            boolean success = data.storeNewMovie(movieNumber, list.getName(), name, rating, genre);
-            if (success) {
-                ((Stage) movieName.getScene().getWindow()).close();
-                movieNumber++;
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("You've already added this movie. Please choose a different movie.");
-                alert.showAndWait();
-            }
-        } else {
+        try {
+            String name = movieName.getText();
+            String ratingText = movieRating.getText();
+                if (!ratingText.isEmpty()) {
+                    int rating = Integer.parseInt(ratingText);
+                    if (rating >= 0 && rating <= 5) {
+                        boolean success = data.storeNewMovie(movieNumber, list.getName(), name, rating, genre);
+                        if (success) {
+                            ((Stage) movieName.getScene().getWindow()).close();
+                            movieNumber++;
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setContentText("You've already added this movie. Please choose a different movie.");
+                            alert.showAndWait();
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("Rating should be on a scale of 0-5.");
+                        alert.showAndWait();
+                    }
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Please enter a rating.");
+                    alert.showAndWait();
+                }
+        } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Please type the name of the movie you'd like to add.");
+            alert.setContentText("Please enter the name of the movie.");
             alert.showAndWait();
         }
     }
