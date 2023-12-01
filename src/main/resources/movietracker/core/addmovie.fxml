@@ -6,16 +6,17 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="movietracker.core.AddMovieController">
+<AnchorPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="movietracker.core.AddMovieController">
    <children>
-      <Button layoutX="62.0" layoutY="138.0" mnemonicParsing="false" onAction="#addMovie" style="-fx-background-radius: 10;" text="Add Movie" />
+      <Button layoutX="61.0" layoutY="162.0" mnemonicParsing="false" onAction="#addMovie" style="-fx-background-radius: 10;" text="Add Movie" />
       <TextField fx:id="movieName" layoutX="87.0" layoutY="5.0" prefHeight="26.0" prefWidth="149.0" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" />
-      <Label layoutX="6.0" layoutY="9.0" text="Movie name" AnchorPane.leftAnchor="5.0" />
-      <Label layoutX="10.0" layoutY="40.0" text="List" AnchorPane.leftAnchor="5.0" />
-      <ChoiceBox fx:id="listChoice" layoutX="73.0" layoutY="36.0" prefHeight="26.0" prefWidth="139.0" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" />
-      <Label layoutX="3.0" layoutY="72.0" text="Genre" AnchorPane.leftAnchor="5.0" />
-      <ChoiceBox fx:id="genreChoice" layoutX="80.0" layoutY="67.0" prefHeight="26.0" prefWidth="139.0" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" />
-      <TextField fx:id="movieRating" layoutX="80.0" layoutY="98.0" prefHeight="26.0" prefWidth="149.0" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" />
-      <Label layoutX="5.0" layoutY="103.0" text="Rating (0-5)" AnchorPane.leftAnchor="5.0" />
+      <Label alignment="CENTER_RIGHT" layoutY="9.0" prefWidth="70.0" text="Movie name" textAlignment="CENTER" AnchorPane.leftAnchor="5.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="53.0" prefHeight="17.0" prefWidth="70.0" text="List" textAlignment="CENTER" AnchorPane.leftAnchor="5.0" />
+      <ChoiceBox fx:id="listChoice" layoutX="73.0" layoutY="36.0" prefHeight="26.0" prefWidth="139.0" style="-fx-background-radius: 5 5 0 0;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" />
+      <Label alignment="CENTER_RIGHT" layoutY="97.0" prefWidth="70.0" text="Genre" textAlignment="CENTER" AnchorPane.leftAnchor="5.0" />
+      <ChoiceBox fx:id="genreChoice" layoutX="80.0" layoutY="93.0" prefHeight="26.0" prefWidth="139.0" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" />
+      <TextField fx:id="movieRating" layoutX="80.0" layoutY="124.0" prefHeight="26.0" prefWidth="149.0" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" />
+      <Label alignment="CENTER_RIGHT" layoutY="129.0" prefWidth="70.0" text="Rating (0-5)" textAlignment="CENTER" AnchorPane.leftAnchor="5.0" />
+      <Button layoutX="110.0" layoutY="62.0" mnemonicParsing="false" onAction="#createNewList" style="-fx-background-radius: 0 0 5 5;" text="New list" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" />
    </children>
 </AnchorPane>

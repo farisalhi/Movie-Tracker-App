@@ -2,6 +2,9 @@ package movietracker.core;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -11,6 +14,7 @@ import movietracker.core.data.Genre;
 import movietracker.core.data.List;
 import movietracker.core.data.Movie;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class AddMovieController {
@@ -77,16 +81,27 @@ public class AddMovieController {
         }
     }
 
+    @FXML
+    void createNewList(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("movietracker.fxml"));
+            Scene scene = new Scene(loader.load(), 200, 150);
+            MovieController movieController = loader.getController();
+            movieController.createList(event);
+            ((Stage) listChoice.getScene().getWindow()).close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void initializeChoices() {
         ArrayList<List> lists = data.getLists();
-        if (!lists.isEmpty()){
-            listChoice.getItems().addAll(lists);
+
+        listChoice.getItems().addAll(lists);
+        if (!lists.isEmpty()) {
             listChoice.setValue(lists.get(0));
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Create a list first!");
-            alert.showAndWait();
         }
+
         Genre.movieGenre[] genres = Genre.movieGenre.values();
         genreChoice.getItems().addAll(genres);
         genreChoice.setValue(genres[0]);

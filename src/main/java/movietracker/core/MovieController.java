@@ -101,7 +101,7 @@ public class MovieController {
         try {
             FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("addmovie.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(loader.load(), 200, 180);
+            Scene scene = new Scene(loader.load(), 200, 200);
             stage.setResizable(false);
 
             AddMovieController addMovieController = loader.getController();
