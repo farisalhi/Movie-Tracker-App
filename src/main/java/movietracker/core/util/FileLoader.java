@@ -23,6 +23,7 @@ public class FileLoader {
                 // load the list objects
                 if (elements[0].equals("list")) { // first element is the object type (list)
                     Menu.listNumber++;
+                    System.out.println(Menu.listNumber+ " in fileloader");
                     char type = elements[1].charAt(0); // second element is the list type
                     String listName = elements[2]; // third element is the list name
                     String listType = null;

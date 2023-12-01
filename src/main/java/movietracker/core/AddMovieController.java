@@ -13,16 +13,18 @@ import movietracker.core.data.Data;
 import movietracker.core.data.Genre;
 import movietracker.core.data.List;
 import movietracker.core.data.Movie;
+import movietracker.core.part2.Menu;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class AddMovieController {
 
-    private Data data;
+    //private Data data;
+    Data data = Menu.getData();
 
     // Static constant for movie counting.
-    public static int movieNumber = 0;
+   // public static int movieNumber = 0;
 
     @FXML
     private TextField movieName;
@@ -31,23 +33,26 @@ public class AddMovieController {
     private TextField movieRating;
 
     @FXML
-    private ChoiceBox<List> listChoice;
+    private ChoiceBox<String> listChoice;
 
     @FXML
     private ChoiceBox<Genre.movieGenre> genreChoice;
 
-    public void setData(Data data) {
+
+   /* public void setData(Data data) {
         this.data = data;
         initializeChoices();
-    }
+    }*/
 
-    public Movie getMovie() {
+   /* public Movie getMovie() {
         return data.getMovie(movieNumber);
-    }
+    }*/
 
     @FXML
     void addMovie(ActionEvent event) {
-        List list = listChoice.getValue();
+        Menu.movieNumber++;
+        System.out.println(data.getLists());
+        String listName = listChoice.getValue();
         Genre.movieGenre genre = genreChoice.getValue();
         try {
             String name = movieName.getText();
@@ -55,10 +60,10 @@ public class AddMovieController {
                 if (!ratingText.isEmpty()) {
                     int rating = Integer.parseInt(ratingText);
                     if (rating >= 0 && rating <= 5) {
-                        boolean success = data.storeNewMovie(movieNumber, list.getName(), name, rating, genre);
+                        boolean success = data.storeNewMovie(Menu.movieNumber, listName, name, rating, genre);
                         if (success) {
                             ((Stage) movieName.getScene().getWindow()).close();
-                            movieNumber++;
+                            //Menu.movieNumber++;
                         } else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setContentText("You've already added this movie. Please choose a different movie.");
@@ -96,10 +101,12 @@ public class AddMovieController {
 
     private void initializeChoices() {
         ArrayList<List> lists = data.getLists();
-
-        listChoice.getItems().addAll(lists);
+        listChoice.getItems().clear();
         if (!lists.isEmpty()) {
-            listChoice.setValue(lists.get(0));
+            for (List list:lists){
+                String listName = list.getName();
+                listChoice.getItems().add(listName);
+            }
         }
 
         Genre.movieGenre[] genres = Genre.movieGenre.values();
