@@ -240,7 +240,25 @@ public class MovieController {
 
     @FXML
     void viewGenres(ActionEvent event) {
-        //TODO
+        ArrayList<Movie> movies = data.getMovies();
+        if (!movies.isEmpty()) {
+            printGenres(movies);
+        } else {
+            status.setText("You haven't added any movies.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
+    }
+
+    private void printGenres(ArrayList<Movie> movies) {
+        String textData = String.format("%-15s %-15s\n", "Movie", "Genre");
+        textData += "-----------------------------\n";
+
+        for (Movie movie : movies) {
+            textData += String.format("%-15s %-15s\n", movie.getName(), movie.getGenre());
+        }
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
     }
 
     @FXML
@@ -314,7 +332,25 @@ public class MovieController {
 
     @FXML
     void viewRatings(ActionEvent event) {
-        //TODO
+        ArrayList<Movie> movies = data.getMovies();
+        if (!movies.isEmpty()) {
+            printRatings(movies);
+        } else {
+            status.setText("You haven't added any movies.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
+    }
+
+    private void printRatings(ArrayList<Movie> movies) {
+        String textData = String.format("%-15s %-15s\n", "Movie", "Ratins");
+        textData += "-----------------------------\n";
+
+        for (Movie movie : movies) {
+            textData += String.format("%-15s %-15d\n", movie.getName(), movie.getRating());
+        }
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
     }
 
     @FXML
