@@ -24,6 +24,7 @@ import movietracker.core.util.FileSaver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MovieController {
 
@@ -94,7 +95,26 @@ public class MovieController {
 
     @FXML
     void deleteList(ActionEvent event) {
-        //TODO
+        try {
+            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("deleteList.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.load(), 200, 150);
+            stage.setResizable(false);
+
+            DeleteListController deleteListController = loader.getController();
+            deleteListController.initializeChoices();
+            stage.setTitle("Delete a List");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+
+            status.setText("Deleted List.");
+            status.setTextFill(Color.GREEN);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -106,16 +126,13 @@ public class MovieController {
             stage.setResizable(false);
 
             AddMovieController addMovieController = loader.getController();
-            //addMovieController.setData(data);
             addMovieController.initializeChoices();
 
-            stage.setTitle("Add a movie");
+            stage.setTitle("Added Movie");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
-            //Movie movie = ((AddMovieController)fxmlLoader.getController()).getMovie();
-            //status.setText(String.format("Movie '%s' added to '%s'!", movie.getName(), movie.getList()));
-            status.setText("Added movie.");
+            status.setText("Movie Added.");
             status.setTextFill(Color.GREEN);
             pause.setOnFinished(event1 -> status.setText(null));
             pause.play();

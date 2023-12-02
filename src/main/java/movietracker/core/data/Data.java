@@ -113,6 +113,23 @@ public class Data {
         }
     }
 
+    public boolean deleteList(String name,String type){
+        for(List list_single : list){
+            if (Objects.equals(list_single.getName(), name) && Objects.equals(list_single.getType(),type)){
+                list.remove(list_single);
+                listLookup.remove(list_single.getNum(), list_single);
+                listDuplicateLookup.remove(list_single);
+                for(Movie movie: movieList){
+                    if(Objects.equals(movie.getList(), name)){
+                        removeMovie(movie.getName());
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean removeMovie(String name){
         for(Movie movie : movieList){
             if (Objects.equals(movie.getName(), name)){
