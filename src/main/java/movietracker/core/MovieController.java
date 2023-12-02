@@ -125,6 +125,26 @@ public class MovieController {
     }
 
     @FXML
+    void removeMovie(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("removeMovie.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 230, 150);
+            Stage stage = new Stage();
+            stage.setTitle("Delete a Movie");
+            //stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+            status.setTextFill(Color.GREEN);
+            status.setText("Deleted movie.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @FXML
     void load(ActionEvent event) {
         // Create a new FileChooser and set the title of the file search window
         FileChooser fc = new FileChooser();
