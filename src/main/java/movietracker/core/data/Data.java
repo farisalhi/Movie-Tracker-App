@@ -113,6 +113,21 @@ public class Data {
         }
     }
 
+    public boolean removeMovie(String name){
+        for(Movie movie : movieList){
+            if (Objects.equals(movie.getName(), name)){
+                movieList.remove(movie);
+                movieLookup.remove(movie.getNum(), movie);
+                movieDuplicateLookup.remove(movie);
+                ratingLookup.remove(name, movie.getRating());
+                genreLookup.remove(movie, movie.getGenre());
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * Getter for storeNewMovie function
      * @return ArrayList that stores the Movies
