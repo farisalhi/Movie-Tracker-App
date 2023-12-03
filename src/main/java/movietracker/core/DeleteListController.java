@@ -10,6 +10,7 @@ import movietracker.core.data.Data;
 import movietracker.core.data.List;
 import movietracker.core.part2.Menu;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -17,40 +18,40 @@ import java.util.Objects;
 public class DeleteListController {
     Data data = Menu.getData();
     @FXML
-    private TextField listName;
-
-    @FXML
-    private ChoiceBox<String> listType;
+    private ChoiceBox<String> listName;
 
     @FXML
     void deleteList(ActionEvent event) {
         try {
-            String name = listName.getText().trim();
-            String type = listType.getValue();
-            ArrayList<List> list = data.getLists();
-            for (List list_single : list) {
-                if (!name.isEmpty() && Objects.equals(list_single.getName(), name) &&
-                        Objects.equals(list_single.getType(), type)) {
-                    boolean success = data.deleteList(name,type);
+            String name = listName.getValue();
+            ArrayList<List> lists = data.getLists();
+            for (List list : lists) {
+                if (!name.isEmpty() && Objects.equals(list.getName(), name)) {
+                    boolean success = data.deleteList(name);
                     if (success) {
                         ((Stage) listName.getScene().getWindow()).close();
-                        ((Stage) listType.getScene().getWindow()).close();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("Enter a valid list name!.");
+                        alert.showAndWait();
                     }
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("Enter a valid movie name!.");
-                    alert.showAndWait();
                 }
             }
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter an integer for the rating.");
             alert.showAndWait();
         }
     }
+
     protected void initializeChoices() {
-        String[] types = {"Favourites", "Watched", "Want-to-watch"};
-        listType.getItems().addAll(types);
-        listType.setValue(types[0]);
+        ArrayList<List> lists = data.getLists();
+        listName.getItems().clear();
+        if (!lists.isEmpty()) {
+            for (List list : lists) {
+                String list_name = list.getName();
+                listName.getItems().add(list_name);
+            }
+        }
     }
 }

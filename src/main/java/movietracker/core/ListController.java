@@ -42,7 +42,7 @@ public class ListController {
                 ((Stage) listName.getScene().getWindow()).close();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("This list already exists. Please choose a different name or change the list type.");
+                alert.setContentText("This list name is already in use. Please choose a different name.");
                 alert.showAndWait();
             }
         } else {

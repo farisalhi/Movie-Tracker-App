@@ -98,20 +98,23 @@ public class MovieController {
         try {
             FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("deleteList.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(loader.load(), 200, 150);
+            Scene scene = new Scene(loader.load(), 250, 150);
             stage.setResizable(false);
 
             DeleteListController deleteListController = loader.getController();
             deleteListController.initializeChoices();
+
             stage.setTitle("Delete a List");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
-            stage.showAndWait();
+            //stage.showAndWait();
+            stage.show();
 
             status.setText("Deleted List.");
             status.setTextFill(Color.GREEN);
             pause.setOnFinished(event1 -> status.setText(null));
             pause.play();
+            viewData.setText("");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

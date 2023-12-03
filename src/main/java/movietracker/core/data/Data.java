@@ -49,12 +49,18 @@ public class Data {
 
     /**
      * Creates a new object array containing all three characteristics of each new list. Adds each object array to another object array called 'list.'
-     * @param listNum Integer value for list number.
-     * @param listType    String value for list type (Favourite, watched, want-to-watch).
-     * @param listName    String value for list name.
+     *
+     * @param listNum  Integer value for list number.
+     * @param listType String value for list type (Favourite, watched, want-to-watch).
+     * @param listName String value for list name.
      */
     public boolean storeNewList(int listNum, String listType, String listName) {
-        List newList = new List(listNum,listType, listName);
+        List newList = new List(listNum, listType, listName);
+        for (List list : listDuplicateLookup) {
+            if (Objects.equals(list.getName(), listName)) {
+                return false;
+            }
+        }
         if (!listDuplicateLookup.contains(newList)) {
             // Add the new list to the 'list' object array
             list.add(newList);
@@ -69,6 +75,7 @@ public class Data {
 
     /**
      * Getter for storeNewList ArrayList
+     *
      * @return list ArrayList storing the list number, list type and list name as an object
      */
     public ArrayList<List> getLists() {
@@ -77,6 +84,7 @@ public class Data {
 
     /**
      * Getter for the listLookup HashMap from storeNewList
+     *
      * @return listLookup HashMap that stores the list number as the keys and the list name as the values
      */
     public HashMap<Integer, List> getListLookup() {
@@ -85,6 +93,7 @@ public class Data {
 
     /**
      * Getter for a List using its list number
+     *
      * @param listNum the number assigned to the list to differentiate between lists
      * @return the list (value) for the corresponding listNum key in listLookup
      */
@@ -94,8 +103,9 @@ public class Data {
 
     /**
      * storeNewMovie function that adds new movie information to an ArrayList and HashMap
-     * @param movieNum the number assigned to the movie
-     * @param listName the name of the list the movie is added to
+     *
+     * @param movieNum  the number assigned to the movie
+     * @param listName  the name of the list the movie is added to
      * @param movieName the name of the movie
      */
     public boolean storeNewMovie(int movieNum, String listName, String movieName, int movieRating, Genre.movieGenre movieGenre) {
@@ -113,22 +123,29 @@ public class Data {
         }
     }
 
-    public boolean deleteList(String name,String type){
-        for(List list_single : list){
-            if (Objects.equals(list_single.getName(), name) && Objects.equals(list_single.getType(),type)){
+    public boolean deleteList(String name) {
+           for(int i = 0;i<movieList.size(); i++){
+               Movie  movie = movieList.get(i);
+               if (Objects.equals(movie.getList(), name)) {
+                   movieList.remove(movie);
+                   movieLookup.remove(movie.getNum(), movie);
+                   movieDuplicateLookup.remove(movie);
+                   ratingLookup.remove(name, movie.getRating());
+                   genreLookup.remove(movie, movie.getGenre());
+                   i--;
+               }
+           }
+        for (List list_single : list) {
+            if (Objects.equals(list_single.getName(), name)) {
                 list.remove(list_single);
                 listLookup.remove(list_single.getNum(), list_single);
                 listDuplicateLookup.remove(list_single);
-                for(Movie movie: movieList){
-                    if(Objects.equals(movie.getList(), name)){
-                        removeMovie(movie.getName());
-                    }
-                }
                 return true;
             }
         }
         return false;
     }
+
 
     public boolean removeMovie(String name){
         for(Movie movie : movieList){
