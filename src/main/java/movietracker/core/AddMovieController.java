@@ -108,6 +108,7 @@ public class AddMovieController {
         }
 
         Genre.movieGenre[] genres = Genre.movieGenre.values();
+        genreChoice.getItems().clear();
         genreChoice.getItems().addAll(genres);
         genreChoice.setValue(genres[0]);
     }

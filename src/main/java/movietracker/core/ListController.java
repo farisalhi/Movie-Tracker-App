@@ -51,6 +51,7 @@ public class ListController {
 
     protected void initializeChoices() {
         String[] types = {"Favourites", "Watched", "Want-to-watch"};
+        listType.getItems().clear();
         listType.getItems().addAll(types);
         listType.setValue(types[0]);
     }

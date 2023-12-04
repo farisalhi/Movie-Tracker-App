@@ -1,0 +1,9 @@
+list,F,favs
+list,W,watched
+list,A,want to watch
+movie,favs,Blade Runner,4,Science_Fiction
+movie,favs,Dune,4,Science_Fiction
+movie,watched,Avatar,2,Science_Fiction
+movie,favs,Interstellar,5,Science_Fiction
+movie,favs,Oppenheimer,4,Drama
+movie,watched,Barbie,1,Comedy

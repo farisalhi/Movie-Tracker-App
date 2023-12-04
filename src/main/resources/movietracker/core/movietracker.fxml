@@ -127,12 +127,22 @@
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>
             </ChoiceBox>
-            <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 10 10 0 0;" text="Top movies by list">
+            <Button mnemonicParsing="false" onAction="#viewTopByList" prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 10 10 0 0;" text="Top movies by list">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="10.0" />
                </VBox.margin>
             </Button>
             <ChoiceBox fx:id="topByList" prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 0 0 10 10;">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </ChoiceBox>
+            <Button mnemonicParsing="false" onAction="#viewTopByListType" prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 10 10 0 0;" text="Top movies by list type">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <ChoiceBox fx:id="topByListType" prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 0 0 10 10;">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>

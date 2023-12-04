@@ -251,7 +251,7 @@ public class Data {
         top5Genre.clear();
         for (int rating : top5) {
             for (String key : movieRatings.keySet()) {
-                if (count < 5 && rating>0) {
+                if (count < 5 && rating >= 0) {
                     for (Movie movie : genreLookup.keySet()) {
                         if (movie.getName().equals(key) && genre.equals(movie.getGenre()) && rating == movieRatings.get(key) && !top5Genre.contains(key) ){
                             top5Genre.add(key);
@@ -291,7 +291,7 @@ public class Data {
         // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
         for (int rating : top5ratings) {
             for (String key : movieRatings.keySet()) {
-                if (count < 5 && rating>0) {
+                if (count < 5 && rating >= 0) {
                     if (rating == movieRatings.get(key) && !top5.contains(key)) {
                         top5.add(key);
                         count++;
@@ -323,7 +323,7 @@ public class Data {
         // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
         for (int rating : top5FavRatings) {
             for (String key : movieRatings.keySet()) {
-                if (count < 5 && rating>0) {
+                if (count < 5 && rating >= 0) {
                     // Loop through the list and movieList to find the matching entries that meet all the requirements
                     for(List list : list){
                         for(Movie movie : movieList){
@@ -358,7 +358,7 @@ public class Data {
         // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
         for (int rating : top5WTWRatings) {
             for (String key : movieRatings.keySet()) {
-                if (count < 5 && rating>0) {
+                if (count < 5 && rating >= 0) {
                     // Loop through the list and movieList to find the matching entries that meet all the requirements
                     for(List list : list){
                         for(Movie movie : movieList){
@@ -393,7 +393,7 @@ public class Data {
         // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
         for (int rating : top5WatchedRatings) {
             for (String key : movieRatings.keySet()) {
-                if (count < 5 && rating>0) {
+                if (count < 5 && rating >= 0) {
                     // Loop through the list and movieList to find the matching entries that meet all the requirements
                     for(List list : list){
                         for(Movie movie : movieList){

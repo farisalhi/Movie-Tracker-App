@@ -2,7 +2,6 @@ package movietracker.core;
 
 import javafx.animation.PauseTransition;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -31,9 +30,9 @@ import java.util.HashMap;
 public class MovieController {
 
     //private static Data data;
-    Data data = Menu.getData();
+    static Data data = Menu.getData();
 
-    private final PauseTransition pause = new PauseTransition(Duration.seconds(2));
+    private static final PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
     @FXML
     private ChoiceBox<String> movieInfo;
@@ -43,6 +42,9 @@ public class MovieController {
 
     @FXML
     private ChoiceBox<String> topByList;
+
+    @FXML
+    private ChoiceBox<String> topByListType;
 
 
     @FXML
@@ -155,6 +157,21 @@ public class MovieController {
         }
     }
 
+
+    /*
+     * For file loading using command-line arguments only.
+     *
+    protected static void loadFile(File loadFile) {
+        if (loadFile.exists() && loadFile.isFile() && loadFile.canRead()) { // checks file properties.
+            FileLoader fl = new FileLoader(); // create a FileLoader object
+            data = fl.loadFile(loadFile); // assign the data from the loadFile function as the current data
+            status.setText(String.format("Data loaded from %s", loadFile.getName()));
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        } else {
+            System.err.printf("The load file %s does not exist!%n", loadFile.getName());
+        }
+    }*/
 
     @FXML
     void load(ActionEvent event) {
@@ -346,6 +363,73 @@ public class MovieController {
     }
 
     @FXML
+    void viewTopByList(ActionEvent event) {
+        //TODO
+    }
+
+    @FXML
+    void viewTopByListType(ActionEvent event) {
+        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+
+        ArrayList<String> top5Fav = data.getTop5Fav();
+        ArrayList<String> top5Watched = data.getTop5Watched();
+        ArrayList<String> top5WTW = data.getTop5WTW();
+
+        if (!ratings.isEmpty()) {
+            String type = topByListType.getValue();
+            switch (type) {
+                case "Favourites" -> {
+                    data.storeTop5Fav(ratings);
+                    printTopFav(top5Fav, ratings);
+                }
+                case "Watched" -> {
+                    data.storeTop5Watched(ratings);
+                    printTopWatched(top5Watched, ratings);
+                }
+                case "Want-to-watch" -> {
+                    data.storeTop5WTW(ratings);
+                    printTopWTW(top5WTW, ratings);
+                }
+            }
+        } else {
+            status.setText("You haven't added any movies.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
+    }
+
+    private void printTopFav(ArrayList<String> top5Fav, HashMap<String, Integer> ratings) {
+        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+        textData += "-----------------------------\n";
+
+        for (String movie : top5Fav) {
+            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+        }
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
+    }
+    private void printTopWatched(ArrayList<String> top5Watched, HashMap<String, Integer> ratings) {
+        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+        textData += "-----------------------------\n";
+
+        for (String movie : top5Watched) {
+            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+        }
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
+    }
+    private void printTopWTW(ArrayList<String> top5WTW, HashMap<String, Integer> ratings) {
+        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+        textData += "-----------------------------\n";
+
+        for (String movie : top5WTW) {
+            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+        }
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
+    }
+
+    @FXML
     void viewMovies(ActionEvent event) {
         ArrayList<Movie> movies = data.getMovies();
         if (!movies.isEmpty()) {
@@ -482,6 +566,11 @@ public class MovieController {
                 movieInfo.setValue(movies.get(0).getName());
             }
         }
+
+        String[] types = {"Favourites", "Watched", "Want-to-watch"};
+        topByListType.getItems().clear();
+        topByListType.getItems().addAll(types);
+        topByListType.setValue(types[0]);
 
         Genre.movieGenre[] genres = Genre.movieGenre.values();
         topByGenre.getItems().clear();
