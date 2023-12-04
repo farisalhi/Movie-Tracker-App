@@ -35,6 +35,7 @@ public class MovieController {
     Data data = Menu.getData();
 
     private final PauseTransition pause = new PauseTransition(Duration.seconds(2));
+
     @FXML
     private ChoiceBox<String> movieInfo;
 
@@ -52,7 +53,7 @@ public class MovieController {
     private TextArea viewData;
 
     public void initialize() {
-
+        initializeChoices();
     }
 
     public void setData(Data data) {
@@ -74,16 +75,11 @@ public class MovieController {
     }
 
     @FXML
-    void addGenre(ActionEvent event) {
-        //TODO
-    }
-
-    @FXML
     void createList(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("createlist.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(loader.load(), 200, 150);
+            Scene scene = new Scene(loader.load(), 200, 130);
             stage.setResizable(false);
 
             ListController listController = loader.getController();
@@ -93,6 +89,7 @@ public class MovieController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
+            initialize();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -103,7 +100,7 @@ public class MovieController {
         try {
             FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("deleteList.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(loader.load(), 250, 150);
+            Scene scene = new Scene(loader.load(), 200, 100);
             stage.setResizable(false);
 
             DeleteListController deleteListController = loader.getController();
@@ -113,6 +110,7 @@ public class MovieController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
+            initialize();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -133,6 +131,7 @@ public class MovieController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
+            initialize();
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -142,7 +141,7 @@ public class MovieController {
     void removeMovie(ActionEvent event){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("removeMovie.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 230, 150);
+            Scene scene = new Scene(fxmlLoader.load(), 200, 100);
             Stage stage = new Stage();
             stage.setTitle("Delete a Movie");
             RemoveMovieController removeMovieController = fxmlLoader.getController();
@@ -151,6 +150,7 @@ public class MovieController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
+            initialize();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -175,6 +175,7 @@ public class MovieController {
                 try {
                     FileLoader fl = new FileLoader();
                     data = fl.loadFile(loadFile);
+                    initialize();
                     status.setText(String.format("Data loaded from %s", loadFile.getName()));
                     pause.setOnFinished(event1 -> status.setText(null));
                     pause.play();
@@ -392,7 +393,38 @@ public class MovieController {
     }
 
     @FXML
+    void viewTopGenreMovies(ActionEvent event) {
+
+    }
+
+    @FXML
     void viewTop5(ActionEvent event) {
         //TODO
+    }
+
+    protected void initializeChoices() {
+        ArrayList<List> lists = data.getLists();
+        topByList.getItems().clear();
+        if (!lists.isEmpty()) {
+            for (List list : lists){
+                String listName = list.getName();
+                topByList.getItems().add(listName);
+                topByList.setValue(lists.get(0).getName());
+            }
+        }
+
+        ArrayList<Movie> movies = data.getMovies();
+        movieInfo.getItems().clear();
+        if (!movies.isEmpty()) {
+            for (Movie movie : movies){
+                String movieName = movie.getName();
+                movieInfo.getItems().add(movieName);
+                movieInfo.setValue(movies.get(0).getName());
+            }
+        }
+
+        Genre.movieGenre[] genres = Genre.movieGenre.values();
+        topByGenre.getItems().addAll(genres);
+        topByGenre.setValue(genres[0]);
     }
 }

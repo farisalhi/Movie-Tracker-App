@@ -5,10 +5,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="102.0" prefWidth="261.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="movietracker.core.DeleteListController">
+<AnchorPane prefHeight="100.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="movietracker.core.DeleteListController">
    <children>
-      <Button layoutX="127.0" layoutY="51.0" mnemonicParsing="false" onAction="#deleteList" style="-fx-background-radius: 10;" text="Delete List" />
-      <Label layoutX="14.0" layoutY="28.0" text="List Name" />
-      <ChoiceBox fx:id="listName" layoutX="87.0" layoutY="24.0" prefWidth="150.0" />
+      <Button layoutX="63.0" layoutY="50.0" mnemonicParsing="false" onAction="#deleteList" style="-fx-background-radius: 10;" text="Delete List" />
+      <Label layoutX="5.0" layoutY="9.0" text="List Name" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="9.0" />
+      <ChoiceBox fx:id="listName" layoutX="80.0" layoutY="5.0" prefWidth="150.0" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
    </children>
 </AnchorPane>

@@ -6,11 +6,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="115.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="movietracker.core.RemoveMovieController">
+<AnchorPane prefHeight="100.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="movietracker.core.RemoveMovieController">
     <children>
-        <Button layoutX="101.0" layoutY="58.0" mnemonicParsing="false" onAction="#removeMovie" prefHeight="26.0" prefWidth="127.0" style="-fx-background-radius: 10;" text="Remove Movie" />
-        <Label layoutX="14.0" layoutY="29.0" text="Movie Name" />
-      <ChoiceBox fx:id="movieName" layoutX="101.0" layoutY="24.0" prefHeight="26.0" prefWidth="127.0" style="-fx-background-radius: 10;">
+        <Button layoutX="36.0" layoutY="50.0" mnemonicParsing="false" onAction="#removeMovie" prefHeight="26.0" prefWidth="127.0" style="-fx-background-radius: 10;" text="Remove Movie" />
+        <Label layoutX="14.0" layoutY="29.0" text="Movie Name" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="9.0" />
+      <ChoiceBox fx:id="movieName" layoutX="87.0" layoutY="5.0" prefHeight="26.0" prefWidth="127.0" style="-fx-background-radius: 5;" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <opaqueInsets>
             <Insets left="5.0" right="5.0" />
          </opaqueInsets>

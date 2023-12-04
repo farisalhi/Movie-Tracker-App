@@ -17,7 +17,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="movietracker.core.MovieController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="movietracker.core.MovieController">
    <top>
       <MenuBar style="-fx-background-radius: 0 0 10 10;" BorderPane.alignment="CENTER">
         <menus>
@@ -137,7 +137,7 @@
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>
             </ChoiceBox>
-            <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 10 10 0 0;" text="Top movies by genre">
+            <Button mnemonicParsing="false" onAction="#viewTopGenreMovies" prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 10 10 0 0;" text="Top movies by genre">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="10.0" />
                </VBox.margin>
@@ -149,7 +149,7 @@
             </ChoiceBox>
             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-radius: 10;" text="Most popular genres">
                <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                </VBox.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#viewTop5" prefHeight="50.0" prefWidth="218.0" style="-fx-background-radius: 10;" text="View top 5 movies">
