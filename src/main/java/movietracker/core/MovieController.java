@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class MovieController {
 
@@ -420,8 +419,47 @@ public class MovieController {
     }
 
     @FXML
-    void viewTop5(ActionEvent event) {
+    void viewTopGenres() {
         //TODO
+        ArrayList<Movie> movies = data.getMovies();
+        if (!movies.isEmpty()) {
+            data.storeTopGenres(movies);
+            printTopGenres(movies);
+        } else {
+            status.setText("You haven't added any movies.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
+    }
+
+    private void printTopGenres(ArrayList<Movie> movies) {
+        //TODO
+    }
+
+    @FXML
+    void viewTop5(ActionEvent event) {
+        ArrayList<Movie> movies = data.getMovies();
+        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+        ArrayList<String> top5 = data.getTop5();
+        if (!movies.isEmpty()) {
+            data.storeTop5(ratings);
+            printTop5(top5, ratings);
+        } else {
+            status.setText("You haven't added any movies.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
+    }
+
+    private void printTop5(ArrayList<String> top5, HashMap<String, Integer> ratings) {
+        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+        textData += "-----------------------------\n";
+
+        for (String movie : top5) {
+            textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
+        }
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
     }
 
     protected void initializeChoices() {

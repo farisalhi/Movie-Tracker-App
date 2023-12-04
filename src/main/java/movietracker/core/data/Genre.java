@@ -15,4 +15,8 @@ public class Genre extends Characteristic {
     public Genre.movieGenre getGenre() {
         return genre;
     }
+
+    public String getMovie() {
+        return movie;
+    }
 }

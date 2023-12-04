@@ -25,6 +25,7 @@ public class Data {
     private final ArrayList<String> top5WTW;
     private final ArrayList<String> top5Watched;
     private final ArrayList<String> top5Genre;
+    private final ArrayList<String> topGenres;
 
     public Data() {
         this.list = new ArrayList<>();
@@ -45,6 +46,7 @@ public class Data {
         this.top5WTW = new ArrayList<>();
         this.top5Watched = new ArrayList<>();
         this.top5Genre = new ArrayList<>();
+        this.topGenres = new ArrayList<>();
     }
 
     /**
@@ -404,6 +406,14 @@ public class Data {
                 }
             }
         }
+    }
+
+    public void storeTopGenres(ArrayList<Movie> movies) {
+        //TODO
+    }
+
+    public ArrayList<String> getTopGenres() {
+        return topGenres;
     }
 
     /**
