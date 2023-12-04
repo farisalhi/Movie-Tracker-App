@@ -1,36 +1,29 @@
 package movietracker.core;
 
+import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import movietracker.core.data.Data;
 import movietracker.core.data.List;
 import movietracker.core.part2.Menu;
 
 public class ListController {
-    //private Data data;
     Data data = Menu.getData();
 
-    //public static int listNumber = 0;
 
     @FXML
     private TextField listName;
 
     @FXML
     private ChoiceBox<String> listType;
-
-    /*public void setData(Data data) {
-        this.data = data;
-        initializeChoices();
-    }*/
-
-   /* public List getList() {
-        return data.getList(listNumber);
-    }*/
+    private Label status;
+    private TextArea viewData;
+    private PauseTransition pause;
 
     @FXML
     public void createList(ActionEvent event) {
@@ -40,6 +33,10 @@ public class ListController {
             boolean success = data.storeNewList(Menu.listNumber++, type, name);
             if (success) {
                 ((Stage) listName.getScene().getWindow()).close();
+                status.setText("Created list.");
+                status.setTextFill(Color.GREEN);
+                pause.setOnFinished(event1 -> status.setText(null));
+                pause.play();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("This list name is already in use. Please choose a different name.");
@@ -56,5 +53,10 @@ public class ListController {
         String[] types = {"Favourites", "Watched", "Want-to-watch"};
         listType.getItems().addAll(types);
         listType.setValue(types[0]);
+    }
+    public void setup(Label status, TextArea viewData, PauseTransition pause) {
+        this.status = status;
+        this.viewData = viewData;
+        this.pause = pause;
     }
 }

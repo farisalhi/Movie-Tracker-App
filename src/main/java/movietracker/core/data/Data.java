@@ -130,12 +130,13 @@ public class Data {
                    movieList.remove(movie);
                    movieLookup.remove(movie.getNum(), movie);
                    movieDuplicateLookup.remove(movie);
-                   ratingLookup.remove(name, movie.getRating());
+                   ratingLookup.remove(movie.getName(), movie.getRating());
                    genreLookup.remove(movie, movie.getGenre());
                    i--;
                }
            }
-        for (List list_single : list) {
+        for(int i = 0;i<list.size(); i++){
+            List list_single = list.get(i);
             if (Objects.equals(list_single.getName(), name)) {
                 list.remove(list_single);
                 listLookup.remove(list_single.getNum(), list_single);

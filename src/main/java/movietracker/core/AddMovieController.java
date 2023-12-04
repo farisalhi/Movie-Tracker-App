@@ -1,13 +1,13 @@
 package movietracker.core;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import movietracker.core.data.Data;
 import movietracker.core.data.Genre;
@@ -38,16 +38,11 @@ public class AddMovieController {
 
     @FXML
     private ChoiceBox<Genre.movieGenre> genreChoice;
+    private PauseTransition pause;
+    private Label status;
+    private TextArea viewData;
 
 
-   /* public void setData(Data data) {
-        this.data = data;
-        initializeChoices();
-    }*/
-
-   /* public Movie getMovie() {
-        return data.getMovie(movieNumber);
-    }*/
 
     @FXML
     void addMovie(ActionEvent event) {
@@ -63,6 +58,10 @@ public class AddMovieController {
                         boolean success = data.storeNewMovie(Menu.movieNumber, listName, name, rating, genre);
                         if (success) {
                             ((Stage) movieName.getScene().getWindow()).close();
+                            status.setText("Movie Added.");
+                            status.setTextFill(Color.GREEN);
+                            pause.setOnFinished(event1 -> status.setText(null));
+                            pause.play();
                         } else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setContentText("You've already added this movie. Please choose a different movie.");
@@ -111,5 +110,10 @@ public class AddMovieController {
         Genre.movieGenre[] genres = Genre.movieGenre.values();
         genreChoice.getItems().addAll(genres);
         genreChoice.setValue(genres[0]);
+    }
+    public void setup(Label status, TextArea viewData, PauseTransition pause) {
+        this.status = status;
+        this.viewData = viewData;
+        this.pause = pause;
     }
 }
