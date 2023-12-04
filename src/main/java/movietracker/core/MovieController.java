@@ -2,6 +2,7 @@ package movietracker.core;
 
 import javafx.animation.PauseTransition;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -15,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import movietracker.core.data.Genre;
 import movietracker.core.data.List;
 import movietracker.core.data.Movie;
 import movietracker.core.part2.Menu;
@@ -25,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MovieController {
 
@@ -32,6 +35,15 @@ public class MovieController {
     Data data = Menu.getData();
 
     private final PauseTransition pause = new PauseTransition(Duration.seconds(2));
+    @FXML
+    private ChoiceBox<String> movieInfo;
+
+    @FXML
+    private ChoiceBox<Genre.movieGenre> topByGenre;
+
+    @FXML
+    private ChoiceBox<String> topByList;
+
 
     @FXML
     private Label status;
@@ -40,11 +52,12 @@ public class MovieController {
     private TextArea viewData;
 
     public void initialize() {
+
     }
 
-    /*public void setData(Data data) {
+    public void setData(Data data) {
         this.data = data;
-    }*/
+    }
 
     @FXML
     void about(ActionEvent event) {
@@ -74,20 +87,12 @@ public class MovieController {
             stage.setResizable(false);
 
             ListController listController = loader.getController();
-            //listController.setData(data);
             listController.initializeChoices();
+            listController.setup(status,viewData, pause);
             stage.setTitle("Create a list");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
-
-//            List list = data.getList(ListController.listNumber);
-//            status.setText(String.format("List '%s' created!", list.getName()));
-
-            status.setText("Created list.");
-            status.setTextFill(Color.GREEN);
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -103,18 +108,11 @@ public class MovieController {
 
             DeleteListController deleteListController = loader.getController();
             deleteListController.initializeChoices();
-
+            deleteListController.setup(status, viewData, pause);
             stage.setTitle("Delete a List");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
-            //stage.showAndWait();
-            stage.show();
-
-            status.setText("Deleted List.");
-            status.setTextFill(Color.GREEN);
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
-            viewData.setText("");
+            stage.showAndWait();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -130,15 +128,11 @@ public class MovieController {
 
             AddMovieController addMovieController = loader.getController();
             addMovieController.initializeChoices();
-
+            addMovieController.setup(status, viewData, pause);
             stage.setTitle("Added Movie");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
-            status.setText("Movie Added.");
-            status.setTextFill(Color.GREEN);
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -151,13 +145,12 @@ public class MovieController {
             Scene scene = new Scene(fxmlLoader.load(), 230, 150);
             Stage stage = new Stage();
             stage.setTitle("Delete a Movie");
-            //stage.initModality(Modality.APPLICATION_MODAL);
+            RemoveMovieController removeMovieController = fxmlLoader.getController();
+            removeMovieController.initializeChoices();
+            removeMovieController.setup(status, viewData, pause);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
-            status.setTextFill(Color.GREEN);
-            status.setText("Deleted movie.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -345,6 +338,11 @@ public class MovieController {
         }
         viewData.setFont(Font.font("PT Mono"));
         viewData.setText(textData);
+    }
+
+    @FXML
+    void viewMovieInfo(ActionEvent event) {
+
     }
 
     @FXML
