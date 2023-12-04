@@ -137,7 +137,7 @@
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>
             </ChoiceBox>
-            <Button mnemonicParsing="false" onAction="#viewTopGenreMovies" prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 10 10 0 0;" text="Top movies by genre">
+            <Button mnemonicParsing="false" onAction="#viewTopByGenre" prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 10 10 0 0;" text="Top movies by genre">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="10.0" />
                </VBox.margin>

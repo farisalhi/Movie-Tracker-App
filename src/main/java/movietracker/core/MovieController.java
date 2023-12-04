@@ -393,8 +393,30 @@ public class MovieController {
     }
 
     @FXML
-    void viewTopGenreMovies(ActionEvent event) {
+    void viewTopByGenre(ActionEvent event) {
+        HashMap<Movie, Genre.movieGenre> genreLookup = data.getGenreLookup(); // get the hashmap of movie genres
+        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+        ArrayList<String> top5Genre = data.getTop5Genre();
+        if (!genreLookup.isEmpty()) {
+            Genre.movieGenre genre = topByGenre.getValue();
+            data.storeTop5Genre(ratings, genre);
+            printTopByGenre(top5Genre, ratings);
+        } else {
+            status.setText("You haven't added any movies.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
+    }
 
+    private void printTopByGenre(ArrayList<String> top5Genre, HashMap<String, Integer> ratings) {
+        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+        textData += "-----------------------------\n";
+
+        for (String movie : top5Genre) {
+            textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
+        }
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
     }
 
     @FXML
@@ -424,6 +446,7 @@ public class MovieController {
         }
 
         Genre.movieGenre[] genres = Genre.movieGenre.values();
+        topByGenre.getItems().clear();
         topByGenre.getItems().addAll(genres);
         topByGenre.setValue(genres[0]);
     }
