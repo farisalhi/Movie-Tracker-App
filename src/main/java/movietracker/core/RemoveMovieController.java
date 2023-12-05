@@ -14,14 +14,24 @@ import movietracker.core.part2.Menu;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Controller class to launch popup for movie deletion
+ */
 public class RemoveMovieController {
+    // Get updated data from menu
     Data data = Menu.getData();
+
+    // FXML elements
     @FXML
     private ChoiceBox<String> movieName;
     private Label status;
     private TextArea viewData;
     private PauseTransition pause;
 
+    /**
+     * Function to remove a movie
+     * @param event
+     */
     @FXML
     void removeMovie(ActionEvent event) {
         try {
@@ -48,16 +58,27 @@ public class RemoveMovieController {
         }
     }
 
+     /**
+     * Function to initialize all the choice boxes
+     */
     protected void initializeChoices() {
-        ArrayList<Movie> movies = data.getMovies();
-        movieName.getItems().clear();
-        if (!movies.isEmpty()) {
+        ArrayList<Movie> movies = data.getMovies(); // get the list of movies
+        movieName.getItems().clear(); // clear the list in case of previous data
+        if (!movies.isEmpty()) { // check if it's empty
             for (Movie movie : movies) {
+                // loop through the list and add the names to the choice box items
                 String listName = movie.getName();
                 movieName.getItems().add(listName);
             }
         }
     }
+
+    /**
+     *
+     * @param status
+     * @param viewData
+     * @param pause
+     */
     public void setup(Label status, TextArea viewData, PauseTransition pause) {
         this.status = status;
         this.viewData = viewData;

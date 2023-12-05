@@ -127,6 +127,11 @@ public class Data {
         }
     }
 
+    /**
+     * Function to check if a list can be removed.
+     * @param name String name of the list to be removed.
+     * @return Boolean if the remove was successful.
+     */
     public boolean deleteList(String name) {
            for(int i = 0;i<movieList.size(); i++){
                Movie  movie = movieList.get(i);
@@ -152,6 +157,11 @@ public class Data {
     }
 
 
+    /**
+     * Function to check if a movie is in the movie list to remove.
+     * @param name String name of the movie to be removed
+     * @return Boolean if the remove was successful.
+     */
     public boolean removeMovie(String name){
         for(Movie movie : movieList){
             if (Objects.equals(movie.getName(), name)){
@@ -409,6 +419,12 @@ public class Data {
             }
         }
     }
+
+    /**
+     * Function that stores the top 5 rated movies in a specified list
+     * @param movieRatings HashMap storing the movie names as the keys and the ratings as the values
+     * @param list String name of the list to search in.
+     */
     public void storeTop5List(HashMap<String, Integer> movieRatings, String list) {
         // Create a new ArrayList to store the top 5 ratings
         ArrayList<Integer> top5ListRatings = new ArrayList<>();
@@ -442,6 +458,10 @@ public class Data {
         //TODO
     }
 
+    /**
+     * Getter for the top 5 movies in a given list from the storeTop5List function
+     * @return String Arraylist of top 5 movies in a given list.
+     */
     public ArrayList<String> getTop5List() {
         return top5List;
     }

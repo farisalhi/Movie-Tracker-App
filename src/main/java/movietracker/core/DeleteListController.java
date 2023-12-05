@@ -12,14 +12,24 @@ import movietracker.core.part2.Menu;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Controller class to launch popup for list deletion
+ */
 public class DeleteListController {
+    // Get updated data from menu
     Data data = Menu.getData();
+
+    // FXML elements
     @FXML
     private ChoiceBox<String> listName;
     private Label status;
     private TextArea viewData;
     private PauseTransition pause;
 
+    /**
+     * Function to delete a list
+     * @param event Delete list. Button click.
+     */
     @FXML
     void deleteList(ActionEvent event) {
         try {
@@ -51,17 +61,29 @@ public class DeleteListController {
         }
     }
 
+    /**
+     * Function to initialize all the choice boxes
+     */
     protected void initializeChoices() {
-        ArrayList<List> lists = data.getLists();
-        listName.getItems().clear();
+        // List choice box
+        ArrayList<List> lists = data.getLists(); // get the list of lists
+        listName.getItems().clear(); // clear the list in case of previous data
         if (!lists.isEmpty()) {
             for (List list : lists) {
+                // loop through the list and add the names to the choice box items
                 String list_name = list.getName();
                 listName.getItems().add(list_name);
             }
         }
+
     }
 
+    /**
+     *
+     * @param status
+     * @param viewData
+     * @param pause
+     */
     public void setup(Label status, TextArea viewData, PauseTransition pause) {
         this.status = status;
         this.viewData = viewData;

@@ -4,7 +4,6 @@ import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
@@ -12,27 +11,25 @@ import javafx.stage.Stage;
 import movietracker.core.data.Data;
 import movietracker.core.data.Genre;
 import movietracker.core.data.List;
-import movietracker.core.data.Movie;
 import movietracker.core.part2.Menu;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Controller class to launch popup for movie adding
+ */
 public class AddMovieController {
 
-    //private Data data;
+    // Get updated data from menu
     Data data = Menu.getData();
 
-    // Static constant for movie counting.
-   // public static int movieNumber = 0;
-
+    // FXML elements
     @FXML
     private TextField movieName;
-
     @FXML
     private TextField movieRating;
-
     @FXML
     private ChoiceBox<String> listChoice;
 
@@ -42,11 +39,12 @@ public class AddMovieController {
     private Label status;
     private TextArea viewData;
 
-
-
+    /**
+     * Function to add a new movie
+     * @param event Add movie. Button click.
+     */
     @FXML
     void addMovie(ActionEvent event) {
-        Menu.movieNumber++;
         String listName = listChoice.getValue();
         Genre.movieGenre genre = genreChoice.getValue();
         try {
@@ -57,6 +55,7 @@ public class AddMovieController {
                     if (rating >= 0 && rating <= 5) {
                         boolean success = data.storeNewMovie(Menu.movieNumber, listName, name, rating, genre);
                         if (success) {
+                            Menu.movieNumber++;
                             ((Stage) movieName.getScene().getWindow()).close();
                             status.setText("Movie Added.");
                             status.setTextFill(Color.GREEN);
@@ -84,6 +83,10 @@ public class AddMovieController {
         }
     }
 
+    /**
+     * Function to launch popup for list creation
+     * @param event New list. Button click.
+     */
     @FXML
     void createNewList(ActionEvent event) {
         try {
@@ -97,21 +100,34 @@ public class AddMovieController {
         }
     }
 
+    /**
+     * Function to initialize all the choice boxes
+     */
     protected void initializeChoices() {
-        ArrayList<List> lists = data.getLists();
-        listChoice.getItems().clear();
-        if (!lists.isEmpty()) {
+        // List choice box
+        ArrayList<List> lists = data.getLists(); // get the list of lists
+        listChoice.getItems().clear(); // clear the list in case of previous data
+        if (!lists.isEmpty()) { // Check if the list is empty
             for (List list:lists){
+                // loop through the list and add the names to the choice box items
                 String listName = list.getName();
                 listChoice.getItems().add(listName);
             }
         }
 
-        Genre.movieGenre[] genres = Genre.movieGenre.values();
-        genreChoice.getItems().clear();
-        genreChoice.getItems().addAll(genres);
-        genreChoice.setValue(genres[0]);
+        // Genre choice box
+        Genre.movieGenre[] genres = Genre.movieGenre.values(); // get the list of genres
+        genreChoice.getItems().clear(); // clear the list in case of previous data
+        genreChoice.getItems().addAll(genres); // add all the genres to the choice box items
+        genreChoice.setValue(genres[0]); // set the initial value to the first item
     }
+
+    /**
+     *
+     * @param status
+     * @param viewData
+     * @param pause
+     */
     public void setup(Label status, TextArea viewData, PauseTransition pause) {
         this.status = status;
         this.viewData = viewData;
