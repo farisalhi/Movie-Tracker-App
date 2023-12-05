@@ -376,7 +376,28 @@ public class MovieController {
     }
     @FXML
     void viewTopByList(ActionEvent event) {
-        //TODO
+        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+        ArrayList<String> top5List = data.getTop5List();
+        if (!ratings.isEmpty()) {
+            String list = topByList.getValue();
+            data.storeTop5List(ratings, list);
+            printTop5List(top5List, ratings);
+        } else {
+            status.setText("You haven't added any movies.");
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
+    }
+
+    private void printTop5List(ArrayList<String> top5List, HashMap<String, Integer> ratings) {
+        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+        textData += "-----------------------------\n";
+
+        for (String movie : top5List) {
+            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+        }
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
     }
 
     @FXML

@@ -21,6 +21,7 @@ public class Data {
 
     // HashSet
     private final ArrayList<String> top5;
+    private final ArrayList<String> top5List;
     private final ArrayList<String> top5Fav;
     private final ArrayList<String> top5WTW;
     private final ArrayList<String> top5Watched;
@@ -42,6 +43,7 @@ public class Data {
         this.genreLookup = new HashMap<>();
 
         this.top5 = new ArrayList<>();
+        this.top5List = new ArrayList<>();
         this.top5Fav = new ArrayList<>();
         this.top5WTW = new ArrayList<>();
         this.top5Watched = new ArrayList<>();
@@ -407,6 +409,34 @@ public class Data {
             }
         }
     }
+    public void storeTop5List(HashMap<String, Integer> movieRatings, String list) {
+        // Create a new ArrayList to store the top 5 ratings
+        ArrayList<Integer> top5ListRatings = new ArrayList<>();
+        // For each rating in the movieRatings values, add the rating to the top 5 ratings list.
+        for (int rating : movieRatings.values()) {
+            top5ListRatings.add(rating);
+        }
+        // Sort the ratings by reverse order
+        top5ListRatings.sort(Comparator.reverseOrder());
+        // Set a counter to 0 to keep track of the movies
+        int count = 0;
+        // Clear the top 5 list in case there are already movies in it.
+        top5List.clear();
+        // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
+        for (int rating : top5ListRatings) {
+            for (String key : movieRatings.keySet()) {
+                if (count < 5 && rating >= 0) {
+                    // Loop through the list and movieList to find the matching entries that meet all the requirements
+                    for (Movie movie : movieList) {
+                        if (movie.getName().equals(key) && movie.getList().equals(list) && rating == movieRatings.get(key) && !top5List.contains(key)) {
+                            top5List.add(key);
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public void storeTopGenres(ArrayList<Movie> movies) {
         //TODO
@@ -414,6 +444,10 @@ public class Data {
 
     public ArrayList<String> getTopGenres() {
         return topGenres;
+    }
+
+    public ArrayList<String> getTop5List() {
+        return top5List;
     }
 
     /**
