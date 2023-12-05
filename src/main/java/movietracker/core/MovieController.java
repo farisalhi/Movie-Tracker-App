@@ -67,12 +67,6 @@ public class MovieController {
         this.data = data;
     }
 
-//    public void setup(Label status, TextArea viewData, PauseTransition pause) {
-//        this.status = status;
-//        this.viewData = viewData;
-//        this.pause = pause;
-//    }
-
     /**
      * About function to display information pertaining to application and authors
      * @param event About > About Movie Tracker. Button click
@@ -720,12 +714,17 @@ viewData.setFont(Font.font("PT Mono"));
 viewData.setText(textData);
 }
 
-@FXML
+    /**
+     * Function sorts the genres, finds the genre with the most movies
+     */
+    @FXML
 void viewTopGenres() {
 ArrayList<Movie> movies = data.getMovies();
 ArrayList<Integer> genreCount = new ArrayList<>();
+// set different variables for different genres
 int i = 0, j = 0, k = 0, l = 0, m = 0, n = 0, o = 0, p = 0, q = 0;
 for (Movie movie : movies) {
+    //if the movie is in the genre, the counter goes up by 1
     if (movie.getGenre().equals(Genre.movieGenre.Action)) {
         i++;
     } else if (movie.getGenre().equals(Genre.movieGenre.Adventure)) {
@@ -746,6 +745,7 @@ for (Movie movie : movies) {
         q++;
     }
 }
+// add the different counts for the genres to an array list and sort it in reverse
 genreCount.add(i);
 genreCount.add(j);
 genreCount.add(k);
@@ -756,6 +756,7 @@ genreCount.add(o);
 genreCount.add(p);
 genreCount.add(q);
 genreCount.sort(Comparator.reverseOrder());
+// if the highest counter is for the genre, the genre will be printed along with the number of movies (counter)
 int type = genreCount.get(0);
 if (type == i) {
     printTopGenres(Genre.movieGenre.Action, i);
@@ -778,8 +779,12 @@ if (type == i) {
 }
 }
 
+/**
+* Helper function to display/print the genre with the most movies and the number of movies in the genre
+* @param genre the genre to be printed
+* @param type the number of movies in the genre which will be printed
+*/
 private void printTopGenres(Genre.movieGenre genre,Integer type) {
-//TODO
 String textData = ("");
 textData += genre + "\t Number of Movies: "+type;
 viewData.setFont(Font.font("PT Mono"));
@@ -798,7 +803,7 @@ ArrayList<String> top5 = data.getTop5(); // get the arraylist of top 5 movies
 if (!movies.isEmpty()) { // check if the movie list is empty
     data.storeTop5(ratings); // invoke the function for sorting the data
     printTop5(top5, ratings); // invoke helper function for data output
-} else { // if the list is empty, there are no movies
+}else { // if the list is empty, there are no movies
     status.setText("You haven't added any movies.");
     pause.setOnFinished(event1 -> status.setText(null));
     pause.play();
