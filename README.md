@@ -1,8 +1,17 @@
 # Computer Science 219 Project
 
 ## Movie Tracker
-
 This program is a project where we used Java to create an app where a user can store and keep track of Movies they have watched, want-to-watch and their favourites. The app also allows the user to view different types of data about the movies they have stored by using the GUI interface's buttons and options. Running the program allows the user to:
+
+# How to run
+**Without .jar file**
+You can run the application using the IDE or with this command in the target/classes folder
+java --module-path "/Users/faris/java/javafx-sdk-21.0.1 2/lib" --add-modules javafx.controls,javafx.fxml movietracker.core.MainGUI
+**With .jar file**
+Run it through the jar file in the out/artifacts/CPSC219F23A3 folder
+java --module-path "/Users/faris/java/javafx-sdk-21.0.1 2/lib" --add-modules javafx.controls,javafx.fxml -jar CPSC219F23A3.jar mvh.app.Main
+
+
 
 # Menu Bar Functions
 * Create and delete different lists that movies will be stored in
