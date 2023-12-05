@@ -442,10 +442,6 @@ public class Data {
         //TODO
     }
 
-    public ArrayList<String> getTopGenres() {
-        return topGenres;
-    }
-
     public ArrayList<String> getTop5List() {
         return top5List;
     }

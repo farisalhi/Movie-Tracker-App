@@ -25,6 +25,7 @@ import movietracker.core.util.FileSaver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class MovieController {
@@ -537,20 +538,68 @@ public class MovieController {
 
     @FXML
     void viewTopGenres() {
-        //TODO
         ArrayList<Movie> movies = data.getMovies();
-        if (!movies.isEmpty()) {
-            data.storeTopGenres(movies);
-            printTopGenres(movies);
-        } else {
-            status.setText("You haven't added any movies.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
+        ArrayList<Integer> genreCount = new ArrayList<>();
+        int i = 0, j = 0, k = 0, l = 0, m = 0, n = 0, o = 0, p = 0, q = 0;
+        for (Movie movie : movies) {
+            if (movie.getGenre().equals(Genre.movieGenre.Action)) {
+                i++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Adventure)) {
+                j++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Drama)) {
+                k++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Comedy)) {
+                l++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Fantasy)) {
+                m++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Horror)) {
+                n++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Romance)) {
+                o++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Science_Fiction)) {
+                p++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.None)) {
+                q++;
+            }
+        }
+        genreCount.add(i);
+        genreCount.add(j);
+        genreCount.add(k);
+        genreCount.add(l);
+        genreCount.add(m);
+        genreCount.add(n);
+        genreCount.add(o);
+        genreCount.add(p);
+        genreCount.add(q);
+        genreCount.sort(Comparator.reverseOrder());
+        int type = genreCount.get(0);
+        if (type == i) {
+            printTopGenres(Genre.movieGenre.Action, i);
+        }else if(type == j){
+            printTopGenres(Genre.movieGenre.Adventure, j);
+        }else if(type == k){
+            printTopGenres(Genre.movieGenre.Drama, k);
+        }else if(type == l){
+            printTopGenres(Genre.movieGenre.Comedy, l);
+        }else if(type == m){
+            printTopGenres(Genre.movieGenre.Fantasy, m);
+        }else if(type == n){
+            printTopGenres(Genre.movieGenre.Horror, n);
+        }else if(type == o){
+            printTopGenres(Genre.movieGenre.Romance, o);
+        }else if(type == p){
+            printTopGenres(Genre.movieGenre.Science_Fiction, p);
+        }else if(type == q){
+            printTopGenres(Genre.movieGenre.None, q);
         }
     }
 
-    private void printTopGenres(ArrayList<Movie> movies) {
+    private void printTopGenres(Genre.movieGenre genre,Integer type) {
         //TODO
+        String textData = ("");
+        textData += genre + "\t Number of Movies: "+type;
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
     }
 
     @FXML
