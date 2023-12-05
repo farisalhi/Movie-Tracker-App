@@ -348,508 +348,519 @@ public class MovieController {
      */
     @FXML
     void tutorial(ActionEvent event) {
-        //TODO
-    }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Message");
+        alert.setTitle("Help");
+        alert.setContentText("""
+                * This is a Movie Tracking/Sorting application. 
+                * You can create and delete lists of different types to sort your movies by (under List menu option) and add and remove movies (under Movie menu option).
+                * To add a movie, you need to add a rating, genre and the list it will be added to.
+                * You can also load and save a text file with movies and lists that can be stored (under the File menu option).
+                * The buttons trigger different functions as per labels to display different information under the PRINT window in the middle.
+                * The success/failure status will be displayed at the bottom as the application runs.
+                """);
+        alert.showAndWait();
+}
 
-    /**
-     * Views all the movies and their assigned genres
-     * @param event View genres. Button click
-     */
-    @FXML
-    void viewGenres(ActionEvent event) {
-        ArrayList<Movie> movies = data.getMovies(); // get arraylist of movies
-        if (!movies.isEmpty()) { // check if it's empty
-            printGenres(movies); // invoke helper function to output data
-        } else { // no movies added
-            status.setText("You haven't added any movies.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
+/**
+* Views all the movies and their assigned genres
+* @param event View genres. Button click
+*/
+@FXML
+void viewGenres(ActionEvent event) {
+ArrayList<Movie> movies = data.getMovies(); // get arraylist of movies
+if (!movies.isEmpty()) { // check if it's empty
+    printGenres(movies); // invoke helper function to output data
+} else { // no movies added
+    status.setText("You haven't added any movies.");
+    pause.setOnFinished(event1 -> status.setText(null));
+    pause.play();
+}
+}
+/**
+* Helper function for viewGenres. Creates a string with the formatted info.
+* @param movies Movie Arraylist containing all the current movies.
+*/
+private void printGenres(ArrayList<Movie> movies) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "Movie", "Genre");
+textData += "-----------------------------\n";
+
+// Loop through every movie and append the related info to the string.
+for (Movie movie : movies) {
+    textData += String.format("%-15s %-15s\n", movie.getName(), movie.getGenre());
+}
+// output to text area in application
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Views all lists.
+* @param event View all lists. Button click.
+*/
+@FXML
+void viewLists(ActionEvent event) {
+ArrayList<List> lists = data.getLists(); // get arraylist of lists
+if (!lists.isEmpty()) { // check if it's empty
+    printLists(lists); // invoke helper function to output data
+} else { // No lists created
+    status.setText("You haven't added any lists.");
+    pause.setOnFinished(event1 -> status.setText(null));
+    pause.play();
+}
+}
+
+/**
+* Helper function for viewLists. Creates a string with the formatted info.
+* @param lists List ArrayList containing all the created lists.
+*/
+public void printLists(ArrayList<List> lists) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "List", "Name");
+textData += "-----------------------------\n";
+// Loop through every list and append  the related info to the string.
+for (List list : lists) {
+    textData += String.format("%-15s %-15s\n", list.getType(), list.getName());
+}
+// output to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Views all movies and the lists they are in.
+* @param event View movies and lists. Button click.
+*/
+@FXML
+void viewMovieLists(ActionEvent event) {
+ArrayList<Movie> movies = data.getMovies(); // Get the arraylist of movies
+if (!movies.isEmpty()) { // check if it's empty
+    printMoviesLists(movies); // invoke helper function to output data
+} else { // no movies added
+    status.setText("You haven't added any movies.");
+    pause.setOnFinished(event1 -> status.setText(null));
+    pause.play();
+}
+}
+
+/**
+* Helper function for viewMovieLists. Creates a string with the formatted info
+* @param movies Movie ArrayList containing all the movies
+*/
+public void printMoviesLists(ArrayList<Movie> movies) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "Name", "List");
+textData += "-----------------------------\n";
+// Loop through every movie and append the related info to the string.
+for (Movie movie : movies) {
+    textData += String.format("%-15s %-15s\n", movie.getName(), movie.getList());
+}
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Views all info relating a movie.
+* @param event View movie info. Button click
+*/
+@FXML
+void viewMovieInfo(ActionEvent event) {
+ArrayList<Movie> movies = data.getMovies(); // get the arraylist of movies
+String movieName = movieInfo.getValue(); // get the name of the movie from the choice box
+// Loop through every movie and check if the name is equal to the name in the choice box.
+for (Movie movie:movies){
+    if(movie.getName().equals(movieName)){
+        printMovieInfo(movie); // invoke helper function to output data
+    }
+}
+}
+
+/**
+* Helper function for viewMovieInfo. Creates a string with the formatted info
+* @param movie Movie selected for info viewing.
+*/
+public void printMovieInfo(Movie movie) {
+String textData =(""); // initialize String with blank space.
+textData += movie.toString(); // format the movie info into toString
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Views the top 5 movies by list.
+* @param event Top movies by list. Button click
+*/
+@FXML
+void viewTopByList(ActionEvent event) {
+HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+ArrayList<String> top5List = data.getTop5List(); // get arraylist of top movies by list
+if (!ratings.isEmpty()) { //check if there are any rating added
+    String list = topByList.getValue(); // get the user's selection of list from choice box
+    data.storeTop5List(ratings, list); // invoke storeTop5List to sort data
+    printTop5List(top5List, ratings); // invoke helper function to output data
+} else { // no ratings added means no movies added
+    status.setText("You haven't added any movies.");
+    pause.setOnFinished(event1 -> status.setText(null));
+    pause.play();
+}
+}
+
+/**
+* Helper function for viewTop5ByList. Creates a String with the formatted info
+* @param top5List String ArrayList containing the names of the top 5 movies in the list.
+* @param ratings Hashmap containing the ratings for the movies
+*/
+private void printTop5List(ArrayList<String> top5List, HashMap<String, Integer> ratings) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+textData += "-----------------------------\n";
+// Loop through the movie name in the top 5 list and append the related info to the string
+for (String movie : top5List) {
+    textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+}
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Views the top 5 movies by the list type.
+* @param event Top movies by list type. Button click.
+*/
+@FXML
+void viewTopByListType(ActionEvent event) {
+HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+// Get all String ArrayLists containing the top 5 movies in the three list types
+ArrayList<String> top5Fav = data.getTop5Fav();
+ArrayList<String> top5Watched = data.getTop5Watched();
+ArrayList<String> top5WTW = data.getTop5WTW();
+
+if (!ratings.isEmpty()) { // Check if the ratings hashmap is empty
+    String type = topByListType.getValue(); // Get the user's selection for list type
+    switch (type) { // switch to deal with type cases.
+        // Invoke the appropriate store and helper function for each type.
+        case "Favourites" -> {
+            data.storeTop5Fav(ratings);
+            printTopFav(top5Fav, ratings);
+        }
+        case "Watched" -> {
+            data.storeTop5Watched(ratings);
+            printTopWatched(top5Watched, ratings);
+        }
+        case "Want-to-watch" -> {
+            data.storeTop5WTW(ratings);
+            printTopWTW(top5WTW, ratings);
         }
     }
-    /**
-     * Helper function for viewGenres. Creates a string with the formatted info.
-     * @param movies Movie Arraylist containing all the current movies.
-     */
-    private void printGenres(ArrayList<Movie> movies) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "Movie", "Genre");
-        textData += "-----------------------------\n";
+} else { // no ratings means no movies have been added
+    status.setText("You haven't added any movies.");
+    pause.setOnFinished(event1 -> status.setText(null));
+    pause.play();
+}
+}
 
-        // Loop through every movie and append the related info to the string.
-        for (Movie movie : movies) {
-            textData += String.format("%-15s %-15s\n", movie.getName(), movie.getGenre());
-        }
-        // output to text area in application
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
+/**
+* Helper function for the top 5 movies in Favourites type list
+* @param top5Fav String ArrayList containing the top 5 movies in Favourite lists.
+* @param ratings Hashmap containing the integer ratings for the movies
+*/
+private void printTopFav(ArrayList<String> top5Fav, HashMap<String, Integer> ratings) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+textData += "-----------------------------\n";
+// Loop through the movie name in the top 5 list and append the related info to the string
+for (String movie : top5Fav) {
+    textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+}
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Helper function for the top 5 movies in Watched type list
+* @param top5Watched String ArrayList containing the top 5 movies in Watched lists.
+* @param ratings Hashmap containing the integer ratings for the movies
+*/
+private void printTopWatched(ArrayList<String> top5Watched, HashMap<String, Integer> ratings) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+textData += "-----------------------------\n";
+// Loop through the movie name in the top 5 list and append the related info to the string
+for (String movie : top5Watched) {
+    textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+}
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Helper function for the top 5 movies in Want-to-watch type list
+* @param top5WTW String ArrayList containing the top 5 movies in Want-to-watch lists.
+* @param ratings Hashmap containing the integer ratings for the movies
+*/
+private void printTopWTW(ArrayList<String> top5WTW, HashMap<String, Integer> ratings) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+textData += "-----------------------------\n";
+// Loop through the movie name in the top 5 list and append the related info to the string
+for (String movie : top5WTW) {
+    textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+}
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Views all the movies.
+* @param event View movies. Button click
+*/
+@FXML
+void viewMovies(ActionEvent event) {
+ArrayList<Movie> movies = data.getMovies(); //get the arraylist of movies
+if (!movies.isEmpty()) { // check if it's empty
+    printMovies(movies); //invoke helper function to output data
+} else { // no movies were added
+    status.setText("You haven't added any movies.");
+    pause.setOnFinished(event1 -> status.setText(null));
+    pause.play();
+}
+}
+
+/**
+* Helper function for viewMovies. Creates a string Creates a String with the formatted info
+* @param movies Movie ArrayList containing all the movies
+*/
+public void printMovies(ArrayList<Movie> movies) {
+// format text for header info
+String textData = String.format("%-15s\n", "Name");
+textData += "-----------------------------\n";
+// Loop through the movie name in the top 5 list and append the related info to the string
+for (Movie movie : movies) {
+    textData += String.format("%-15s\n", movie.getName());
+}
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Views all the movies and their assigned ratings.
+* @param event View ratings. Button click
+*/
+@FXML
+void viewRatings(ActionEvent event) {
+ArrayList<Movie> movies = data.getMovies(); //get the arraylist of movies
+if (!movies.isEmpty()) { // check if it's empty
+    printRatings(movies); //invoke helper function to output data
+} else { // no movies were added
+    status.setText("You haven't added any movies.");
+    pause.setOnFinished(event1 -> status.setText(null));
+    pause.play();
+}
+}
+
+/**
+* Helper function for viewRatings. Creates a string Creates a String with the formatted info
+* @param movies Movie ArrayList containing all the movies
+*/
+private void printRatings(ArrayList<Movie> movies) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "Movie", "Ratins");
+textData += "-----------------------------\n";
+// Loop through the movie name in the top 5 list and append the related info to the string
+for (Movie movie : movies) {
+    textData += String.format("%-15s %-15d\n", movie.getName(), movie.getRating());
+}
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Views the top 5 movies in their genres
+* @param event Top movies by genre. Button click.
+*/
+@FXML
+void viewTopByGenre(ActionEvent event) {
+HashMap<Movie, Genre.movieGenre> genreLookup = data.getGenreLookup(); // get the hashmap of movie genres
+HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+ArrayList<String> top5Genre = data.getTop5Genre(); // get the list of top 5 movies by genre
+if (!genreLookup.isEmpty()) { // check if the genre lookup hashmap is empty
+    Genre.movieGenre genre = topByGenre.getValue(); // get the genre for viewing selected by the user
+    data.storeTop5Genre(ratings, genre); // invoke the function to sort the data
+    printTopByGenre(top5Genre, ratings); // invoke the helper function for data output
+} else { //if there are no genres assigned, then there are no movies
+    status.setText("You haven't added any movies.");
+    pause.setOnFinished(event1 -> status.setText(null));
+    pause.play();
+}
+}
+
+/**
+* Helper function for viewTopByGenre
+* @param top5Genre String ArrayList containing the top 5 movies in a genre
+* @param ratings Hashmap containing the integer ratings for the movies
+*/
+private void printTopByGenre(ArrayList<String> top5Genre, HashMap<String, Integer> ratings) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+textData += "-----------------------------\n";
+// Loop through the movie name in the top 5 list and append the related info to the string
+for (String movie : top5Genre) {
+    textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
+}
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+@FXML
+void viewTopGenres() {
+ArrayList<Movie> movies = data.getMovies();
+ArrayList<Integer> genreCount = new ArrayList<>();
+int i = 0, j = 0, k = 0, l = 0, m = 0, n = 0, o = 0, p = 0, q = 0;
+for (Movie movie : movies) {
+    if (movie.getGenre().equals(Genre.movieGenre.Action)) {
+        i++;
+    } else if (movie.getGenre().equals(Genre.movieGenre.Adventure)) {
+        j++;
+    } else if (movie.getGenre().equals(Genre.movieGenre.Drama)) {
+        k++;
+    } else if (movie.getGenre().equals(Genre.movieGenre.Comedy)) {
+        l++;
+    } else if (movie.getGenre().equals(Genre.movieGenre.Fantasy)) {
+        m++;
+    } else if (movie.getGenre().equals(Genre.movieGenre.Horror)) {
+        n++;
+    } else if (movie.getGenre().equals(Genre.movieGenre.Romance)) {
+        o++;
+    } else if (movie.getGenre().equals(Genre.movieGenre.Science_Fiction)) {
+        p++;
+    } else if (movie.getGenre().equals(Genre.movieGenre.None)) {
+        q++;
     }
+}
+genreCount.add(i);
+genreCount.add(j);
+genreCount.add(k);
+genreCount.add(l);
+genreCount.add(m);
+genreCount.add(n);
+genreCount.add(o);
+genreCount.add(p);
+genreCount.add(q);
+genreCount.sort(Comparator.reverseOrder());
+int type = genreCount.get(0);
+if (type == i) {
+    printTopGenres(Genre.movieGenre.Action, i);
+}else if(type == j){
+    printTopGenres(Genre.movieGenre.Adventure, j);
+}else if(type == k){
+    printTopGenres(Genre.movieGenre.Drama, k);
+}else if(type == l){
+    printTopGenres(Genre.movieGenre.Comedy, l);
+}else if(type == m){
+    printTopGenres(Genre.movieGenre.Fantasy, m);
+}else if(type == n){
+    printTopGenres(Genre.movieGenre.Horror, n);
+}else if(type == o){
+    printTopGenres(Genre.movieGenre.Romance, o);
+}else if(type == p){
+    printTopGenres(Genre.movieGenre.Science_Fiction, p);
+}else if(type == q){
+    printTopGenres(Genre.movieGenre.None, q);
+}
+}
 
-    /**
-     * Views all lists.
-     * @param event View all lists. Button click.
-     */
-    @FXML
-    void viewLists(ActionEvent event) {
-        ArrayList<List> lists = data.getLists(); // get arraylist of lists
-        if (!lists.isEmpty()) { // check if it's empty
-            printLists(lists); // invoke helper function to output data
-        } else { // No lists created
-            status.setText("You haven't added any lists.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
-        }
+private void printTopGenres(Genre.movieGenre genre,Integer type) {
+//TODO
+String textData = ("");
+textData += genre + "\t Number of Movies: "+type;
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Views the top 5 movies.
+* @param event View top 5 movies. Button click
+*/
+@FXML
+void viewTop5(ActionEvent event) {
+ArrayList<Movie> movies = data.getMovies(); // get the arraylist of movies
+HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+ArrayList<String> top5 = data.getTop5(); // get the arraylist of top 5 movies
+if (!movies.isEmpty()) { // check if the movie list is empty
+    data.storeTop5(ratings); // invoke the function for sorting the data
+    printTop5(top5, ratings); // invoke helper function for data output
+} else { // if the list is empty, there are no movies
+    status.setText("You haven't added any movies.");
+    pause.setOnFinished(event1 -> status.setText(null));
+    pause.play();
+}
+}
+
+/**
+* Helper function for viewTop5.Creates a String with the formatted info
+* @param top5 String ArrayList containing the top 5 movies.
+* @param ratings Hashmap containing the integer ratings for the movies
+*/
+private void printTop5(ArrayList<String> top5, HashMap<String, Integer> ratings) {
+// format text for header info
+String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
+textData += "-----------------------------\n";
+// Loop through the movie name in the top 5 list and append the related info to the string
+for (String movie : top5) {
+    textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
+}
+// output data to text area
+viewData.setFont(Font.font("PT Mono"));
+viewData.setText(textData);
+}
+
+/**
+* Function to initialize all the choice boxes
+*/
+protected void initializeChoices() {
+// List choices box
+ArrayList<List> lists = data.getLists(); // get the list of lists
+topByList.getItems().clear(); // clear the list in case of previous data
+if (!lists.isEmpty()) { // check if it isn't empty
+    topByList.setValue(lists.get(0).getName()); // set the initial value to the first item
+    for (List list : lists){ // loop through each list
+        // get the string name and add it to the choice box items
+        String listName = list.getName();
+        topByList.getItems().add(listName);
     }
+}
 
-    /**
-     * Helper function for viewLists. Creates a string with the formatted info.
-     * @param lists List ArrayList containing all the created lists.
-     */
-    public void printLists(ArrayList<List> lists) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "List", "Name");
-        textData += "-----------------------------\n";
-        // Loop through every list and append  the related info to the string.
-        for (List list : lists) {
-            textData += String.format("%-15s %-15s\n", list.getType(), list.getName());
-        }
-        // output to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
+// Movie choice box
+ArrayList<Movie> movies = data.getMovies(); // get the list of movies
+movieInfo.getItems().clear(); // clear the list in case of previous data
+if (!movies.isEmpty()) { // check if it isn't empty
+    movieInfo.setValue(movies.get(0).getName()); // set the initial value to the first item
+    for (Movie movie : movies){ // loop through each movie
+        // get the string name and add it to the choice box items
+        String movieName = movie.getName();
+        movieInfo.getItems().add(movieName);
     }
+}
 
-    /**
-     * Views all movies and the lists they are in.
-     * @param event View movies and lists. Button click.
-     */
-    @FXML
-    void viewMovieLists(ActionEvent event) {
-        ArrayList<Movie> movies = data.getMovies(); // Get the arraylist of movies
-        if (!movies.isEmpty()) { // check if it's empty
-            printMoviesLists(movies); // invoke helper function to output data
-        } else { // no movies added
-            status.setText("You haven't added any movies.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
-        }
-    }
+// List type choice box
+String[] types = {"Favourites", "Watched", "Want-to-watch"}; // declare all the list types
+topByListType.getItems().clear(); // clear the list in case of previous data
+topByListType.getItems().addAll(types); // add all the list types to the choice box items
+topByListType.setValue(types[0]); // set the initial value to the first item
 
-    /**
-     * Helper function for viewMovieLists. Creates a string with the formatted info
-     * @param movies Movie ArrayList containing all the movies
-     */
-    public void printMoviesLists(ArrayList<Movie> movies) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "Name", "List");
-        textData += "-----------------------------\n";
-        // Loop through every movie and append the related info to the string.
-        for (Movie movie : movies) {
-            textData += String.format("%-15s %-15s\n", movie.getName(), movie.getList());
-        }
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Views all info relating a movie.
-     * @param event View movie info. Button click
-     */
-    @FXML
-    void viewMovieInfo(ActionEvent event) {
-        ArrayList<Movie> movies = data.getMovies(); // get the arraylist of movies
-        String movieName = movieInfo.getValue(); // get the name of the movie from the choice box
-        // Loop through every movie and check if the name is equal to the name in the choice box.
-        for (Movie movie:movies){
-            if(movie.getName().equals(movieName)){
-                printMovieInfo(movie); // invoke helper function to output data
-            }
-        }
-    }
-
-    /**
-     * Helper function for viewMovieInfo. Creates a string with the formatted info
-     * @param movie Movie selected for info viewing.
-     */
-    public void printMovieInfo(Movie movie) {
-        String textData =(""); // initialize String with blank space.
-        textData += movie.toString(); // format the movie info into toString
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Views the top 5 movies by list.
-     * @param event Top movies by list. Button click
-     */
-    @FXML
-    void viewTopByList(ActionEvent event) {
-        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
-        ArrayList<String> top5List = data.getTop5List(); // get arraylist of top movies by list
-        if (!ratings.isEmpty()) { //check if there are any rating added
-            String list = topByList.getValue(); // get the user's selection of list from choice box
-            data.storeTop5List(ratings, list); // invoke storeTop5List to sort data
-            printTop5List(top5List, ratings); // invoke helper function to output data
-        } else { // no ratings added means no movies added
-            status.setText("You haven't added any movies.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
-        }
-    }
-
-    /**
-     * Helper function for viewTop5ByList. Creates a String with the formatted info
-     * @param top5List String ArrayList containing the names of the top 5 movies in the list.
-     * @param ratings Hashmap containing the ratings for the movies
-     */
-    private void printTop5List(ArrayList<String> top5List, HashMap<String, Integer> ratings) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
-        textData += "-----------------------------\n";
-        // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5List) {
-            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
-        }
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Views the top 5 movies by the list type.
-     * @param event Top movies by list type. Button click.
-     */
-    @FXML
-    void viewTopByListType(ActionEvent event) {
-        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
-        // Get all String ArrayLists containing the top 5 movies in the three list types
-        ArrayList<String> top5Fav = data.getTop5Fav();
-        ArrayList<String> top5Watched = data.getTop5Watched();
-        ArrayList<String> top5WTW = data.getTop5WTW();
-
-        if (!ratings.isEmpty()) { // Check if the ratings hashmap is empty
-            String type = topByListType.getValue(); // Get the user's selection for list type
-            switch (type) { // switch to deal with type cases.
-                // Invoke the appropriate store and helper function for each type.
-                case "Favourites" -> {
-                    data.storeTop5Fav(ratings);
-                    printTopFav(top5Fav, ratings);
-                }
-                case "Watched" -> {
-                    data.storeTop5Watched(ratings);
-                    printTopWatched(top5Watched, ratings);
-                }
-                case "Want-to-watch" -> {
-                    data.storeTop5WTW(ratings);
-                    printTopWTW(top5WTW, ratings);
-                }
-            }
-        } else { // no ratings means no movies have been added
-            status.setText("You haven't added any movies.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
-        }
-    }
-
-    /**
-     * Helper function for the top 5 movies in Favourites type list
-     * @param top5Fav String ArrayList containing the top 5 movies in Favourite lists.
-     * @param ratings Hashmap containing the integer ratings for the movies
-     */
-    private void printTopFav(ArrayList<String> top5Fav, HashMap<String, Integer> ratings) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
-        textData += "-----------------------------\n";
-        // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5Fav) {
-            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
-        }
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Helper function for the top 5 movies in Watched type list
-     * @param top5Watched String ArrayList containing the top 5 movies in Watched lists.
-     * @param ratings Hashmap containing the integer ratings for the movies
-     */
-    private void printTopWatched(ArrayList<String> top5Watched, HashMap<String, Integer> ratings) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
-        textData += "-----------------------------\n";
-        // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5Watched) {
-            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
-        }
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Helper function for the top 5 movies in Want-to-watch type list
-     * @param top5WTW String ArrayList containing the top 5 movies in Want-to-watch lists.
-     * @param ratings Hashmap containing the integer ratings for the movies
-     */
-    private void printTopWTW(ArrayList<String> top5WTW, HashMap<String, Integer> ratings) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
-        textData += "-----------------------------\n";
-        // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5WTW) {
-            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
-        }
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Views all the movies.
-     * @param event View movies. Button click
-     */
-    @FXML
-    void viewMovies(ActionEvent event) {
-        ArrayList<Movie> movies = data.getMovies(); //get the arraylist of movies
-        if (!movies.isEmpty()) { // check if it's empty
-            printMovies(movies); //invoke helper function to output data
-        } else { // no movies were added
-            status.setText("You haven't added any movies.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
-        }
-    }
-
-    /**
-     * Helper function for viewMovies. Creates a string Creates a String with the formatted info
-     * @param movies Movie ArrayList containing all the movies
-     */
-    public void printMovies(ArrayList<Movie> movies) {
-        // format text for header info
-        String textData = String.format("%-15s\n", "Name");
-        textData += "-----------------------------\n";
-        // Loop through the movie name in the top 5 list and append the related info to the string
-        for (Movie movie : movies) {
-            textData += String.format("%-15s\n", movie.getName());
-        }
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Views all the movies and their assigned ratings.
-     * @param event View ratings. Button click
-     */
-    @FXML
-    void viewRatings(ActionEvent event) {
-        ArrayList<Movie> movies = data.getMovies(); //get the arraylist of movies
-        if (!movies.isEmpty()) { // check if it's empty
-            printRatings(movies); //invoke helper function to output data
-        } else { // no movies were added
-            status.setText("You haven't added any movies.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
-        }
-    }
-
-    /**
-     * Helper function for viewRatings. Creates a string Creates a String with the formatted info
-     * @param movies Movie ArrayList containing all the movies
-     */
-    private void printRatings(ArrayList<Movie> movies) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "Movie", "Ratins");
-        textData += "-----------------------------\n";
-        // Loop through the movie name in the top 5 list and append the related info to the string
-        for (Movie movie : movies) {
-            textData += String.format("%-15s %-15d\n", movie.getName(), movie.getRating());
-        }
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Views the top 5 movies in their genres
-     * @param event Top movies by genre. Button click.
-     */
-    @FXML
-    void viewTopByGenre(ActionEvent event) {
-        HashMap<Movie, Genre.movieGenre> genreLookup = data.getGenreLookup(); // get the hashmap of movie genres
-        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
-        ArrayList<String> top5Genre = data.getTop5Genre(); // get the list of top 5 movies by genre
-        if (!genreLookup.isEmpty()) { // check if the genre lookup hashmap is empty
-            Genre.movieGenre genre = topByGenre.getValue(); // get the genre for viewing selected by the user
-            data.storeTop5Genre(ratings, genre); // invoke the function to sort the data
-            printTopByGenre(top5Genre, ratings); // invoke the helper function for data output
-        } else { //if there are no genres assigned, then there are no movies
-            status.setText("You haven't added any movies.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
-        }
-    }
-
-    /**
-     * Helper function for viewTopByGenre
-     * @param top5Genre String ArrayList containing the top 5 movies in a genre
-     * @param ratings Hashmap containing the integer ratings for the movies
-     */
-    private void printTopByGenre(ArrayList<String> top5Genre, HashMap<String, Integer> ratings) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
-        textData += "-----------------------------\n";
-        // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5Genre) {
-            textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
-        }
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    @FXML
-    void viewTopGenres() {
-        ArrayList<Movie> movies = data.getMovies();
-        ArrayList<Integer> genreCount = new ArrayList<>();
-        int i = 0, j = 0, k = 0, l = 0, m = 0, n = 0, o = 0, p = 0, q = 0;
-        for (Movie movie : movies) {
-            if (movie.getGenre().equals(Genre.movieGenre.Action)) {
-                i++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Adventure)) {
-                j++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Drama)) {
-                k++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Comedy)) {
-                l++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Fantasy)) {
-                m++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Horror)) {
-                n++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Romance)) {
-                o++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Science_Fiction)) {
-                p++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.None)) {
-                q++;
-            }
-        }
-        genreCount.add(i);
-        genreCount.add(j);
-        genreCount.add(k);
-        genreCount.add(l);
-        genreCount.add(m);
-        genreCount.add(n);
-        genreCount.add(o);
-        genreCount.add(p);
-        genreCount.add(q);
-        genreCount.sort(Comparator.reverseOrder());
-        int type = genreCount.get(0);
-        if (type == i) {
-            printTopGenres(Genre.movieGenre.Action, i);
-        }else if(type == j){
-            printTopGenres(Genre.movieGenre.Adventure, j);
-        }else if(type == k){
-            printTopGenres(Genre.movieGenre.Drama, k);
-        }else if(type == l){
-            printTopGenres(Genre.movieGenre.Comedy, l);
-        }else if(type == m){
-            printTopGenres(Genre.movieGenre.Fantasy, m);
-        }else if(type == n){
-            printTopGenres(Genre.movieGenre.Horror, n);
-        }else if(type == o){
-            printTopGenres(Genre.movieGenre.Romance, o);
-        }else if(type == p){
-            printTopGenres(Genre.movieGenre.Science_Fiction, p);
-        }else if(type == q){
-            printTopGenres(Genre.movieGenre.None, q);
-        }
-    }
-
-    private void printTopGenres(Genre.movieGenre genre,Integer type) {
-        //TODO
-        String textData = ("");
-        textData += genre + "\t Number of Movies: "+type;
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Views the top 5 movies.
-     * @param event View top 5 movies. Button click
-     */
-    @FXML
-    void viewTop5(ActionEvent event) {
-        ArrayList<Movie> movies = data.getMovies(); // get the arraylist of movies
-        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
-        ArrayList<String> top5 = data.getTop5(); // get the arraylist of top 5 movies
-        if (!movies.isEmpty()) { // check if the movie list is empty
-            data.storeTop5(ratings); // invoke the function for sorting the data
-            printTop5(top5, ratings); // invoke helper function for data output
-        } else { // if the list is empty, there are no movies
-            status.setText("You haven't added any movies.");
-            pause.setOnFinished(event1 -> status.setText(null));
-            pause.play();
-        }
-    }
-
-    /**
-     * Helper function for viewTop5.Creates a String with the formatted info
-     * @param top5 String ArrayList containing the top 5 movies.
-     * @param ratings Hashmap containing the integer ratings for the movies
-     */
-    private void printTop5(ArrayList<String> top5, HashMap<String, Integer> ratings) {
-        // format text for header info
-        String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
-        textData += "-----------------------------\n";
-        // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5) {
-            textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
-        }
-        // output data to text area
-        viewData.setFont(Font.font("PT Mono"));
-        viewData.setText(textData);
-    }
-
-    /**
-     * Function to initialize all the choice boxes
-     */
-    protected void initializeChoices() {
-        // List choices box
-        ArrayList<List> lists = data.getLists(); // get the list of lists
-        topByList.getItems().clear(); // clear the list in case of previous data
-        if (!lists.isEmpty()) { // check if it isn't empty
-            topByList.setValue(lists.get(0).getName()); // set the initial value to the first item
-            for (List list : lists){ // loop through each list
-                // get the string name and add it to the choice box items
-                String listName = list.getName();
-                topByList.getItems().add(listName);
-            }
-        }
-
-        // Movie choice box
-        ArrayList<Movie> movies = data.getMovies(); // get the list of movies
-        movieInfo.getItems().clear(); // clear the list in case of previous data
-        if (!movies.isEmpty()) { // check if it isn't empty
-            movieInfo.setValue(movies.get(0).getName()); // set the initial value to the first item
-            for (Movie movie : movies){ // loop through each movie
-                // get the string name and add it to the choice box items
-                String movieName = movie.getName();
-                movieInfo.getItems().add(movieName);
-            }
-        }
-
-        // List type choice box
-        String[] types = {"Favourites", "Watched", "Want-to-watch"}; // declare all the list types
-        topByListType.getItems().clear(); // clear the list in case of previous data
-        topByListType.getItems().addAll(types); // add all the list types to the choice box items
-        topByListType.setValue(types[0]); // set the initial value to the first item
-
-        // Genre choice box
-        Genre.movieGenre[] genres = Genre.movieGenre.values(); // get the list of genres
-        topByGenre.getItems().clear(); // clear the list in case of previous data
-        topByGenre.getItems().addAll(genres); // add all the genres to the choice box items
-        topByGenre.setValue(genres[0]); // set the initial value to the first item
-    }
+// Genre choice box
+Genre.movieGenre[] genres = Genre.movieGenre.values(); // get the list of genres
+topByGenre.getItems().clear(); // clear the list in case of previous data
+topByGenre.getItems().addAll(genres); // add all the genres to the choice box items
+topByGenre.setValue(genres[0]); // set the initial value to the first item
+}
 }
