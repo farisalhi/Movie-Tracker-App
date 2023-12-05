@@ -3,6 +3,7 @@ package movietracker.core;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -15,20 +16,17 @@ public class MainGUI extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setResizable(false);
         stage.setTitle("Movie Tracker!");
+
         stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
-        /*if (args.length == 1) { // loading from command-line
-            File loadFile = new File(args[0]); // first argument is the file we want to load from
-            // load the file and run the program
-            MovieController.loadFile(loadFile);
-            launch();
-        } else {
-            // not loading from command-line. Run program normally.
-            launch();
-        }*/
+//        if (args.length == 1) { // loading from command-line
+//            File loadFile = new File(args[0]); // first argument is the file we want to load from
+//            // load the file and run the program
+//            MovieController.loadFile(loadFile);
+//        }
+        launch(args);
     }
 }
