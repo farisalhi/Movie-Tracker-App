@@ -2,6 +2,19 @@ package movietracker.core.data;
 
 import java.util.*;
 
+/**
+ * Movie Tracker Application Data class
+ * The class containing functions to handle data storage and movie/list sorting
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi ()
+ * Dec. 5, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
+/**
+ * Class for handling data storage and sorting
+ */
 public class Data {
 
     // Private static constant ArrayLists and HashMaps and HashLists for data storage.
@@ -133,19 +146,21 @@ public class Data {
      * @return Boolean if the remove was successful.
      */
     public boolean deleteList(String name) {
-           for(int i = 0;i<movieList.size(); i++){
-               Movie  movie = movieList.get(i);
-               if (Objects.equals(movie.getList(), name)) {
-                   movieList.remove(movie);
-                   movieLookup.remove(movie.getNum(), movie);
-                   movieDuplicateLookup.remove(movie);
-                   ratingLookup.remove(movie.getName(), movie.getRating());
-                   genreLookup.remove(movie, movie.getGenre());
-                   i--;
-               }
+       for (int i = 0; i < movieList.size(); i++) { // loop through size of movie list
+           Movie movie = movieList.get(i); // get the movie at each index
+           if (Objects.equals(movie.getList(), name)) { // check if the movie name parameter is a real movie
+               // remove it from the movie list and hashmaps for lookup, duplicate lookup, rating, and genre
+               movieList.remove(movie);
+               movieLookup.remove(movie.getNum(), movie);
+               movieDuplicateLookup.remove(movie);
+               ratingLookup.remove(movie.getName(), movie.getRating());
+               genreLookup.remove(movie, movie.getGenre());
+               i--;
            }
-        for(int i = 0;i<list.size(); i++){
-            List list_single = list.get(i);
+       }
+
+        for (int i = 0; i < list.size(); i++) { // loop through the size of the list of lists
+            List list_single = list.get(i); // get the list at each index
             if (Objects.equals(list_single.getName(), name)) {
                 list.remove(list_single);
                 listLookup.remove(list_single.getNum(), list_single);
@@ -163,8 +178,9 @@ public class Data {
      * @return Boolean if the remove was successful.
      */
     public boolean removeMovie(String name){
-        for(Movie movie : movieList){
-            if (Objects.equals(movie.getName(), name)){
+        for(Movie movie : movieList){ // Loop through every movie in the movie list
+            if (Objects.equals(movie.getName(), name)) { // Check if the movie is in the list
+                // remove the movie from all the lists and hashmaps it's in
                 movieList.remove(movie);
                 movieLookup.remove(movie.getNum(), movie);
                 movieDuplicateLookup.remove(movie);

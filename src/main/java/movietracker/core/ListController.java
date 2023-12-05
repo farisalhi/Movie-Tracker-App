@@ -10,6 +10,16 @@ import movietracker.core.data.Data;
 import movietracker.core.part2.Menu;
 
 /**
+ * List Controller class
+ * The class containing all FXML elements and functions relating to list creation in the fxml popup
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi ()
+ * Dec. 5, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
+/**
  * Controller class to launch popup for list creation
  */
 public class ListController {
@@ -38,13 +48,14 @@ public class ListController {
             // Store a new list and update list number
             boolean success = data.storeNewList(Menu.listNumber, type, name);
             if (success) { // if data storage was successful, close the stage and display success message.
-                Menu.listNumber++;
-                ((Stage) listName.getScene().getWindow()).close();
+                Menu.listNumber++; // update list number by 1
+                ((Stage) listName.getScene().getWindow()).close(); // close popup
+                // display status confirmation message
                 status.setText("Created list.");
                 status.setTextFill(Color.GREEN);
                 pause.setOnFinished(event1 -> status.setText(null));
                 pause.play();
-            } else {
+            } else { // hashcode warning about duplicate list based on name
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("This list name is already in use. Please choose a different name.");
                 alert.showAndWait();
@@ -68,10 +79,10 @@ public class ListController {
     }
 
     /**
-     *
-     * @param status
-     * @param viewData
-     * @param pause
+     * Setup function to initialize status label, view data, and pause transition
+     * @param status Label for status updates
+     * @param viewData TextArea for viewing data
+     * @param pause PauseTransition for label timeout
      */
     public void setup(Label status, TextArea viewData, PauseTransition pause) {
         this.status = status;

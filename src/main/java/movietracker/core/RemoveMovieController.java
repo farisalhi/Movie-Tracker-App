@@ -15,6 +15,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * Movie Deletion class
+ * The class containing all FXML elements and functions relating to movie deletion in the fxml popup
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi ()
+ * Dec. 5, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
+/**
  * Controller class to launch popup for movie deletion
  */
 public class RemoveMovieController {

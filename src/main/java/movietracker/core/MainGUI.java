@@ -12,6 +12,16 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Movie Tracker Application main
+ * The main class to set up files and launch the gui scene
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi ()
+ * Dec. 5, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
+/**
  * Application class to set up files launch gui scene.
  */
 public class MainGUI extends Application {
@@ -44,7 +54,7 @@ public class MainGUI extends Application {
             Label status = movieController.status;
             PauseTransition pause = movieController.pause;
             // set up the variables and load the file
-            movieController.setUp(status, pause);
+            movieController.setup(status, pause);
             movieController.loadFile(loadFile);
 
         } else if (args.size() > 1) { // invalid argument length
