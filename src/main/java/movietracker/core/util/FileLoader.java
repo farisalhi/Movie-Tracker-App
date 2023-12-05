@@ -29,7 +29,7 @@ public class FileLoader {
                     switch (type) { // switch to get the character representation of the list type
                         case 'F' -> listType = "Favourites";
                         case 'W' -> listType = "Watched";
-                        case 'A' -> listType = "Want-to_watch";
+                        case 'A' -> listType = "Want-to-watch";
                     }
                     // store the data
                     data.storeNewList(Menu.listNumber, listType, listName);
