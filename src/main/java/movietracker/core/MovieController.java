@@ -77,13 +77,6 @@ public class MovieController {
     }
 
     /**
-     * Is this used anywhere?
-     */
-//    public void setData(Data data) {
-//        this.data = data;
-//    }
-
-    /**
      * setUp function to initialize status label and its pause transition
      *
      * @param status Label for status updates
@@ -781,7 +774,7 @@ public class MovieController {
     void viewTopGenres() {
         ArrayList<Movie> movies = data.getMovies();
         ArrayList<Integer> genreCount = new ArrayList<>();
-// set different variables for different genres
+        // set different variables for different genres
         int i = 0, j = 0, k = 0, l = 0, m = 0, n = 0, o = 0, p = 0, q = 0;
         for (Movie movie : movies) {
             //if the movie is in the genre, the counter goes up by 1

@@ -39,7 +39,6 @@ public class Data {
     private final ArrayList<String> top5WTW;
     private final ArrayList<String> top5Watched;
     private final ArrayList<String> top5Genre;
-    private final ArrayList<String> topGenres;
 
     public Data() {
         this.list = new ArrayList<>();
@@ -61,7 +60,6 @@ public class Data {
         this.top5WTW = new ArrayList<>();
         this.top5Watched = new ArrayList<>();
         this.top5Genre = new ArrayList<>();
-        this.topGenres = new ArrayList<>();
     }
 
     /**
@@ -148,7 +146,7 @@ public class Data {
     public boolean deleteList(String name) {
        for (int i = 0; i < movieList.size(); i++) { // loop through size of movie list
            Movie movie = movieList.get(i); // get the movie at each index
-           if (Objects.equals(movie.getList(), name)) { // check if the movie name parameter is a real movie
+           if (Objects.equals(movie.getList(), name)) { // check if the movie's list name is the same as the list being deleted
                // remove it from the movie list and hashmaps for lookup, duplicate lookup, rating, and genre
                movieList.remove(movie);
                movieLookup.remove(movie.getNum(), movie);
@@ -161,7 +159,8 @@ public class Data {
 
         for (int i = 0; i < list.size(); i++) { // loop through the size of the list of lists
             List list_single = list.get(i); // get the list at each index
-            if (Objects.equals(list_single.getName(), name)) {
+            if (Objects.equals(list_single.getName(), name)) {// check if the name of the list is the same as the list being deleted
+                // remove it from list, listLookup, listDuplicateLookup
                 list.remove(list_single);
                 listLookup.remove(list_single.getNum(), list_single);
                 listDuplicateLookup.remove(list_single);
