@@ -186,7 +186,7 @@ public class Menu {
         HashMap<String, Integer> movieRatings = data.getRatingLookup();
         // Check if map is empty. If not, call the storeTop5 function and print the header.
         for (int rating : movieRatings.values()) {
-            if (rating > 0) {
+            if (rating > -1) {
                 noRatings = false;
                 break;
             }
@@ -237,7 +237,7 @@ public class Menu {
             }
         }
         for (int rating : movieRatings.values()) {
-            if (rating > 0) {
+            if (rating > -1) {
                 noRatings = false;
                 break;
             }
@@ -269,20 +269,20 @@ public class Menu {
         boolean noRatings = true;
         // Check if map is empty. If not, call the storeTop5Watched function and print the header.
         for (List list : lists) {
-            if (list.getType().equals("Want-To-Watched")) {
+            if (list.getType().equals("Want-to-watch")) {
                 listEmpty = false;
                 break;
             }
         }
         for (int rating : movieRatings.values()) {
-            if (rating > 0) {
+            if (rating > -1) {
                 noRatings = false;
                 break;
             }
         }
         if (!movieRatings.isEmpty() && !listEmpty && !noRatings) {
             data.storeTop5WTW(movieRatings);
-            System.out.println("Top 5 Movies in Want-To-Watch:");
+            System.out.println("Top 5 Movies in Want-to-watch:");
             // Iterate through the getTop5WTW HashSet and print the name of the movie and its rating.
             for (int i = 0; i < data.getTop5WTW().size(); i++) {
                 String movie = data.getTop5WTW().get(i);
@@ -291,7 +291,7 @@ public class Menu {
             returnToMenu();
             // If map is empty, display a message and ask user for input to continue the program.
         } else {
-            System.out.println("There are no rated movies in 'Want-To-Watch'.");
+            System.out.println("There are no rated movies in 'Want-to-watch'.");
             returnToMenu();
         }
     }
@@ -733,8 +733,8 @@ public class Menu {
                     // Ask the user to name the list.
                     System.out.println("What would you like to call your want-to-watch list?");
                     name = scanner.nextLine().trim();
-                    boolean succeess = data.storeNewList(listNumber, type, name);
-                    if (succeess) {
+                    boolean success = data.storeNewList(listNumber, type, name);
+                    if (success) {
                         System.out.printf("Want-to-watch list '%s' created.\n", name);
                         returnToMenu();
                     } else {

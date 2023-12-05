@@ -359,9 +359,21 @@ public class MovieController {
 
     @FXML
     void viewMovieInfo(ActionEvent event) {
+        ArrayList<Movie> movies = data.getMovies();
+        String movieName = movieInfo.getValue();
+        for (Movie movie:movies){
+            if(movie.getName().equals(movieName)){
+                printMovieInfo(movie);
+            }
+        }
 
     }
-
+    public void printMovieInfo(Movie movie) {
+        String textData =("");
+        textData += movie.toString();
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
+    }
     @FXML
     void viewTopByList(ActionEvent event) {
         //TODO
