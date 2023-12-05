@@ -34,7 +34,7 @@ public class MovieController {
     private static Data data = Menu.getData();
 
     // A pause transition to set a time limit on status messages.
-    private PauseTransition pause = new PauseTransition(Duration.seconds(2));
+    protected PauseTransition pause = new PauseTransition(Duration.seconds(5));
 
     // Choice box elements
     @FXML
@@ -51,7 +51,7 @@ public class MovieController {
 
     // elements for viewing data
     @FXML
-    private Label status;
+    protected Label status;
 
     @FXML
     private TextArea viewData;
@@ -63,8 +63,21 @@ public class MovieController {
         initializeChoices();
     }
 
-    public void setData(Data data, Label status) {
-        this.data = data;
+    /**
+     * Is this used anywhere?
+     */
+//    public void setData(Data data) {
+//        this.data = data;
+//    }
+
+    /**
+     * setUp function to initialize status label and its pause transition
+     * @param status Label for status updates
+     * @param pause PauseTransition for label timout
+     */
+    public void setUp(Label status, PauseTransition pause) {
+        this.status = status;
+        this.pause = pause;
     }
 
     /**
@@ -200,7 +213,9 @@ public class MovieController {
         if (loadFile.exists() && loadFile.isFile() && loadFile.canRead()) { // checks file properties.
             FileLoader fl = new FileLoader(); // create a FileLoader object
             data = fl.loadFile(loadFile); // assign the data from the loadFile function as the current data
+            initialize();
             status.setText(String.format("Data loaded from %s", loadFile.getName()));
+            status.setTextFill(Color.GREEN);
             pause.setOnFinished(event1 -> status.setText(null));
             pause.play();
         } else {
@@ -598,7 +613,7 @@ viewData.setText(textData);
 * @param ratings Hashmap containing the integer ratings for the movies
 */
 private void printTopWTW(ArrayList<String> top5WTW, HashMap<String, Integer> ratings) {
-// format text for header info
+    // format text for header info
 String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
 textData += "-----------------------------\n";
 // Loop through the movie name in the top 5 list and append the related info to the string
