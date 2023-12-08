@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class Data {
 
-    // Private static constant ArrayLists and HashMaps and HashLists for data storage.
+    // String ArrayLists and HashMaps for data storage.
     private final ArrayList<List> list;
     private final HashMap<Integer, List> listLookup;
     private final HashSet<List> listDuplicateLookup;
@@ -30,9 +30,10 @@ public class Data {
     private final HashMap<String, Integer> ratingLookup;
 
     private final HashMap<Movie, Genre.movieGenre> genreLookup;
+    private final HashMap<Genre.movieGenre, Integer> topGenre;
 
 
-    // HashSet
+    // String Arraylists for sorted movies
     private final ArrayList<String> top5;
     private final ArrayList<String> top5List;
     private final ArrayList<String> top5Fav;
@@ -40,6 +41,9 @@ public class Data {
     private final ArrayList<String> top5Watched;
     private final ArrayList<String> top5Genre;
 
+    /**
+     * Public data function to initialize all data storage
+     */
     public Data() {
         this.list = new ArrayList<>();
         this.listLookup = new HashMap<>();
@@ -53,6 +57,7 @@ public class Data {
         this.ratingLookup = new HashMap<>();
 
         this.genreLookup = new HashMap<>();
+        this.topGenre = new HashMap<>();
 
         this.top5 = new ArrayList<>();
         this.top5List = new ArrayList<>();
@@ -280,7 +285,7 @@ public class Data {
             for (String key : movieRatings.keySet()) {
                 if (count < 5 && rating >= 0) {
                     for (Movie movie : genreLookup.keySet()) {
-                        if (movie.getName().equals(key) && genre.equals(movie.getGenre()) && rating == movieRatings.get(key) && !top5Genre.contains(key) ){
+                        if (movie != null && movie.getName().equals(key) && genre.equals(movie.getGenre()) && rating == movieRatings.get(key) && !top5Genre.contains(key) ){
                             top5Genre.add(key);
                             count++;
                         }
@@ -327,8 +332,6 @@ public class Data {
             }
         }
     }
-
-
 
     /**
      * storeTop5Fav function that pulls out the top 5 rated movies in the Favourites lists
@@ -469,8 +472,78 @@ public class Data {
         }
     }
 
+    /**
+     * Function that stores the top genres with the most movies in a list
+     * @param movies Movie ArrayList containing all the movies added
+     */
     public void storeTopGenres(ArrayList<Movie> movies) {
-        //TODO
+        // Create a new Integer ArrayList to store the genre count
+        ArrayList<Integer> genreCount = new ArrayList<>();
+        // set different variables for different genres
+        int i = 0, j = 0, k = 0, l = 0, m = 0, n = 0, o = 0, p = 0, q = 0;
+        for (Movie movie : movies) {
+            //if the movie is in the genre, the counter goes up by 1
+            if (movie.getGenre().equals(Genre.movieGenre.Action)) {
+                i++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Adventure)) {
+                j++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Drama)) {
+                k++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Comedy)) {
+                l++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Fantasy)) {
+                m++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Horror)) {
+                n++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Romance)) {
+                o++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.Science_Fiction)) {
+                p++;
+            } else if (movie.getGenre().equals(Genre.movieGenre.None)) {
+                q++;
+            }
+        }
+        // add the different counts for the genres to an array list and sort it in reverse
+        genreCount.add(i);
+        genreCount.add(j);
+        genreCount.add(k);
+        genreCount.add(l);
+        genreCount.add(m);
+        genreCount.add(n);
+        genreCount.add(o);
+        genreCount.add(p);
+        genreCount.add(q);
+        genreCount.sort(Comparator.reverseOrder());
+
+        // set int type to be the first genre in the list (top genre)
+        int type = genreCount.get(0);
+        if (type == i) { // loop through every genre and check if it has the same number of movies as the type
+            topGenre.put(Genre.movieGenre.Action, i); // if it does, add it to the topGenre hashmap
+        } else if (type == j) {
+            topGenre.put(Genre.movieGenre.Adventure, j);
+        } else if (type == k) {
+            topGenre.put(Genre.movieGenre.Drama, k);
+        } else if (type == l) {
+            topGenre.put(Genre.movieGenre.Comedy, l);
+        } else if (type == m) {
+            topGenre.put(Genre.movieGenre.Fantasy, m);
+        } else if (type == n) {
+            topGenre.put(Genre.movieGenre.Horror, n);
+        } else if (type == o) {
+            topGenre.put(Genre.movieGenre.Romance, o);
+        } else if (type == p) {
+            topGenre.put(Genre.movieGenre.Science_Fiction, p);
+        } else if (type == q) {
+            topGenre.put(Genre.movieGenre.None, q);
+        }
+    }
+
+    /**
+     * Getter for the top genre with the most movies
+     * @return Hashmap of the top genre and it's number of movies
+     */
+    public HashMap<Genre.movieGenre, Integer> getTopGenre() {
+        return topGenre;
     }
 
     /**

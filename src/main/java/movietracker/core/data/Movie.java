@@ -9,6 +9,14 @@ public class Movie {
     private int movieRating;
     private Genre.movieGenre movieGenre;
 
+    /**
+     *
+     * @param movieNum int The movie number
+     * @param listName String
+     * @param movieName String
+     * @param movieRating int
+     * @param movieGenre Genre.moviegenre
+     */
     public Movie(int movieNum, String listName, String movieName, int movieRating, Genre.movieGenre movieGenre) {
         this.movieNum = movieNum;
         this.listName = listName;
@@ -17,6 +25,7 @@ public class Movie {
         this.movieRating = movieRating;
     }
 
+    // Hashcode for movie duplicates based on name and type
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -30,6 +39,7 @@ public class Movie {
         return Objects.hash(movieName);
     }
 
+    // Getters for all movie attributes
     public String getName() {
         return this.movieName;
     }
@@ -54,6 +64,10 @@ public class Movie {
         this.movieGenre = genre;
     }
 
+    /**
+     * To String function to return formatted movie info
+     * @return String. To String format of movie info.
+     */
     @Override
     public String toString(){
         return String.format("Name:     %s\nNumber:   %d\nList:     %s\nRating:   %d stars\nGenre:    %s",

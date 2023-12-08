@@ -54,6 +54,9 @@ public class MovieController {
     private ChoiceBox<String> movieInfo;
 
     @FXML
+    private ChoiceBox<String> viewByList;
+
+    @FXML
     private ChoiceBox<Genre.movieGenre> topByGenre;
 
     @FXML
@@ -247,8 +250,8 @@ public class MovieController {
         fc.setTitle("Choose a text file to load");
         // Automatically search within the current folder
         fc.setInitialDirectory(new File("."));
-        // Adding extension filter to only accept .txt files.
-        FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Text files  (*.txt)", "*.txt");
+        // Adding extension filter to only accept .txt and .csv files.
+        FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Comma-separated files  (*.txt, *.csv)", "*.txt", "*.csv");
         fc.getExtensionFilters().add(extension);
         // Set a File variable to the file selected in the file search window
         File loadFile = fc.showOpenDialog(new Stage());
@@ -337,8 +340,8 @@ public class MovieController {
         fc.setTitle("Create a text file to save to.");
         // Set initial directory to current directory
         fc.setInitialDirectory(new File("."));
-        // Adding extension filter to only accept .txt files.
-        FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Text files  (*.txt)", "*.txt");
+        // Adding extension filter to only accept .txt or .csv files.
+        FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Comma-separated files  (*.txt, *.csv)", "*.txt", "*.csv");
         fc.getExtensionFilters().add(extension);
 
         // Create a new FileSaver
@@ -539,9 +542,54 @@ public class MovieController {
             printTop5List(top5List, ratings); // invoke helper function to output data
         } else { // no ratings added means no movies added
             status.setText("You haven't added any movies.");
+            status.setTextFill(Color.BLACK);
             pause.setOnFinished(event1 -> status.setText(null));
             pause.play();
         }
+    }
+
+    /**
+     * Views all the movies in a given list.
+     *
+     * @param event View
+     */
+    @FXML
+    void viewByList(ActionEvent event) {
+        ArrayList<Movie> movies = data.getMovies(); // get list of movies
+        ArrayList<List> lists = data.getLists(); // get list of lists
+        if (!movies.isEmpty()) { // check if it's empty
+            String list = viewByList.getValue();
+            for (List listChoice : lists) {
+                if (listChoice.getName().equals(list));
+                printMoviesByList(list);
+            }
+        } else {
+            status.setText("You haven't added any movies.");
+            status.setTextFill(Color.BLACK);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+        }
+    }
+
+    /**
+     * Helper function for viewByList. Creates a string with the formatted info
+     *
+     * @param list Name of selected list
+     */
+    private void printMoviesByList(String list) {
+        ArrayList<Movie> movies = data.getMovies();
+        // format text for header info
+        String textData = String.format("%-15s %-15s\n", "Movie", "List");
+        textData += "-----------------------------\n";
+        // Loop through the movies name in the movie list and append the related info to the string
+        for (Movie movie : movies) {
+            if (movie.getList().equals(list)) {
+                textData += String.format("%-15s %-15s\n", movie.getName(), movie.getList());
+            }
+        }
+        // output data to text area
+        viewData.setFont(Font.font("PT Mono"));
+        viewData.setText(textData);
     }
 
     /**
@@ -755,92 +803,51 @@ public class MovieController {
      * @param ratings   Hashmap containing the integer ratings for the movies
      */
     private void printTopByGenre(ArrayList<String> top5Genre, HashMap<String, Integer> ratings) {
-// format text for header info
+        // format text for header info
         String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
         textData += "-----------------------------\n";
-// Loop through the movie name in the top 5 list and append the related info to the string
+        // Loop through the movie name in the top 5 list and append the related info to the string
         for (String movie : top5Genre) {
             textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
         }
-// output data to text area
+        // output data to text area
         viewData.setFont(Font.font("PT Mono"));
         viewData.setText(textData);
     }
 
     /**
-     * Function sorts the genres, finds the genre with the most movies
+     * Views the top genre with the most movies
+     *
+     * @param event Most popular genres. Button click
      */
     @FXML
-    void viewTopGenres() {
+    void viewTopGenres(ActionEvent event) {
         ArrayList<Movie> movies = data.getMovies();
-        ArrayList<Integer> genreCount = new ArrayList<>();
-        // set different variables for different genres
-        int i = 0, j = 0, k = 0, l = 0, m = 0, n = 0, o = 0, p = 0, q = 0;
-        for (Movie movie : movies) {
-            //if the movie is in the genre, the counter goes up by 1
-            if (movie.getGenre().equals(Genre.movieGenre.Action)) {
-                i++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Adventure)) {
-                j++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Drama)) {
-                k++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Comedy)) {
-                l++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Fantasy)) {
-                m++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Horror)) {
-                n++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Romance)) {
-                o++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.Science_Fiction)) {
-                p++;
-            } else if (movie.getGenre().equals(Genre.movieGenre.None)) {
-                q++;
-            }
-        }
-// add the different counts for the genres to an array list and sort it in reverse
-        genreCount.add(i);
-        genreCount.add(j);
-        genreCount.add(k);
-        genreCount.add(l);
-        genreCount.add(m);
-        genreCount.add(n);
-        genreCount.add(o);
-        genreCount.add(p);
-        genreCount.add(q);
-        genreCount.sort(Comparator.reverseOrder());
-// if the highest counter is for the genre, the genre will be printed along with the number of movies (counter)
-        int type = genreCount.get(0);
-        if (type == i) {
-            printTopGenres(Genre.movieGenre.Action, i);
-        } else if (type == j) {
-            printTopGenres(Genre.movieGenre.Adventure, j);
-        } else if (type == k) {
-            printTopGenres(Genre.movieGenre.Drama, k);
-        } else if (type == l) {
-            printTopGenres(Genre.movieGenre.Comedy, l);
-        } else if (type == m) {
-            printTopGenres(Genre.movieGenre.Fantasy, m);
-        } else if (type == n) {
-            printTopGenres(Genre.movieGenre.Horror, n);
-        } else if (type == o) {
-            printTopGenres(Genre.movieGenre.Romance, o);
-        } else if (type == p) {
-            printTopGenres(Genre.movieGenre.Science_Fiction, p);
-        } else if (type == q) {
-            printTopGenres(Genre.movieGenre.None, q);
+        if (!movies.isEmpty()) { // check if there are any movies added
+            data.storeTopGenres(movies); // invoke the function to find the genre with the most movies
+            printTopGenres(); // invoke helper function to output data to text area
+        } else { //if the user hasn't added any movies
+            status.setText("You haven't added any movies.");
+            status.setTextFill(Color.BLACK);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
+
         }
     }
 
     /**
-     * Helper function to display/print the genre with the most movies and the number of movies in the genre
-     *
-     * @param genre the genre to be printed
-     * @param type  the number of movies in the genre which will be printed
+     * Helper function to display the genre with the most movies and the number of movies in the genre
      */
-    private void printTopGenres(Genre.movieGenre genre, Integer type) {
-        String textData = ("");
-        textData += genre + "\t Number of Movies: " + type;
+    private void printTopGenres() {
+        HashMap<Genre.movieGenre, Integer> topGenre = data.getTopGenre(); // get the hashmap of top genre
+        // format text for header info
+        String textData = String.format("%-15s %-15s\n", "Genre", "Number of movies");
+        textData += "-----------------------------\n";
+        // Loop through the genre in the top genre hashmap and append the related info to the string
+        for (Genre.movieGenre genre : topGenre.keySet()) {
+            textData += String.format("%-15s %-15s\n", genre, topGenre.get(genre));
+        }
+        // output data to text area
         viewData.setFont(Font.font("PT Mono"));
         viewData.setText(textData);
     }
@@ -872,14 +879,14 @@ public class MovieController {
      * @param ratings Hashmap containing the integer ratings for the movies
      */
     private void printTop5(ArrayList<String> top5, HashMap<String, Integer> ratings) {
-// format text for header info
+        // format text for header info
         String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
         textData += "-----------------------------\n";
-// Loop through the movie name in the top 5 list and append the related info to the string
+        // Loop through the movie name in the top 5 list and append the related info to the string
         for (String movie : top5) {
             textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
         }
-// output data to text area
+        // output data to text area
         viewData.setFont(Font.font("PT Mono"));
         viewData.setText(textData);
     }
@@ -888,7 +895,7 @@ public class MovieController {
      * Function to initialize all the choice boxes
      */
     protected void initializeChoices() {
-// List choices box
+        // List choice box
         ArrayList<List> lists = data.getLists(); // get the list of lists
         topByList.getItems().clear(); // clear the list in case of previous data
         if (!lists.isEmpty()) { // check if it isn't empty
@@ -900,7 +907,19 @@ public class MovieController {
             }
         }
 
-// Movie choice box
+        // view by list choice box
+        ArrayList<List> lists2 = data.getLists(); // get the list of lists
+        viewByList.getItems().clear(); // clear the list in case of previous data
+        if (!lists2.isEmpty()) { // check if it isn't empty
+            viewByList.setValue(lists.get(0).getName()); // set the initial value to the first item
+            for (List list : lists2) { // loop through each list
+                // get the string name and add it to the choice box items
+                String listName = list.getName();
+                viewByList.getItems().add(listName);
+            }
+        }
+
+        // Movie choice box
         ArrayList<Movie> movies = data.getMovies(); // get the list of movies
         movieInfo.getItems().clear(); // clear the list in case of previous data
         if (!movies.isEmpty()) { // check if it isn't empty
@@ -912,7 +931,7 @@ public class MovieController {
             }
         }
 
-// List type choice box
+        // List type choice box
         String[] types = {"Favourites", "Watched", "Want-to-watch"}; // declare all the list types
         topByListType.getItems().clear(); // clear the list in case of previous data
         topByListType.getItems().addAll(types); // add all the list types to the choice box items

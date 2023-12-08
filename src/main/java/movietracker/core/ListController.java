@@ -19,9 +19,6 @@ import movietracker.core.part2.Menu;
  * @version 1.0
  */
 
-/**
- * Controller class to launch popup for list creation
- */
 public class ListController {
 
     // Get updated data from menu

@@ -1,9 +1,13 @@
+list,F,Favs
+list,F,favs
 list,W,watched
 list,A,want to watch
-list,F,Favs
-list,W,Balls
+movie,Favs,Movie,5,Comedy
+movie,favs,Blade Runner,4,Science_Fiction
+movie,favs,Dune,4,Science_Fiction
 movie,watched,Avatar,2,Science_Fiction
+movie,favs,Interstellar,5,Science_Fiction
+movie,favs,Oppenheimer,4,Drama
 movie,watched,Barbie,1,Comedy
-movie,want to watch,Lord of the Rings,0,Fantasy
+movie,want to watch,The Hobbit,0,Fantasy
 movie,want to watch,The Fountain,0,Drama
-movie,Balls,Djns,0,Horror
