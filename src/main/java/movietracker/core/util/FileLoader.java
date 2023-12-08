@@ -49,7 +49,7 @@ public class FileLoader {
                     // store the data.
                     data.storeNewMovie(Menu.movieNumber, listName, movieName, movieRating, movieGenre);
                     Movie movie = data.getMovie(Menu.movieNumber);
-                    data.storeRating(movieName, movieRating);
+                    data.storeRating(movie, movieRating);
                     data.addGenre(movie ,movieGenre);
                 }
             }

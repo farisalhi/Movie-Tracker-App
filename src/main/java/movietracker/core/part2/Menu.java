@@ -58,12 +58,12 @@ public class Menu {
             """;
 
     /**
-     * Non-menu function that checks the load file and sends it to the movietracker.core.util.FileLoader.
+     * Non-menu function that checks the load file and sends it to the FileLoader.
      * @param loadFile The file to be loaded.
      */
     protected static void loadFile(File loadFile) {
         if (loadFile.exists() && loadFile.isFile() && loadFile.canRead()) { // checks file properties.
-            FileLoader fl = new FileLoader(); // create a movietracker.core.util.FileLoader object
+            FileLoader fl = new FileLoader(); // create a FileLoader object
             data = fl.loadFile(loadFile); // assign the data from the loadFile function as the current data
             System.out.printf("Loaded data from save %s\n", loadFile);
         } else {
@@ -72,7 +72,7 @@ public class Menu {
     }
 
     /**
-     * Non-menu function that checks the save file and sends it to the movietracker.core.util.FileSaver
+     * Non-menu function that checks the save file and sends it to the FileSaver
      * @param saveFile The file we are saving the data to.
      * @param data The data being saved.
      */
@@ -92,7 +92,6 @@ public class Menu {
      */
     protected static void menuLoop() {
         // Print option message and ask for input selection
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.print(optMessage);
         String option = scanner.nextLine();
         // switch options to execute selected function
@@ -125,7 +124,7 @@ public class Menu {
     }
 
     /**
-     * movietracker.core.part2.Menu function to save data to a save file.
+     * Menu function to save data to a save file.
      */
     private static void menuSaveFile() {
         System.out.println("Enter the name of the file to save to: "); // ask user for name of file to save to
@@ -134,7 +133,7 @@ public class Menu {
     }
 
     /**
-     * movietracker.core.part2.Menu function to load data from a save file.
+     * Menu function to load data from a save file.
      */
     private static void menuLoadFile() {
         System.out.println("Enter the name of the file to load: "); // ask user for name of file to load from
@@ -147,7 +146,7 @@ public class Menu {
      */
     private static void menuTop5Genre() {
         HashMap<Movie, Genre.movieGenre> genreLookup = data.getGenreLookup(); // get the hashmap of movie genres
-        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+        HashMap<Movie, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
         if (!genreLookup.isEmpty()) { // check if there are movies with assigned genres
             System.out.println("Which genre would you like to sort by?");
             Genre.movieGenre[] genres = Genre.movieGenre.values(); // create a list of genres from the genre enum values
@@ -163,17 +162,17 @@ public class Menu {
                     System.out.printf("Top 5 movies in %s:\n", genre);
                     System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                     for (int i = 0; i < data.getTop5Genre().size(); i++) {
-                        String movie = data.getTop5Genre().get(i);
-                            System.out.printf("%d. %s\n", i + 1, movie);
+                        Movie movie = data.getTop5Genre().get(i);
+                            System.out.printf("%d. %s\n", i + 1, movie.getName());
                     }
                 } else {
                     System.out.printf("You haven't added any %s movies.\n", genre);
                 }
             }
-            returnToMenu();
+            menuLoop();
         } else {
             addGenre();
-            returnToMenu();
+            menuLoop();
         }
     }
 
@@ -183,7 +182,7 @@ public class Menu {
     private static void menuTop5() {
         boolean noRatings = true;
         // Retrieve movieRatings map from Data.java
-        HashMap<String, Integer> movieRatings = data.getRatingLookup();
+        HashMap<Movie, Integer> movieRatings = data.getRatingLookup();
         // Check if map is empty. If not, call the storeTop5 function and print the header.
         for (int rating : movieRatings.values()) {
             if (rating > -1) {
@@ -197,15 +196,15 @@ public class Menu {
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             // Iterate through the getTop5 HashSet and print the name of the movie and its rating.
             for (int i = 0; i < data.getTop5().size(); i++) {
-                String movie = data.getTop5().get(i);
-                System.out.printf("%d. %s\n", i + 1, movie);
+                Movie movie = data.getTop5().get(i);
+                System.out.printf("%d. %s\n", i + 1, movie.getName());
             }
-            returnToMenu();
+            menuLoop();
         }
         // If map is empty, display a message and ask user for input to continue the program.
         else {
             rateMovie();
-            returnToMenu();
+            menuLoop();
         }
     }
 
@@ -225,7 +224,7 @@ public class Menu {
      * Gets the top 5 movies from the storeTop5Fav function in Data.java and prints them out
      */
     private static void menuTop5Favourites() {
-        HashMap<String, Integer> movieRatings = data.getRatingLookup(); // get the hashmap of movie ratings
+        HashMap<Movie, Integer> movieRatings = data.getRatingLookup(); // get the hashmap of movie ratings
         ArrayList<List> lists = data.getLists(); // get the arraylist of lists
         boolean listEmpty = true;
         boolean noRatings = true;
@@ -248,14 +247,14 @@ public class Menu {
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             // Iterate through the getTop5 HashSet and print the name of the movie and its rating.
             for (int i = 0; i < data.getTop5Fav().size(); i++) {
-                String movie = data.getTop5Fav().get(i);
-                System.out.printf("%d. %s\n", i + 1, movie);
+                Movie movie = data.getTop5Fav().get(i);
+                System.out.printf("%d. %s\n", i + 1, movie.getName());
             }
-            returnToMenu();
+            menuLoop();
             // If map is empty, display a message and ask user for input to continue the program.
         } else {
             System.out.println("There are no rated movies in 'Favourites'.");
-            returnToMenu();
+            menuLoop();
         }
     }
 
@@ -263,7 +262,7 @@ public class Menu {
      * Gets the top 5 movies from the storeTop5WTW function in Data.java and prints them out
      */
     private static void menuTop5WantToWatch() {
-        HashMap<String, Integer> movieRatings = data.getRatingLookup(); // get the hashmap of movie ratings
+        HashMap<Movie, Integer> movieRatings = data.getRatingLookup(); // get the hashmap of movie ratings
         ArrayList<List> lists = data.getLists(); // get the arraylist of lists
         boolean listEmpty = true;
         boolean noRatings = true;
@@ -283,16 +282,17 @@ public class Menu {
         if (!movieRatings.isEmpty() && !listEmpty && !noRatings) {
             data.storeTop5WTW(movieRatings);
             System.out.println("Top 5 Movies in Want-to-watch:");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             // Iterate through the getTop5WTW HashSet and print the name of the movie and its rating.
             for (int i = 0; i < data.getTop5WTW().size(); i++) {
-                String movie = data.getTop5WTW().get(i);
-                System.out.printf("%d. %s\n", i + 1, movie);
+                Movie movie = data.getTop5WTW().get(i);
+                System.out.printf("%d. %s\n", i + 1, movie.getName());
             }
-            returnToMenu();
+            menuLoop();
             // If map is empty, display a message and ask user for input to continue the program.
         } else {
             System.out.println("There are no rated movies in 'Want-to-watch'.");
-            returnToMenu();
+            menuLoop();
         }
     }
 
@@ -301,7 +301,7 @@ public class Menu {
      * Gets the top 5 movies from the storeTop5Watched function in Data.java and prints them out
      */
     private static void menuTop5Watched() {
-        HashMap<String, Integer> movieRatings = data.getRatingLookup(); // get hashmap of movie ratings
+        HashMap<Movie, Integer> movieRatings = data.getRatingLookup(); // get hashmap of movie ratings
         ArrayList<List> lists = data.getLists(); // get arraylist of lists
         boolean listEmpty = true;
         boolean noRatings = true;
@@ -324,14 +324,14 @@ public class Menu {
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             // Iterate through the getTop5Watched HashSet and print the name of the movie and its rating.
             for (int i = 0; i < data.getTop5Watched().size(); i++) {
-                String movie = data.getTop5Watched().get(i);
-                System.out.printf("%d. %s\n", i + 1, movie);
+                Movie movie = data.getTop5Watched().get(i);
+                System.out.printf("%d. %s\n", i + 1, movie.getName());
             }
-            returnToMenu();
+            menuLoop();
             // If map is empty, display a message and ask user for input to continue the program.
         } else {
             System.out.println("There are no rated movies in 'Watched'.");
-            returnToMenu();
+            menuLoop();
 
         }
     }
@@ -347,10 +347,10 @@ public class Menu {
             for (Movie movie : movies) { // loop through it and get info
                 System.out.printf("%-13s\t%s\n", movie.getName(), movie.getGenre());
             }
-            returnToMenu();
+            menuLoop();
         } else { // the user hasn't assigned any genres. Ask them if they want to.
             addGenre();
-            returnToMenu();
+            menuLoop();
         }
     }
 
@@ -371,11 +371,11 @@ public class Menu {
      */
     private static void menuPrintRating() {
         // Get the map of ratings from Data.java
-        HashMap<String, Integer> ratings = data.getRatingLookup();
+        HashMap<Movie, Integer> ratings = data.getRatingLookup();
         boolean noRatings = true;
         // Check if the map is not empty
-        for (String key : ratings.keySet()) {
-            if (ratings.get(key) != 0) {
+        for (Movie movie : ratings.keySet()) {
+            if (ratings.get(movie) != 0) {
                 noRatings = false;
             }
         }
@@ -383,12 +383,12 @@ public class Menu {
             System.out.println("Movie        \tRating");
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             // Iterate through the map keys (ratings) and print the values at those keys (movies)
-            for (String key : ratings.keySet()) {
-                if (ratings.get(key) != 0) {
-                    System.out.printf("%-13s\t%s stars\n", key, ratings.get(key));
+            for (Movie movie : ratings.keySet()) {
+                if (ratings.get(movie) != 0) {
+                    System.out.printf("%-13s\t%s stars\n", movie.getName(), ratings.get(movie));
                 }
             }
-            returnToMenu();
+            menuLoop();
         } else {
             // If map is empty, display a message and ask user for input to continue the program.
             System.out.println("You haven't rated any movies. Would you like to choose a movie to rate? ('y' for Yes)");
@@ -396,7 +396,7 @@ public class Menu {
             if (choice.equalsIgnoreCase("y")) {
                 menuAddRating();
                 menuPrintRating();
-                returnToMenu();
+                menuLoop();
             }
         }
     }
@@ -415,11 +415,11 @@ public class Menu {
             for (Movie movie : movies) {
                 System.out.printf("%-13s\t'%s'\n", movie.getList(), movie.getName());
             }
-            returnToMenu();
+            menuLoop();
             // If the list is empty, display a message and ask for input to continue the program.
         } else {
             createNewList();
-            returnToMenu();
+            menuLoop();
         }
     }
 
@@ -437,11 +437,11 @@ public class Menu {
             for (List list : lists) {
                 System.out.printf("%-13s\t'%s'\n", list.getType(), list.getName());
             }
-            returnToMenu();
+            menuLoop();
             // If the list is empty, display a message and ask for input to continue the program.
         } else {
             createNewList();
-            returnToMenu();
+            menuLoop();
         }
     }
 
@@ -472,11 +472,11 @@ public class Menu {
                 // Assign an object entry to the movie name index of the list.
                 System.out.printf("\t%s \n", movie.getName());
             }
-            returnToMenu();
+            menuLoop();
             // If the list is empty, display a message and ask for input to continue the program.
         } else {
             createNewMovie();
-            returnToMenu();
+            menuLoop();
         }
     }
 
@@ -529,28 +529,16 @@ public class Menu {
                     rating = scanner.nextInt();
                     scanner.nextLine(); // account for unwanted input character
                 }
-                data.storeRating(movie.getName(), rating);
+                data.storeRating(movie, rating);
                 movie.setRating(rating);
                 System.out.printf("'%s' rated %d stars.\n", movie.getName(), rating);
-                returnToMenu();
+                menuLoop();
             } else {
                 System.out.println("Invalid selection.");
             }
         } else { // Otherwise the user hasn't added any movies. Ask them to add one.
             createNewMovie();
             menuAddRating();
-            returnToMenu();
-        }
-    }
-
-    /**
-     * Intermediary function to allow user to view their data without the program switching too quickly.
-     */
-    private static void returnToMenu() {
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); // line separator for clarity
-        System.out.println("Press enter to continue.");
-        String input = scanner.nextLine();
-        if (input.equals(" ")) {
             menuLoop();
         }
     }
@@ -598,7 +586,7 @@ public class Menu {
                 boolean success = data.storeNewMovie(movieNumber, list.getName(), movie, rating, genre);
                 if (success) {
                     System.out.printf("'%s' added to '%s.'\n", movie, list.getName());
-                    returnToMenu();
+                    menuLoop();
                 } else {
                     System.out.printf("'%s' has already been added.\n", movie);
                 }
@@ -608,7 +596,7 @@ public class Menu {
                 movieNumber++;
                 data.storeNewMovie(movieNumber, listL.getName(), movie, rating, genre);
                 System.out.printf("'%s' added to '%s.'\n", movie, listL.getName());
-                returnToMenu();
+                menuLoop();
             }
             // If the user hasn't created any previous lists, ask them if they'd like to and continue the program.
         } else {
@@ -618,7 +606,7 @@ public class Menu {
                 movieNumber++;
                 data.storeNewMovie(movieNumber, list.getName(), movie, rating, genre);
                 System.out.printf("'%s' added to '%s.'\n", movie, list.getName());
-                returnToMenu();
+                menuLoop();
             }
         }
     }
@@ -662,7 +650,7 @@ public class Menu {
                     data.addGenre(movie, genreL); // store it in data
                     movie.setGenre(genreL); // set it in the movie class
                     System.out.printf("Labeled '%s' as %s\n", movie.getName(), genreL);
-                    returnToMenu();
+                    menuLoop();
                 } else {
                     System.out.println("Invalid choice.");
                 }
@@ -706,7 +694,7 @@ public class Menu {
                     boolean success = data.storeNewList(listNumber, type, name);
                     if (success) {
                         System.out.printf("Favourites list '%s' created.\n", name);
-                        returnToMenu();
+                        menuLoop();
                     } else {
                         System.out.println("This list already exists!");
                     }
@@ -721,7 +709,7 @@ public class Menu {
                     boolean success = data.storeNewList(listNumber, type, name);
                     if (success) {
                         System.out.printf("Watched list '%s' created.\n", name);
-                        returnToMenu();
+                        menuLoop();
                     } else {
                         System.out.println("This list already exists!");
                     }
@@ -736,14 +724,14 @@ public class Menu {
                     boolean success = data.storeNewList(listNumber, type, name);
                     if (success) {
                         System.out.printf("Want-to-watch list '%s' created.\n", name);
-                        returnToMenu();
+                        menuLoop();
                     } else {
                         System.out.println("This list already exists!");
                     }
                 }
                 default -> {
                     System.out.printf("Option %s not recognized.\n", choice);
-                    returnToMenu();
+                    
                     menuCreateList();
                 }
             }
@@ -751,19 +739,24 @@ public class Menu {
         }
     }
 
+    /**
+     * Function to view all info about a specific movie
+     */
     private static void menuViewMovie() {
-        ArrayList<Movie> moviesList = data.getMovies();
-        if(!moviesList.isEmpty()) {
+        ArrayList<Movie> moviesList = data.getMovies(); // get the arraylist of all movies
+        if(!moviesList.isEmpty()) { // check if it isn't empty
             System.out.println("Which movie would you like to view?");
-            for (Movie movieEntry : moviesList) {
+            for (Movie movieEntry : moviesList) { // loop through every movie in the list
+                // print the movies for selection
                 System.out.printf("\t[%s] %s\n", movieEntry.getNum(), movieEntry.getName());
             }
-            String choice = scanner.nextLine().trim();
+            String choice = scanner.nextLine().trim(); // get the user selection
             int movieNum = Integer.parseInt(choice);
-            Movie movie = data.getMovie(movieNum);
+            Movie movie = data.getMovie(movieNum); // get the movie based on the user selection
+            // print the info in overridden toString
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             System.out.println(movie);
-            returnToMenu();
+            menuLoop();
         } else {
             createNewMovie();
         }

@@ -46,7 +46,7 @@ public class RemoveMovieController {
     void removeMovie(ActionEvent event) {
         try {
             String name = movieName.getValue().trim();
-            HashMap<String, Integer> ratingLookup = data.getRatingLookup();
+            HashMap<Movie, Integer> ratingLookup = data.getRatingLookup();
             if (!name.isEmpty() && ratingLookup.containsKey(name)) {
                 boolean success = data.removeMovie(name);
                 if (success) {

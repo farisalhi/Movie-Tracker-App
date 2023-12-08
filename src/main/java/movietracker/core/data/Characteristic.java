@@ -13,17 +13,21 @@ package movietracker.core.data;
 public abstract class Characteristic {
 
     // every characteristic must have a movie associated with it
-    protected String movie;
+    protected Movie movie;
 
     /**
      * Constructor for String movie name
      * @param movie String movie name
      */
-    public Characteristic(String movie) {
+    public Characteristic(Movie movie) {
         this.movie = movie;
     }
-    public String getMovie() {
+
+    /**
+     * Getter for Movie. All characteristics should be able to get the movie they're associated with
+     * @return Movie. The movie associated with the characteristic.
+     */
+    public Movie getMovie() {
         return movie;
     }
-
 }

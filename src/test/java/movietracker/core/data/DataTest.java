@@ -1,7 +1,9 @@
 package movietracker.core.data;
 
+import movietracker.core.part2.Menu;
 import org.junit.jupiter.api.Test;
 
+import java.lang.management.MonitorInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -198,22 +200,24 @@ class DataTest {
         Data data = new Data();
 
         //Test Data
-        String movieName = "Blade Runner";
         int expectedRating = 4;
+        String movieName = "Blade Runner";
+        data.storeNewMovie(1, "Favs", movieName, expectedRating, Genre.movieGenre.Science_Fiction);
+        Movie expectedMovie = data.getMovie(1);
         //Function stores Test Data
-        data.storeRating(movieName, expectedRating);
+        data.storeRating(expectedMovie, expectedRating);
         // Retrieve the result
         int actualRating = data.getRating().get(0).getRating();
-        String actualMovie = data.getRating().get(0).getMovie();
+        Movie actualMovie = data.getRating().get(0).getMovie();
         int size = data.getRating().size();
         // Compare results to expected values
         assertEquals(1, size, "Size of list is not 1");
         assertEquals(expectedRating, actualRating, "The movie ratings do not match");
-        assertEquals(movieName, actualMovie, "The movie names do not match");
+        assertEquals(movieName, actualMovie.getName(), "The movie names do not match");
         // Retrieve the result and Compare Lookup values to expected results
-        boolean exists = data.getRatingLookup().containsKey(movieName);
+        boolean exists = data.getRatingLookup().containsKey(expectedMovie);
         int sizeL = data.getRatingLookup().size();
-        int movieRatingL = data.getRatingLookup().get(movieName);
+        int movieRatingL = data.getRatingLookup().get(expectedMovie);
         assertEquals(1, sizeL, "Size of Hashmap is not 1");
         assertTrue(exists, "The movie name has not been stored");
         assertEquals(expectedRating, movieRatingL, "The ratings of the movies do not match");
@@ -225,7 +229,10 @@ class DataTest {
 
         //Test Data
         int expectedRating = 4;
-        String expectedMovie = "Blade Runner";
+        String movieName = "Blade Runner";
+
+        data.storeNewMovie(expectedRating, "Favs", movieName, 5, Genre.movieGenre.Science_Fiction);
+        Movie expectedMovie = data.getMovie(expectedRating);
         // Store data using function
         data.storeRating(expectedMovie, expectedRating);
         //Retrieve the results
@@ -244,13 +251,15 @@ class DataTest {
 
         //Test Data 1
         int rating = 1;
-        String movie = "Qwerty";
-        HashMap<String, Integer> expectedRatingLookup = new HashMap<>();
+        data.storeNewMovie(rating, "Favs", "Dune", 5, Genre.movieGenre.Science_Fiction);
+        Movie movie = data.getMovie(rating);
+
+        HashMap<Movie, Integer> expectedRatingLookup = new HashMap<>();
         expectedRatingLookup.put(movie, rating);
         // Store data using function
         data.storeRating(movie, rating);
         //Retrieve the results
-        HashMap<String, Integer> ratingLookup = data.getRatingLookup();
+        HashMap<Movie, Integer> ratingLookup = data.getRatingLookup();
         int actualRating = ratingLookup.get(movie);
         int size = ratingLookup.size();
         //Compare the actual results to the expected results
@@ -263,23 +272,33 @@ class DataTest {
         //Test for 6 movies
     void storeTop5Test1() {
         Data data = new Data();
-        HashMap<String, Integer> ratings = new HashMap<>();
-        ratings.put("Movie 1", 5);
-        ratings.put("Movie 2", 3);
-        ratings.put("Movie 3", 4);
-        ratings.put("Movie 4", 4);
-        ratings.put("Movie 5", 2);
-        ratings.put("Movie 6", 1);
+        HashMap<Movie, Integer> ratings = new HashMap<>();
+        // Create 6 movies
+        data.storeNewMovie(1,"Fav", "Movie 1", 0, Genre.movieGenre.None);
+        data.storeNewMovie(2,"Fav", "Movie 2", 0,Genre.movieGenre.None);
+        data.storeNewMovie(3,"Fav", "Movie 3", 0,Genre.movieGenre.None);
+        data.storeNewMovie(4,"Fav", "Movie 4", 0, Genre.movieGenre.None);
+        data.storeNewMovie(5,"Fav", "Movie 5", 0,Genre.movieGenre.None);
+        data.storeNewMovie(6,"Fav", "Movie 6", 0,Genre.movieGenre.None);
+        // add them to the hashmap
+        ratings.put(data.getMovie(1), 5);
+        ratings.put(data.getMovie(2), 3);
+        ratings.put(data.getMovie(3), 4);
+        ratings.put(data.getMovie(4), 4);
+        ratings.put(data.getMovie(5), 2);
+        ratings.put(data.getMovie(6), 1);
+        // sort them based on ratings
         data.storeTop5(ratings);
-        ArrayList<String> actual = data.getTop5();
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Movie 1");
-        expected.add("Movie 3");
-        expected.add("Movie 4");
-        expected.add("Movie 2");
-        expected.add("Movie 5");
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+
+        ArrayList<Movie> actual = data.getTop5();
+        ArrayList<Movie> expected = new ArrayList<>();
+
+        expected.add(data.getMovie(1));
+        expected.add(data.getMovie(4));
+        expected.add(data.getMovie(3));
+        expected.add(data.getMovie(2));
+        expected.add(data.getMovie(5));
+
         assertEquals(expected, actual);
     }
 
@@ -287,19 +306,23 @@ class DataTest {
         // Test for 3 movies
     void storeTop5Test2() {
         Data data = new Data();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
+        data.storeNewMovie(1,"Fav", "Movie 1", 0, Genre.movieGenre.None);
+        data.storeNewMovie(2,"Fav", "Movie 2", 0,Genre.movieGenre.None);
+        data.storeNewMovie(3,"Fav", "Movie 3", 0,Genre.movieGenre.None);
 
-        HashMap<String, Integer> ratings = new HashMap<>();
-        ratings.put("Movie 1",4);
-        ratings.put("Movie 2",1);
-        ratings.put("Movie 3",3);
+        ratings.put(data.getMovie(1), 4);
+        ratings.put(data.getMovie(2), 1);
+        ratings.put(data.getMovie(3), 3);
         data.storeTop5(ratings);
-        ArrayList<String> actual = data.getTop5();
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Movie 1");
-        expected.add("Movie 3");
-        expected.add("Movie 2");
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+
+        ArrayList<Movie> actual = data.getTop5();
+        ArrayList<Movie> expected = new ArrayList<>();
+
+        expected.add(data.getMovie(1));
+        expected.add(data.getMovie(3));
+        expected.add(data.getMovie(2));
+
         assertEquals(expected, actual);
     }
 
@@ -307,31 +330,33 @@ class DataTest {
         // Test for 6 movies
     void storeTop5FavTest() {
         Data data = new Data();
-
-        HashMap<String, Integer> ratings = new HashMap<>();
-        data.storeNewMovie(1,"Fav", "Movie 1", 0, Genre.movieGenre.None);
-        data.storeNewMovie(2,"Fav", "Movie 2", 0,Genre.movieGenre.None);
-        data.storeNewMovie(3,"Fav", "Movie 3", 0,Genre.movieGenre.None);
-        data.storeNewMovie(4,"Fav", "Movie 4", 0,Genre.movieGenre.None);
-        data.storeNewMovie(5,"Fav", "Movie 5", 0,Genre.movieGenre.None);
-        data.storeNewMovie(6,"Fav", "Movie 6", 0,Genre.movieGenre.None);
-        ratings.put("Movie 1",5);
-        ratings.put("Movie 2",3);
-        ratings.put("Movie 3",4);
-        ratings.put("Movie 4",4);
-        ratings.put("Movie 5",2);
-        ratings.put("Movie 6",1);
+        HashMap<Movie, Integer> ratings = new HashMap<>();
         data.storeNewList(1,"Favourites", "Fav");
+        data.storeNewMovie(1,"Fav", "Movie 1", 0, Genre.movieGenre.None);
+        data.storeNewMovie(2,"Fav", "Movie 2", 0, Genre.movieGenre.None);
+        data.storeNewMovie(3,"Fav", "Movie 3", 0, Genre.movieGenre.None);
+        data.storeNewMovie(4,"Fav", "Movie 4", 0, Genre.movieGenre.None);
+        data.storeNewMovie(5,"Fav", "Movie 5", 0, Genre.movieGenre.None);
+        data.storeNewMovie(6,"Fav", "Movie 6", 0, Genre.movieGenre.None);
+
+        ratings.put(data.getMovie(1), 5);
+        ratings.put(data.getMovie(2), 3);
+        ratings.put(data.getMovie(3), 4);
+        ratings.put(data.getMovie(4), 4);
+        ratings.put(data.getMovie(5), 2);
+        ratings.put(data.getMovie(6), 1);
+
         data.storeTop5Fav(ratings);
-        ArrayList<String> actual = data.getTop5Fav();
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Movie 1");
-        expected.add("Movie 3");
-        expected.add("Movie 4");
-        expected.add("Movie 2");
-        expected.add("Movie 5");
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+
+        ArrayList<Movie> actual = data.getTop5Fav();
+        ArrayList<Movie> expected = new ArrayList<>();
+
+        expected.add(data.getMovie(1));
+        expected.add(data.getMovie(4));
+        expected.add(data.getMovie(3));
+        expected.add(data.getMovie(2));
+        expected.add(data.getMovie(5));
+
         assertEquals(expected, actual);
     }
 
@@ -340,29 +365,30 @@ class DataTest {
     void storeTop5WTWTest() {
         Data data = new Data();
 
-        HashMap<String, Integer> ratings = new HashMap<>();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
         data.storeNewMovie(1,"WTW", "Movie 1", 0, Genre.movieGenre.None);
         data.storeNewMovie(2,"WTW", "Movie 2", 0, Genre.movieGenre.None);
         data.storeNewMovie(3,"WTW", "Movie 3", 0, Genre.movieGenre.None);
         data.storeNewMovie(4,"WTW", "Movie 4", 0, Genre.movieGenre.None);
         data.storeNewMovie(5,"Fav", "Movie 5", 0,Genre.movieGenre.None);
         data.storeNewMovie(6,"Fav", "Movie 6", 0,Genre.movieGenre.None);
-        ratings.put("Movie 1",5);
-        ratings.put("Movie 2",3);
-        ratings.put("Movie 3",4);
-        ratings.put("Movie 4",4);
-        ratings.put("Movie 5",2);
-        ratings.put("Movie 6",1);
+        ratings.put(data.getMovie(1), 5);
+        ratings.put(data.getMovie(2), 3);
+        ratings.put(data.getMovie(3), 4);
+        ratings.put(data.getMovie(4) ,4);
+        ratings.put(data.getMovie(5) ,2);
+        ratings.put(data.getMovie(6) ,1);
         data.storeNewList(1,"Want-to-watch", "WTW");
         data.storeTop5WTW(ratings);
-        ArrayList<String> actual = data.getTop5WTW();
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Movie 1");
-        expected.add("Movie 3");
-        expected.add("Movie 4");
-        expected.add("Movie 2");
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+
+        ArrayList<Movie> actual = data.getTop5WTW();
+        ArrayList<Movie> expected = new ArrayList<>();
+
+        expected.add(data.getMovie(1));
+        expected.add(data.getMovie(4));
+        expected.add(data.getMovie(3));
+        expected.add(data.getMovie(2));
+
         assertEquals(expected, actual);
     }
 
@@ -371,25 +397,27 @@ class DataTest {
     void storeTop5WatchedTest() {
         Data data = new Data();
 
-        HashMap<String, Integer> ratings = new HashMap<>();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
         data.storeNewMovie(1,"asd", "Movie 1", 0,Genre.movieGenre.None);
         data.storeNewMovie(2,"asd", "Movie 2", 0,Genre.movieGenre.None);
         data.storeNewMovie(3,"asd", "Movie 3", 0,Genre.movieGenre.None);
         data.storeNewMovie(4,"asd", "Movie 4", 0,Genre.movieGenre.None);
-        ratings.put("Movie 1",5);
-        ratings.put("Movie 2",3);
-        ratings.put("Movie 3",4);
-        ratings.put("Movie 4",4);
+        ratings.put(data.getMovie(1),5);
+        ratings.put(data.getMovie(2),3);
+        ratings.put(data.getMovie(3),4);
+        ratings.put(data.getMovie(4),4);
         data.storeNewList(1,"Watched", "asd");
         data.storeTop5Watched(ratings);
-        ArrayList<String> actual = data.getTop5Watched();
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Movie 1");
-        expected.add("Movie 3");
-        expected.add("Movie 4");
-        expected.add("Movie 2");
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+
+        ArrayList<Movie> actual = data.getTop5Watched();
+        ArrayList<Movie> expected = new ArrayList<>();
+
+        expected.add(data.getMovie(1));
+        expected.add(data.getMovie(4));
+        expected.add(data.getMovie(3));
+        expected.add(data.getMovie(2));
+
+
         assertEquals(expected, actual);
     }
 
@@ -398,30 +426,31 @@ class DataTest {
     void getTop5WTWTest() {
         Data data = new Data();
 
-        HashMap<String, Integer> ratings = new HashMap<>();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
         data.storeNewMovie(1,"WTW", "Movie 1", 0,Genre.movieGenre.None);
         data.storeNewMovie(2,"WTW", "Movie 2", 0,Genre.movieGenre.None);
         data.storeNewMovie(3,"WTW", "Movie 3", 0,Genre.movieGenre.None);
         data.storeNewMovie(4,"WTW", "Movie 4", 0,Genre.movieGenre.None);
         data.storeNewMovie(5,"WTW", "Movie 5", 0,Genre.movieGenre.None);
         data.storeNewMovie(6,"WTW", "Movie 6", 0,Genre.movieGenre.None);
-        ratings.put("Movie 1",5);
-        ratings.put("Movie 2",3);
-        ratings.put("Movie 3",4);
-        ratings.put("Movie 4",4);
-        ratings.put("Movie 5",2);
-        ratings.put("Movie 6",1);
+        ratings.put(data.getMovie(1), 5);
+        ratings.put(data.getMovie(2), 3);
+        ratings.put(data.getMovie(3), 4);
+        ratings.put(data.getMovie(4), 4);
+        ratings.put(data.getMovie(5), 2);
+        ratings.put(data.getMovie(6), 1);
         data.storeNewList(1,"Want-to-watch", "WTW");
         data.storeTop5WTW(ratings);
-        ArrayList<String> actual = data.getTop5WTW();
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Movie 1");
-        expected.add("Movie 3");
-        expected.add("Movie 4");
-        expected.add("Movie 2");
-        expected.add("Movie 5");
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+
+        ArrayList<Movie> actual = data.getTop5WTW();
+        ArrayList<Movie> expected = new ArrayList<>();
+
+        expected.add(data.getMovie(1));
+        expected.add(data.getMovie(4));
+        expected.add(data.getMovie(3));
+        expected.add(data.getMovie(2));
+        expected.add(data.getMovie(5));
+
         assertEquals(expected, actual);
     }
 
@@ -430,23 +459,26 @@ class DataTest {
     void getTop5WatchedTest() {
         Data data = new Data();
 
-        HashMap<String, Integer> ratings = new HashMap<>();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
         data.storeNewMovie(1,"asd", "Movie 1", 0,Genre.movieGenre.None);
         data.storeNewMovie(2,"asd", "Movie 2", 0,Genre.movieGenre.None);
         data.storeNewMovie(3,"Fav", "Movie 3", 0,Genre.movieGenre.None);
         data.storeNewMovie(4,"Fav", "Movie 4", 0,Genre.movieGenre.None);
-        ratings.put("Movie 1",5);
-        ratings.put("Movie 2",3);
-        ratings.put("Movie 3",4);
-        ratings.put("Movie 4",4);
+
+        ratings.put(data.getMovie(1),5);
+        ratings.put(data.getMovie(2),3);
+        ratings.put(data.getMovie(3),4);
+        ratings.put(data.getMovie(4),4);
+
         data.storeNewList(1,"Watched", "asd");
         data.storeTop5Watched(ratings);
-        ArrayList<String> actual = data.getTop5Watched();
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Movie 1");
-        expected.add("Movie 2");
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+
+        ArrayList<Movie> actual = data.getTop5Watched();
+        ArrayList<Movie> expected = new ArrayList<>();
+
+        expected.add(data.getMovie(1));
+        expected.add(data.getMovie(2));
+
         assertEquals(expected, actual);
     }
 
@@ -455,26 +487,28 @@ class DataTest {
     void getTop5FavTest() {
         Data data = new Data();
 
-        HashMap<String, Integer> ratings = new HashMap<>();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
         data.storeNewMovie(1,"Fav", "Movie 1", 0,Genre.movieGenre.None);
         data.storeNewMovie(2,"asd", "Movie 2", 0,Genre.movieGenre.None);
         data.storeNewMovie(3,"asd", "Movie 3", 0,Genre.movieGenre.None);
         data.storeNewMovie(4,"asd", "Movie 4", 0,Genre.movieGenre.None);
         data.storeNewMovie(5,"asd", "Movie 5", 0,Genre.movieGenre.None);
         data.storeNewMovie(6,"asd", "Movie 6", 0,Genre.movieGenre.None);
-        ratings.put("Movie 1",5);
-        ratings.put("Movie 2",3);
-        ratings.put("Movie 3",4);
-        ratings.put("Movie 4",4);
-        ratings.put("Movie 5",2);
-        ratings.put("Movie 6",1);
+        ratings.put(data.getMovie(1),5);
+        ratings.put(data.getMovie(2),3);
+        ratings.put(data.getMovie(3),4);
+        ratings.put(data.getMovie(4),4);
+        ratings.put(data.getMovie(5),5);
+        ratings.put(data.getMovie(6),3);
+
         data.storeNewList(1,"Favourites", "Fav");
         data.storeTop5Fav(ratings);
-        ArrayList<String> actual = data.getTop5Fav();
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Movie 1");
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+
+        ArrayList<Movie> actual = data.getTop5Fav();
+        ArrayList<Movie> expected = new ArrayList<>();
+
+        expected.add(data.getMovie(1));
+
         assertEquals(expected, actual);
     }
 
@@ -483,13 +517,12 @@ class DataTest {
     void getTop5Test1() {
         Data data = new Data();
 
-        HashMap<String, Integer> ratings = new HashMap<>();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
 
         data.storeTop5(ratings);
-        ArrayList<String> actual = data.getTop5();
-        ArrayList<String> expected = new ArrayList<>();
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+        ArrayList<Movie> actual = data.getTop5();
+        ArrayList<Movie> expected = new ArrayList<>();
+        ;
         assertEquals(expected, actual);
     }
     @Test
@@ -508,16 +541,19 @@ class DataTest {
     void getTop5Test2() {
         Data data = new Data();
 
-        HashMap<String, Integer> ratings = new HashMap<>();
-        ratings.put("Movie 1",4);
-        ratings.put("Movie 2",1);
+        HashMap<Movie, Integer> ratings = new HashMap<>();
+        data.storeNewMovie(1,"Fav", "Movie 1", 0,Genre.movieGenre.None);
+        data.storeNewMovie(2,"asd", "Movie 2", 0,Genre.movieGenre.None);
+        ratings.put(data.getMovie(1),1);
+        ratings.put(data.getMovie(2),4);
         data.storeTop5(ratings);
-        ArrayList<String> actual = data.getTop5();
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Movie 1");
-        expected.add("Movie 2");
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
+
+        ArrayList<Movie> actual = data.getTop5();
+        ArrayList<Movie> expected = new ArrayList<>();
+
+        expected.add(data.getMovie(2));
+        expected.add(data.getMovie(1));
+
         assertEquals(expected, actual);
     }
     @Test
@@ -550,8 +586,8 @@ class DataTest {
     @Test
     void storeTop5GenreTest() {
         Data data = new Data();
-        ArrayList<String> expected = new ArrayList<>();
-        HashMap<String , Integer> ratings = new HashMap<>();
+        ArrayList<Movie> expected = new ArrayList<>();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
         // Storing data to test functions
         data.storeNewMovie(1,"Favs", "Qwerty", 5, Genre.movieGenre.Comedy);
         data.storeNewMovie(2,"Favs", "Qwert", 4, Genre.movieGenre.Comedy);
@@ -559,13 +595,14 @@ class DataTest {
         data.storeNewMovie(4,"WTW", "Qwe", 2, Genre.movieGenre.Comedy);
         data.storeNewMovie(5,"WTW", "Qw", 4, Genre.movieGenre.Comedy);
         data.storeNewMovie(6,"Favs", "Q", 5, Genre.movieGenre.Comedy);
+
         // storing ratings in HashMap
-        ratings.put("Qwerty", 5);
-        ratings.put("Qwert", 4);
-        ratings.put("Qwer", 3);
-        ratings.put("Qwe", 2);
-        ratings.put("Qw", 4);
-        ratings.put("Q", 5);
+        ratings.put(data.getMovie(1), 5);
+        ratings.put(data.getMovie(2), 4);
+        ratings.put(data.getMovie(3), 3);
+        ratings.put(data.getMovie(4), 2);
+        ratings.put(data.getMovie(5), 4);
+        ratings.put(data.getMovie(6), 5);
 
         Movie movie1 = data.getMovie(1);
         Movie movie2 = data.getMovie(2);
@@ -581,22 +618,22 @@ class DataTest {
         data.addGenre(movie5, Genre.movieGenre.Comedy);
         data.addGenre(movie6, Genre.movieGenre.Comedy);
         //adding to expected ArrayList
-        expected.add("Q");
-        expected.add("Qwerty");
-        expected.add("Qw");
-        expected.add("Qwert");
-        expected.add("Qwer");
+        expected.add(data.getMovie(6));
+        expected.add(data.getMovie(1));
+        expected.add(data.getMovie(5));
+        expected.add(data.getMovie(2));
+        expected.add(data.getMovie(3));
         // calling function for testing
         data.storeTop5Genre(ratings, Genre.movieGenre.Comedy);
-        ArrayList<String> actual = data.getTop5Genre();
+        ArrayList<Movie> actual = data.getTop5Genre();
         // comparing results to expected outcome
         assertEquals(expected, actual);
     }
     @Test
     void getTop5GenreTest() {
         Data data = new Data();
-        ArrayList<String> expected = new ArrayList<>();
-        HashMap<String , Integer> ratings = new HashMap<>();
+        ArrayList<Movie> expected = new ArrayList<>();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
         // Storing data to test functions
         data.storeNewMovie(1,"Favs", "Qwerty", 5, Genre.movieGenre.Action);
         data.storeNewMovie(2,"Favs", "Qwert", 4, Genre.movieGenre.Comedy);
@@ -604,13 +641,14 @@ class DataTest {
         data.storeNewMovie(4,"WTW", "Qwe", 2, Genre.movieGenre.Comedy);
         data.storeNewMovie(5,"WTW", "Qw", 4, Genre.movieGenre.Comedy);
         data.storeNewMovie(6,"Favs", "Q", 5, Genre.movieGenre.Comedy);
+
         // storing ratings in HashMap
-        ratings.put("Qwerty", 5);
-        ratings.put("Qwert", 4);
-        ratings.put("Qwer", 3);
-        ratings.put("Qwe", 2);
-        ratings.put("Qw", 4);
-        ratings.put("Q", 5);
+        ratings.put(data.getMovie(1), 5);
+        ratings.put(data.getMovie(2), 4);
+        ratings.put(data.getMovie(3), 3);
+        ratings.put(data.getMovie(4), 2);
+        ratings.put(data.getMovie(5), 4);
+        ratings.put(data.getMovie(6), 5);
 
         Movie movie1 = data.getMovie(1);
         Movie movie2 = data.getMovie(2);
@@ -618,6 +656,7 @@ class DataTest {
         Movie movie4 = data.getMovie(4);
         Movie movie5 = data.getMovie(5);
         Movie movie6 = data.getMovie(6);
+
         // adding genres to movies
         data.addGenre(movie1, Genre.movieGenre.Action);
         data.addGenre(movie2, Genre.movieGenre.Comedy);
@@ -625,14 +664,15 @@ class DataTest {
         data.addGenre(movie4, Genre.movieGenre.Comedy);
         data.addGenre(movie5, Genre.movieGenre.Comedy);
         data.addGenre(movie6, Genre.movieGenre.Comedy);
+
         //adding to expected ArrayList
-        expected.add("Q");
-        expected.add("Qw");
-        expected.add("Qwert");
-        expected.add("Qwe");
+        expected.add(data.getMovie(6));
+        expected.add(data.getMovie(5));
+        expected.add(data.getMovie(2));
+        expected.add(data.getMovie(4));
         // calling function for testing
         data.storeTop5Genre(ratings, Genre.movieGenre.Comedy);
-        ArrayList<String> actual = data.getTop5Genre();
+        ArrayList<Movie> actual = data.getTop5Genre();
         // comparing results to expected outcome
         assertEquals(expected, actual);
     }

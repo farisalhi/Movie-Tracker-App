@@ -534,8 +534,8 @@ public class MovieController {
      */
     @FXML
     void viewTopByList(ActionEvent event) {
-        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
-        ArrayList<String> top5List = data.getTop5List(); // get arraylist of top movies by list
+        HashMap<Movie, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+        ArrayList<Movie> top5List = data.getTop5List(); // get arraylist of top movies by list
         if (!ratings.isEmpty()) { //check if there are any rating added
             String list = topByList.getValue(); // get the user's selection of list from choice box
             data.storeTop5List(ratings, list); // invoke storeTop5List to sort data
@@ -598,15 +598,15 @@ public class MovieController {
      * @param top5List String ArrayList containing the names of the top 5 movies in the list.
      * @param ratings  Hashmap containing the ratings for the movies
      */
-    private void printTop5List(ArrayList<String> top5List, HashMap<String, Integer> ratings) {
-// format text for header info
+    private void printTop5List(ArrayList<Movie> top5List, HashMap<Movie, Integer> ratings) {
+        // format text for header info
         String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
         textData += "-----------------------------\n";
-// Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5List) {
-            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+        // Loop through the movie name in the top 5 list and append the related info to the string
+        for (Movie movie : top5List) {
+            textData += String.format("%-15s %-15d\n", movie.getName(), ratings.get(movie));
         }
-// output data to text area
+        // output data to text area
         viewData.setFont(Font.font("PT Mono"));
         viewData.setText(textData);
     }
@@ -618,11 +618,11 @@ public class MovieController {
      */
     @FXML
     void viewTopByListType(ActionEvent event) {
-        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+        HashMap<Movie, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
 // Get all String ArrayLists containing the top 5 movies in the three list types
-        ArrayList<String> top5Fav = data.getTop5Fav();
-        ArrayList<String> top5Watched = data.getTop5Watched();
-        ArrayList<String> top5WTW = data.getTop5WTW();
+        ArrayList<Movie> top5Fav = data.getTop5Fav();
+        ArrayList<Movie> top5Watched = data.getTop5Watched();
+        ArrayList<Movie> top5WTW = data.getTop5WTW();
 
         if (!ratings.isEmpty()) { // Check if the ratings hashmap is empty
             String type = topByListType.getValue(); // Get the user's selection for list type
@@ -654,13 +654,13 @@ public class MovieController {
      * @param top5Fav String ArrayList containing the top 5 movies in Favourite lists.
      * @param ratings Hashmap containing the integer ratings for the movies
      */
-    private void printTopFav(ArrayList<String> top5Fav, HashMap<String, Integer> ratings) {
+    private void printTopFav(ArrayList<Movie> top5Fav, HashMap<Movie, Integer> ratings) {
 // format text for header info
         String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
         textData += "-----------------------------\n";
 // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5Fav) {
-            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+        for (Movie movie : top5Fav) {
+            textData += String.format("%-15s %-15d\n", movie.getName(), ratings.get(movie));
         }
 // output data to text area
         viewData.setFont(Font.font("PT Mono"));
@@ -673,13 +673,13 @@ public class MovieController {
      * @param top5Watched String ArrayList containing the top 5 movies in Watched lists.
      * @param ratings     Hashmap containing the integer ratings for the movies
      */
-    private void printTopWatched(ArrayList<String> top5Watched, HashMap<String, Integer> ratings) {
+    private void printTopWatched(ArrayList<Movie> top5Watched, HashMap<Movie, Integer> ratings) {
 // format text for header info
         String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
         textData += "-----------------------------\n";
 // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5Watched) {
-            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+        for (Movie movie : top5Watched) {
+            textData += String.format("%-15s %-15d\n", movie.getName(), ratings.get(movie));
         }
 // output data to text area
         viewData.setFont(Font.font("PT Mono"));
@@ -692,13 +692,13 @@ public class MovieController {
      * @param top5WTW String ArrayList containing the top 5 movies in Want-to-watch lists.
      * @param ratings Hashmap containing the integer ratings for the movies
      */
-    private void printTopWTW(ArrayList<String> top5WTW, HashMap<String, Integer> ratings) {
+    private void printTopWTW(ArrayList<Movie> top5WTW, HashMap<Movie, Integer> ratings) {
         // format text for header info
         String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
         textData += "-----------------------------\n";
 // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5WTW) {
-            textData += String.format("%-15s %-15d\n", movie, ratings.get(movie));
+        for (Movie movie : top5WTW) {
+            textData += String.format("%-15s %-15d\n", movie.getName(), ratings.get(movie));
         }
 // output data to text area
         viewData.setFont(Font.font("PT Mono"));
@@ -783,8 +783,8 @@ public class MovieController {
     @FXML
     void viewTopByGenre(ActionEvent event) {
         HashMap<Movie, Genre.movieGenre> genreLookup = data.getGenreLookup(); // get the hashmap of movie genres
-        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
-        ArrayList<String> top5Genre = data.getTop5Genre(); // get the list of top 5 movies by genre
+        HashMap<Movie, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+        ArrayList<Movie> top5Genre = data.getTop5Genre(); // get the list of top 5 movies by genre
         if (!genreLookup.isEmpty()) { // check if the genre lookup hashmap is empty
             Genre.movieGenre genre = topByGenre.getValue(); // get the genre for viewing selected by the user
             data.storeTop5Genre(ratings, genre); // invoke the function to sort the data
@@ -802,13 +802,13 @@ public class MovieController {
      * @param top5Genre String ArrayList containing the top 5 movies in a genre
      * @param ratings   Hashmap containing the integer ratings for the movies
      */
-    private void printTopByGenre(ArrayList<String> top5Genre, HashMap<String, Integer> ratings) {
+    private void printTopByGenre(ArrayList<Movie> top5Genre, HashMap<Movie, Integer> ratings) {
         // format text for header info
         String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
         textData += "-----------------------------\n";
         // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5Genre) {
-            textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
+        for (Movie movie : top5Genre) {
+            textData += String.format("%-15s %-15s\n", movie.getName(), ratings.get(movie));
         }
         // output data to text area
         viewData.setFont(Font.font("PT Mono"));
@@ -860,8 +860,8 @@ public class MovieController {
     @FXML
     void viewTop5(ActionEvent event) {
         ArrayList<Movie> movies = data.getMovies(); // get the arraylist of movies
-        HashMap<String, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
-        ArrayList<String> top5 = data.getTop5(); // get the arraylist of top 5 movies
+        HashMap<Movie, Integer> ratings = data.getRatingLookup(); // get the hashmap of ratings
+        ArrayList<Movie> top5 = data.getTop5(); // get the arraylist of top 5 movies
         if (!movies.isEmpty()) { // check if the movie list is empty
             data.storeTop5(ratings); // invoke the function for sorting the data
             printTop5(top5, ratings); // invoke helper function for data output
@@ -878,13 +878,13 @@ public class MovieController {
      * @param top5    String ArrayList containing the top 5 movies.
      * @param ratings Hashmap containing the integer ratings for the movies
      */
-    private void printTop5(ArrayList<String> top5, HashMap<String, Integer> ratings) {
+    private void printTop5(ArrayList<Movie> top5, HashMap<Movie, Integer> ratings) {
         // format text for header info
         String textData = String.format("%-15s %-15s\n", "Movie", "Rating");
         textData += "-----------------------------\n";
         // Loop through the movie name in the top 5 list and append the related info to the string
-        for (String movie : top5) {
-            textData += String.format("%-15s %-15s\n", movie, ratings.get(movie));
+        for (Movie movie : top5) {
+            textData += String.format("%-15s %-15s\n", movie.getName(), ratings.get(movie));
         }
         // output data to text area
         viewData.setFont(Font.font("PT Mono"));

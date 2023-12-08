@@ -25,7 +25,7 @@ public class Movie {
         this.movieRating = movieRating;
     }
 
-    // Hashcode for movie duplicates based on name and type
+    // Hashcode for movie duplicates based on name and number
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,7 +69,7 @@ public class Movie {
      * @return String. To String format of movie info.
      */
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("Name:     %s\nNumber:   %d\nList:     %s\nRating:   %d stars\nGenre:    %s",
                 movieName, movieNum, listName, movieRating, movieGenre);
     }

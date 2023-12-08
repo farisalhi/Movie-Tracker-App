@@ -27,19 +27,19 @@ public class Data {
     private final HashSet<Movie> movieDuplicateLookup;
 
     private final ArrayList<Rating> ratingList;
-    private final HashMap<String, Integer> ratingLookup;
+    private final HashMap<Movie, Integer> ratingLookup;
 
     private final HashMap<Movie, Genre.movieGenre> genreLookup;
     private final HashMap<Genre.movieGenre, Integer> topGenre;
 
 
     // String Arraylists for sorted movies
-    private final ArrayList<String> top5;
-    private final ArrayList<String> top5List;
-    private final ArrayList<String> top5Fav;
-    private final ArrayList<String> top5WTW;
-    private final ArrayList<String> top5Watched;
-    private final ArrayList<String> top5Genre;
+    private final ArrayList<Movie> top5;
+    private final ArrayList<Movie> top5List;
+    private final ArrayList<Movie> top5Fav;
+    private final ArrayList<Movie> top5WTW;
+    private final ArrayList<Movie> top5Watched;
+    private final ArrayList<Movie> top5Genre;
 
     /**
      * Public data function to initialize all data storage
@@ -136,7 +136,7 @@ public class Data {
             // Add the movie number and name as the key-value pairs for the movieLookup HashMap.
             movieLookup.put(movieNum, newMovie);
             movieDuplicateLookup.add(newMovie);
-            ratingLookup.put(movieName, movieRating);
+            ratingLookup.put(newMovie, movieRating);
             return true;
         } else {
             return false;
@@ -156,7 +156,7 @@ public class Data {
                movieList.remove(movie);
                movieLookup.remove(movie.getNum(), movie);
                movieDuplicateLookup.remove(movie);
-               ratingLookup.remove(movie.getName(), movie.getRating());
+               ratingLookup.remove(movie, movie.getRating());
                genreLookup.remove(movie, movie.getGenre());
                i--;
            }
@@ -188,7 +188,7 @@ public class Data {
                 movieList.remove(movie);
                 movieLookup.remove(movie.getNum(), movie);
                 movieDuplicateLookup.remove(movie);
-                ratingLookup.remove(name, movie.getRating());
+                ratingLookup.remove(movie, movie.getRating());
                 genreLookup.remove(movie, movie.getGenre());
                 return true;
             }
@@ -227,7 +227,7 @@ public class Data {
      * @param movie the name of the movie
      * @param rating the rating of the movie
      */
-    public void storeRating(String movie, int rating) {
+    public void storeRating(Movie movie, int rating) {
         Rating newRating = new Rating(movie, rating);
         // Add the new list to the 'ratingList' object array
         ratingList.add(newRating);
@@ -247,7 +247,7 @@ public class Data {
      * Getter for the ratings HashMap storing movie names and ratings from storeRating function
      * @return ratingLookup HashMap that stores the movie name as the keys and the rating as a value
      */
-    public HashMap<String, Integer> getRatingLookup() {
+    public HashMap<Movie, Integer> getRatingLookup() {
         return ratingLookup;
     }
 
@@ -273,7 +273,7 @@ public class Data {
      * @param movieRatings the HashMap of movies and ratings
      * @param genre the genre we get the top 5 for
      */
-    public void storeTop5Genre(HashMap<String, Integer> movieRatings, Genre.movieGenre genre) {
+    public void storeTop5Genre(HashMap<Movie, Integer> movieRatings, Genre.movieGenre genre) {
         ArrayList<Integer> top5 = new ArrayList<>();
         for (int rating : movieRatings.values()) {
             top5.add(rating);
@@ -282,10 +282,10 @@ public class Data {
         int count = 0;
         top5Genre.clear();
         for (int rating : top5) {
-            for (String key : movieRatings.keySet()) {
+            for (Movie key : movieRatings.keySet()) {
                 if (count < 5 && rating >= 0) {
                     for (Movie movie : genreLookup.keySet()) {
-                        if (movie != null && movie.getName().equals(key) && genre.equals(movie.getGenre()) && rating == movieRatings.get(key) && !top5Genre.contains(key) ){
+                        if (movie != null && movie.equals(key) && genre.equals(movie.getGenre()) && rating == movieRatings.get(key) && !top5Genre.contains(key) ){
                             top5Genre.add(key);
                             count++;
                         }
@@ -299,7 +299,7 @@ public class Data {
      * Getter for ArrayList with the top 5 movies in the genre
      * @return ArrayList of the top 5 movies
      */
-    public ArrayList<String> getTop5Genre() {
+    public ArrayList<Movie> getTop5Genre() {
         return top5Genre;
     }
 
@@ -307,7 +307,7 @@ public class Data {
      * storeTop5 function that pulls out the top 5 rated movies across all lists
      * @param movieRatings HashMap storing the movie names as the keys and the ratings as the values
      */
-    public void storeTop5(HashMap<String, Integer> movieRatings) {
+    public void storeTop5(HashMap<Movie, Integer> movieRatings) {
         // Create a new ArrayList to store the top 5 ratings
         ArrayList<Integer> top5ratings = new ArrayList<>();
         // For each rating in the movieRatings values, add the rating to the top 5 ratings list.
@@ -322,7 +322,7 @@ public class Data {
         top5.clear();
         // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
         for (int rating : top5ratings) {
-            for (String key : movieRatings.keySet()) {
+            for (Movie key : movieRatings.keySet()) {
                 if (count < 5 && rating >= 0) {
                     if (rating == movieRatings.get(key) && !top5.contains(key)) {
                         top5.add(key);
@@ -337,7 +337,7 @@ public class Data {
      * storeTop5Fav function that pulls out the top 5 rated movies in the Favourites lists
      * @param movieRatings HashMap storing the movie names as the keys and the ratings as the values
      */
-    public void storeTop5Fav(HashMap<String, Integer> movieRatings) {
+    public void storeTop5Fav(HashMap<Movie, Integer> movieRatings) {
         // Create a new ArrayList to store the top 5 ratings
         ArrayList<Integer> top5FavRatings = new ArrayList<>();
         // For each rating in the movieRatings values, add the rating to the top 5 ratings list.
@@ -352,12 +352,12 @@ public class Data {
         top5Fav.clear();
         // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
         for (int rating : top5FavRatings) {
-            for (String key : movieRatings.keySet()) {
+            for (Movie key : movieRatings.keySet()) {
                 if (count < 5 && rating >= 0) {
                     // Loop through the list and movieList to find the matching entries that meet all the requirements
                     for(List list : list){
                         for(Movie movie : movieList){
-                            if (movie.getName().equals(key) && list.getType().equals("Favourites") && movie.getList().equals(list.getName()) && rating == movieRatings.get(key) && !top5Fav.contains(key)){
+                            if (movie.equals(key) && list.getType().equals("Favourites") && movie.getList().equals(list.getName()) && rating == movieRatings.get(key) && !top5Fav.contains(key)){
                                     top5Fav.add(key);
                                     count++;
                                 }
@@ -372,7 +372,7 @@ public class Data {
      * storeTop5 function that pulls out the top 5 rated movies from the Want-To-Watch lists
      * @param movieRatings HashMap storing the movie names as the keys and the ratings as the values
      */
-    public void storeTop5WTW(HashMap<String, Integer> movieRatings) {
+    public void storeTop5WTW(HashMap<Movie, Integer> movieRatings) {
         // Create a new ArrayList to store the top 5 ratings
         ArrayList<Integer> top5WTWRatings = new ArrayList<>();
         // For each rating in the movieRatings values, add the rating to the top 5 ratings list.
@@ -387,12 +387,12 @@ public class Data {
         top5WTW.clear();
         // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
         for (int rating : top5WTWRatings) {
-            for (String key : movieRatings.keySet()) {
+            for (Movie key : movieRatings.keySet()) {
                 if (count < 5 && rating >= 0) {
                     // Loop through the list and movieList to find the matching entries that meet all the requirements
                     for(List list : list){
                         for(Movie movie : movieList){
-                            if (movie.getName().equals(key) && list.getType().equals("Want-to-watch") && movie.getList().equals(list.getName()) && rating == movieRatings.get(key) && !top5WTW.contains(key)){
+                            if (movie.equals(key) && list.getType().equals("Want-to-watch") && movie.getList().equals(list.getName()) && rating == movieRatings.get(key) && !top5WTW.contains(key)){
                                 top5WTW.add(key);
                                 count++;
                             }
@@ -407,7 +407,7 @@ public class Data {
      * storeTop5Watched function that stores the top 5 rated movies in the Watched list
      * @param movieRatings HashMap storing the movie names as the keys and the ratings as the values
      */
-    public void storeTop5Watched(HashMap<String, Integer> movieRatings) {
+    public void storeTop5Watched(HashMap<Movie, Integer> movieRatings) {
         // Create a new ArrayList to store the top 5 ratings
         ArrayList<Integer> top5WatchedRatings = new ArrayList<>();
         // For each rating in the movieRatings values, add the rating to the top 5 ratings list.
@@ -422,12 +422,12 @@ public class Data {
         top5Watched.clear();
         // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
         for (int rating : top5WatchedRatings) {
-            for (String key : movieRatings.keySet()) {
+            for (Movie key : movieRatings.keySet()) {
                 if (count < 5 && rating >= 0) {
                     // Loop through the list and movieList to find the matching entries that meet all the requirements
                     for(List list : list){
                         for(Movie movie : movieList){
-                            if (movie.getName().equals(key) && list.getType().equals("Watched") && movie.getList().equals(list.getName()) && rating == movieRatings.get(key) && !top5Watched.contains(key)){
+                            if (movie.equals(key) && list.getType().equals("Watched") && movie.getList().equals(list.getName()) && rating == movieRatings.get(key) && !top5Watched.contains(key)){
                                 top5Watched.add(key);
                                 count++;
                             }
@@ -443,7 +443,7 @@ public class Data {
      * @param movieRatings HashMap storing the movie names as the keys and the ratings as the values
      * @param list String name of the list to search in.
      */
-    public void storeTop5List(HashMap<String, Integer> movieRatings, String list) {
+    public void storeTop5List(HashMap<Movie, Integer> movieRatings, String list) {
         // Create a new ArrayList to store the top 5 ratings
         ArrayList<Integer> top5ListRatings = new ArrayList<>();
         // For each rating in the movieRatings values, add the rating to the top 5 ratings list.
@@ -458,11 +458,11 @@ public class Data {
         top5List.clear();
         // For each rating in the top 5 ratings list, if there are not yet 5 movies in the list, add the name of the movie at the key (rating) to the top 5 list.
         for (int rating : top5ListRatings) {
-            for (String key : movieRatings.keySet()) {
+            for (Movie key : movieRatings.keySet()) {
                 if (count < 5 && rating >= 0) {
                     // Loop through the list and movieList to find the matching entries that meet all the requirements
                     for (Movie movie : movieList) {
-                        if (movie.getName().equals(key) && movie.getList().equals(list) && rating == movieRatings.get(key) && !top5List.contains(key)) {
+                        if (movie.equals(key) && movie.getList().equals(list) && rating == movieRatings.get(key) && !top5List.contains(key)) {
                             top5List.add(key);
                             count++;
                         }
@@ -550,7 +550,7 @@ public class Data {
      * Getter for the top 5 movies in a given list from the storeTop5List function
      * @return String Arraylist of top 5 movies in a given list.
      */
-    public ArrayList<String> getTop5List() {
+    public ArrayList<Movie> getTop5List() {
         return top5List;
     }
 
@@ -558,7 +558,7 @@ public class Data {
      * Getter for the top 5 movies in the Want-To-Watch from the storeTop5WTW function
      * @return HashSet of 5 movies
      */
-    public ArrayList<String> getTop5WTW() {
+    public ArrayList<Movie> getTop5WTW() {
         return top5WTW;
     }
 
@@ -566,14 +566,14 @@ public class Data {
      * Getter for the top 5 movies in the Watched lists from storeTop5Watched function
      * @return HashSet of 5 movies.
      */
-    public ArrayList<String> getTop5Watched() {
+    public ArrayList<Movie> getTop5Watched() {
         return top5Watched;
     }
     /**
      * Getter for the Top 5 movies in all lists from storeTop5 function.
      * @return HashSet of the top 5 movies in all lists
      */
-    public ArrayList<String> getTop5() {
+    public ArrayList<Movie> getTop5() {
         return top5;
     }
 
@@ -581,7 +581,7 @@ public class Data {
      * Getter for the top 5 movies in Favourites lists from storeTop5Favourites function
      * @return HashSet of top 5 movies in Favourites
      */
-    public ArrayList<String> getTop5Fav() {
+    public ArrayList<Movie> getTop5Fav() {
         return top5Fav;
     }
 }

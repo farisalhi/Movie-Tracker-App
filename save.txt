@@ -1,8 +1,6 @@
-list,F,Favs
 list,F,favs
 list,W,watched
 list,A,want to watch
-movie,Favs,Movie,5,Comedy
 movie,favs,Blade Runner,4,Science_Fiction
 movie,favs,Dune,4,Science_Fiction
 movie,watched,Avatar,2,Science_Fiction

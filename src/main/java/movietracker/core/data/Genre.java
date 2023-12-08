@@ -24,7 +24,7 @@ public class Genre extends Characteristic {
      * @param movie String name of movie inherited from Characteristic class
      * @param genre movie genre from enum
      */
-    public Genre(String movie, movieGenre genre) {
+    public Genre(Movie movie, movieGenre genre) {
         super(movie);
         this.genre = genre;
     }
@@ -35,13 +35,5 @@ public class Genre extends Characteristic {
      */
     public Genre.movieGenre getGenre() {
         return genre;
-    }
-
-    /**
-     * Getter for returning movie associated with genre
-     * @return String movie name
-     */
-    public String getMovie() {
-        return movie;
     }
 }
