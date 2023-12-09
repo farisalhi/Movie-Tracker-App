@@ -676,4 +676,153 @@ class DataTest {
         // comparing results to expected outcome
         assertEquals(expected, actual);
     }
+
+    @Test
+    void storeTop5ListTest() {
+        // Test for 3 movies in the same list
+        Data data = new Data();
+        ArrayList<Movie> expected = new ArrayList<>();
+        HashMap<Movie, Integer> ratings = new HashMap<>();
+        String list = "Favs";
+        // Storing data to test functions
+        data.storeNewMovie(1, list, "Movie 1", 5, Genre.movieGenre.None);
+        data.storeNewMovie(2,list, "Movie 2", 4, Genre.movieGenre.None);
+        data.storeNewMovie(3,list, "Movie 3", 3, Genre.movieGenre.None);
+        data.storeNewMovie(4,"WTW", "Movie 4", 2, Genre.movieGenre.None);
+        data.storeNewMovie(5,"WTW", "Movie 5", 4, Genre.movieGenre.None);
+
+        // storing ratings in HashMap
+        ratings.put(data.getMovie(1), 3);
+        ratings.put(data.getMovie(2), 5);
+        ratings.put(data.getMovie(3), 1);
+        ratings.put(data.getMovie(4), 2);
+        ratings.put(data.getMovie(5), 4);
+
+        //adding to expected ArrayList
+        expected.add(data.getMovie(2));
+        expected.add(data.getMovie(1));
+        expected.add(data.getMovie(3));
+
+        // calling function for testing
+        data.storeTop5List(ratings, list);
+        ArrayList<Movie> actual = data.getTop5List();
+        // comparing results to expected outcome
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void storeTopGenreTest() {
+        // Test for a genre with 2 movies in it
+        Data data = new Data();
+        ArrayList<Movie> movies = new ArrayList<>();
+        HashMap<Genre.movieGenre, Integer> expected = new HashMap<>();
+        String list = "Favs";
+        // Storing data to test functions
+        data.storeNewMovie(1, list, "Movie 1", 5, Genre.movieGenre.Drama);
+        data.storeNewMovie(2,list, "Movie 2", 4, Genre.movieGenre.Drama);
+        data.storeNewMovie(3,list, "Movie 3", 3, Genre.movieGenre.Science_Fiction);
+        data.storeNewMovie(4,"WTW", "Movie 4", 2, Genre.movieGenre.Fantasy);
+        data.storeNewMovie(5,"WTW", "Movie 5", 4, Genre.movieGenre.Comedy);
+        // Add all the movies to the movies ArrayList
+        movies.add(data.getMovie(1));
+        movies.add(data.getMovie(2));
+        movies.add(data.getMovie(3));
+        movies.add(data.getMovie(4));
+        movies.add(data.getMovie(5));
+        //adding to expected ArrayList
+        expected.put(Genre.movieGenre.Drama, 2);
+
+        // calling function for testing
+        data.storeTopGenres(movies);
+        HashMap<Genre.movieGenre, Integer> actual = data.getTopGenre();
+        // comparing results to expected outcome
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteListTest() {
+        // Test for list with three movies in it
+        Data data = new Data();
+        // store a new list
+        data.storeNewList(1, "Favourites", "Favs");
+        List list = data.getList(1);
+        // create a new movie arraylist and store three movies in it
+        ArrayList<Movie> movies = new ArrayList<>();
+        data.storeNewMovie(1, list.getName(), "Movie 1", 5, Genre.movieGenre.Drama);
+        data.storeNewMovie(2, list.getName(), "Movie 2", 4, Genre.movieGenre.Drama);
+        data.storeNewMovie(3, list.getName(), "Movie 3", 3, Genre.movieGenre.Science_Fiction);
+
+        movies.add(data.getMovie(1));
+        movies.add(data.getMovie(2));
+        movies.add(data.getMovie(3));
+
+        data.deleteList(list.getName());
+
+        int expectedListSize = data.getLists().size();
+        int actualListSize = 0;
+        assertEquals(expectedListSize, actualListSize); // check if list is removed from the list of lists
+
+        int expectedListLookupSize = data.getListLookup().size();
+        int actualListLookupSize = 0;
+        assertEquals(expectedListLookupSize, actualListLookupSize); // check if the list is removed from the listLookup
+
+        int expectedListDupSize = data.getListDuplicate().size();
+        int actualListDupSize = 0;
+        assertEquals(expectedListDupSize, actualListDupSize); // check if the list is removed from the duplicate list Lookup
+
+        int expectedMovieSize = data.getMovies().size();
+        int actualMovieSize = 0;
+        assertEquals(expectedMovieSize, actualMovieSize); // check if the movies were deleted from the movie list
+
+        int expectedMovieLookupSize = data.getMovieLookup().size();
+        int actualMovieLookupSize = 0;
+        assertEquals(expectedMovieLookupSize, actualMovieLookupSize); // check if the list is removed from the listLookup
+
+        int expectedMovieDupSize = data.getMovieDuplicate().size();
+        int actualMovieDupSize = 0;
+        assertEquals(expectedMovieDupSize, actualMovieDupSize); // check if the list is removed from the duplicate movie Lookup
+
+        int expectedRatingSize = data.getRatingLookup().size();
+        int actualRatingSize = 0;
+        assertEquals(expectedRatingSize, actualRatingSize); // check if the rating is removed from the rating Lookup
+
+        int expectedGenreSize = data.getGenreLookup().size();
+        int actualGenreSize = 0;
+        assertEquals(expectedGenreSize, actualGenreSize); // check if the genre is removed from the genre Lookup
+    }
+
+    @Test
+    void removeMovieTest() {
+        // Test for list with three movies in it
+        Data data = new Data();
+        // store a new list
+        data.storeNewList(1, "Favourites", "Favs");
+        List list = data.getList(1);
+        // create a new movie arraylist and store three movies in it
+        ArrayList<Movie> movies = new ArrayList<>();
+        data.storeNewMovie(1, list.getName(), "Movie 1", 5, Genre.movieGenre.Drama);
+        data.storeNewMovie(2, list.getName(), "Movie 2", 4, Genre.movieGenre.Drama);
+        data.storeNewMovie(3, list.getName(), "Movie 3", 3, Genre.movieGenre.Science_Fiction);
+
+        movies.add(data.getMovie(1));
+        movies.add(data.getMovie(2));
+        movies.add(data.getMovie(3));
+
+        Movie movie1 = data.getMovie(1);
+        data.removeMovie(movie1.getName());
+
+        assertFalse(data.getMovies().contains(movie1)); // check if the movie was deleted from the movie list
+
+        assertFalse(data.getMovieLookup().containsValue(movie1)); // check if the Movie was removed from the movie lookup
+
+        assertFalse(data.getMovieDuplicate().contains(movie1)); // check if the movie was removed from the duplicate movie Lookup
+
+        int expectedRatingSize = data.getRatingLookup().size();
+        int actualRatingSize = 2;
+        assertEquals(expectedRatingSize, actualRatingSize); // check if the rating is removed from the rating Lookup
+
+        int expectedGenreSize = data.getGenreLookup().size();
+        int actualGenreSize = 2;
+        assertEquals(expectedGenreSize, actualGenreSize); // check if the genre is removed from the genre Lookup
+    }
 }

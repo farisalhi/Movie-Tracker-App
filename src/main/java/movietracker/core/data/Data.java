@@ -122,6 +122,15 @@ public class Data {
     }
 
     /**
+     * Getter for the list duplicate HashSet
+     *
+     * @return the HashSet of unique lists
+     */
+    public HashSet<List> getListDuplicate() {
+        return listDuplicateLookup;
+    }
+
+    /**
      * storeNewMovie function that adds new movie information to an ArrayList and HashMap
      *
      * @param movieNum  the number assigned to the movie
@@ -137,6 +146,7 @@ public class Data {
             movieLookup.put(movieNum, newMovie);
             movieDuplicateLookup.add(newMovie);
             ratingLookup.put(newMovie, movieRating);
+            genreLookup.put(newMovie, movieGenre);
             return true;
         } else {
             return false;
@@ -220,6 +230,14 @@ public class Data {
      */
     public Movie getMovie(int movieNum) {
         return movieLookup.get(movieNum);
+    }
+
+    /**
+     * Getter for the movie duplicate HashSet
+     * @return the HashSet of unique movies
+     */
+    public HashSet<Movie> getMovieDuplicate() {
+        return movieDuplicateLookup;
     }
 
     /**

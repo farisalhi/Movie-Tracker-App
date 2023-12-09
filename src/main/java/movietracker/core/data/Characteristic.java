@@ -12,7 +12,7 @@ package movietracker.core.data;
 
 public abstract class Characteristic {
 
-    // every characteristic must have a movie associated with it
+    // every characteristic should have a movie associated with it
     protected Movie movie;
 
     /**
