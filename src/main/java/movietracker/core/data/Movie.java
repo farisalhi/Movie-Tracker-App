@@ -2,6 +2,19 @@ package movietracker.core.data;
 
 import java.util.Objects;
 
+/*
+ * Movie Object class
+ * The class for Movie object declaration
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi ()
+ * Dec. 8, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
+/**
+ * Movie class for Movie object creation
+ */
 public class Movie {
     protected final int movieNum;
     private final String listName;

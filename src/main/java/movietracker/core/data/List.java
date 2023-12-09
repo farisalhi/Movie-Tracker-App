@@ -2,7 +2,7 @@ package movietracker.core.data;
 
 import java.util.Objects;
 
-/**
+/*
  * List Object class
  * The class for List object declaration
  *
@@ -12,6 +12,9 @@ import java.util.Objects;
  * @version 1.0
  */
 
+/**
+ * List class for List object creation
+ */
 public class List {
     // final variables for list number, type, and name
     protected final int listNum;

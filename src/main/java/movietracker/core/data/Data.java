@@ -2,7 +2,7 @@ package movietracker.core.data;
 
 import java.util.*;
 
-/**
+/*
  * Movie Tracker Application Data class
  * The class containing functions to handle data storage and movie/list sorting
  *

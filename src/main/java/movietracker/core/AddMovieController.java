@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-/**
+/*
  * Add Movie Controller class
  * The class containing all FXML elements and functions relating to movie adding in the fxml popup
  *

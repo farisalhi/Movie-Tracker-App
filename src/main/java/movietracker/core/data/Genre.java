@@ -1,6 +1,6 @@
 package movietracker.core.data;
 
-/**
+/*
  * Genre Object class extending Characteristic class
  * The class for Genre enum declaration
  *
@@ -9,11 +9,13 @@ package movietracker.core.data;
  * Tutorial T06
  * @version 1.0
  */
+
+/**
+ * Genre class for Genre object creation
+ */
 public class Genre extends Characteristic {
 
-    /**
-     * movieGenre enum containing a few genres to choose from
-     */
+    // movieGenre enum containing a few genres to choose from
     public enum movieGenre {
         Action, Horror, Adventure, Fantasy, Comedy, Science_Fiction, Drama, Romance, None;
     }

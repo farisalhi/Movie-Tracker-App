@@ -10,6 +10,19 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
+ * Movie Tracker Application Data Test class
+ * The test class containing tests for all non-I/O and non-GUI data function
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi ()
+ * Dec. 5, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
+/**
+ * DataTest class containing all junit tests
+ */
 class DataTest {
 
     @Test

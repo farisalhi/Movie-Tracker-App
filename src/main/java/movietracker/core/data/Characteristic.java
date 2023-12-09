@@ -1,6 +1,6 @@
 package movietracker.core.data;
 
-/**
+/*
  * Characteristic Object abstract class
  * The abstract class for movie characteristics
  *
@@ -10,6 +10,9 @@ package movietracker.core.data;
  * @version 1.0
  */
 
+/**
+ * Abstract class for defining movie characteristics
+ */
 public abstract class Characteristic {
 
     // every characteristic should have a movie associated with it

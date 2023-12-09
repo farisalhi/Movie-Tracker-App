@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-/**
+/*
  * Movie Tracker Application main controller class
  * The main controller class containing all FXML elements and functions to handle functions for movie storage
  *
