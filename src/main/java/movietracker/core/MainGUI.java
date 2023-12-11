@@ -11,18 +11,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-/**
+/*
  * Movie Tracker Application main
- * The main class to set up files and launch the gui scene
  *
- * @author Faris Salhi (30117469), Ariel Motsi ()
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
  * Dec. 5, 2023
  * Tutorial T06
  * @version 1.0
  */
 
 /**
- * Application class to set up files launch gui scene.
+ * Application class to set up program args and launch gui scene.
  */
 public class MainGUI extends Application {
     /**

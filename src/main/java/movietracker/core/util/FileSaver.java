@@ -4,6 +4,18 @@ import movietracker.core.data.*;
 import java.io.*;
 import java.util.ArrayList;
 
+/*
+ * FileSaver class to assist in saving data to a comma-separated file
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
+ * Dec. 5, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
+/**
+ * FileSaver class to loop through data structures and save data to comma-separated file
+ */
 public class FileSaver {
     /**
      * This function gets the objects stored in data and writes them to a save file.

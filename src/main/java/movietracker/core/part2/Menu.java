@@ -14,7 +14,7 @@ import movietracker.core.util.*;
  */
 
 /**
- * Prints the menu options to be presented to the user option program start.
+ * Class that contains the selection menu and all the function to run the non-gui version of the app
  */
 public class Menu {
     private static Data data = new Data(); // Create a new object data.

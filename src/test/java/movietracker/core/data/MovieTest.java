@@ -6,6 +6,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
+ * Movie Tracker Application Movie Test class
+ * The test class containing tests for all non-I/O and non-GUI functions in the Movie class
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
+ * Dec. 5, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
+/**
+ * MovieTest class containing all junit tests for Movie class
+ */
+
 class MovieTest {
 
     @Test

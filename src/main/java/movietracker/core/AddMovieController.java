@@ -21,7 +21,7 @@ import java.util.Objects;
  * Add Movie Controller class
  * The class containing all FXML elements and functions relating to movie adding in the fxml popup
  *
- * @author Faris Salhi (30117469), Ariel Motsi ()
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
  * Dec. 5, 2023
  * Tutorial T06
  * @version 1.0

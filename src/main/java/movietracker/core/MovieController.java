@@ -32,7 +32,7 @@ import java.util.HashMap;
  * Movie Tracker Application main controller class
  * The main controller class containing all FXML elements and functions to handle functions for movie storage
  *
- * @author Faris Salhi (30117469), Ariel Motsi ()
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
  * Dec. 5, 2023
  * Tutorial T06
  * @version 1.0

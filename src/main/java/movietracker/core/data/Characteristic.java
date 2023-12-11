@@ -4,7 +4,7 @@ package movietracker.core.data;
  * Characteristic Object abstract class
  * The abstract class for movie characteristics
  *
- * @author Faris Salhi (30117469), Ariel Motsi ()
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
  * Dec. 8, 2023
  * Tutorial T06
  * @version 1.0

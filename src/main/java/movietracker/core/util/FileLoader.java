@@ -6,6 +6,19 @@ import java.util.Scanner;
 import movietracker.core.data.*;
 import movietracker.core.part2.*;
 
+/*
+ * FileLoader class to assist in loading data from a comma-separated file
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
+ * Dec. 5, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
+/**
+ * FileLoader class to loop through comma-separated file and parse data to program
+ */
+
 public class FileLoader {
     /**
      * This function gets the load file, reads it, and then stores data.

@@ -2,12 +2,17 @@ package movietracker.core.part2;
 
 import java.io.File;
 
+/*
+ * Movie Tracker main to run non-GUI version of the app
+ *
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
+ * Dec. 5, 2023
+ * Tutorial T06
+ * @version 1.0
+ */
+
 /**
- * Main to run non-GUI version of application through terminal with or without program args
- * @author faris.salhi Faris Salhi
- * @author ariel.motsi Ariel Motsi
- * date: Dec. 8, 2023
- * tutorial: T06
+ * Main class to set up prgram args and launch the menu
  */
 public class Main {
     /**

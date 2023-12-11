@@ -3,7 +3,7 @@ package movietracker.core.data;
  * Rating class extends Characteristic class
  * The class for Rating object declaration
  *
- * @author Faris Salhi (30117469), Ariel Motsi ()
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
  * Dec. 8, 2023
  * Tutorial T06
  * @version 1.0

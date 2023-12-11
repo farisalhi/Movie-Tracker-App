@@ -6,7 +6,7 @@ import java.util.Objects;
  * Movie Object class
  * The class for Movie object declaration
  *
- * @author Faris Salhi (30117469), Ariel Motsi ()
+ * @author Faris Salhi (30117469), Ariel Motsi (30147625)
  * Dec. 8, 2023
  * Tutorial T06
  * @version 1.0
