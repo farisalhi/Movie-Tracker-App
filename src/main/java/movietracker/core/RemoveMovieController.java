@@ -19,7 +19,7 @@ import java.util.HashMap;
  * The class containing all FXML elements and functions relating to movie deletion in the fxml popup
  *
  * @author Faris Salhi (30117469), Ariel Motsi (30147625)
- * Dec. 5, 2023
+ * Dec. 10, 2023
  * Tutorial T06
  * @version 1.0
  */
@@ -40,26 +40,19 @@ public class RemoveMovieController {
 
     /**
      * Function to remove a movie
-     * @param event
+     * @param event Remove movie. Button click
      */
     @FXML
     void removeMovie(ActionEvent event) {
         try {
-            String name = movieName.getValue().trim();
-            HashMap<Movie, Integer> ratingLookup = data.getRatingLookup();
-            if (!name.isEmpty() && ratingLookup.containsKey(name)) {
-                boolean success = data.removeMovie(name);
-                if (success) {
-                    ((Stage) movieName.getScene().getWindow()).close();
-                    status.setTextFill(Color.GREEN);
-                    status.setText("Deleted movie.");
-                    pause.setOnFinished(event1 -> status.setText(null));
-                    pause.play();
-                }
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Enter a valid movie name!.");
-                alert.showAndWait();
+            String name = movieName.getValue(); // Get the string name of the movie to be removed
+            boolean success = data.removeMovie(name);
+            if (success) { // if remove is successful, close the window and display confirmation
+                ((Stage) movieName.getScene().getWindow()).close();
+                status.setTextFill(Color.GREEN);
+                status.setText("Deleted movie.");
+                pause.setOnFinished(event1 -> status.setText(null));
+                pause.play();
             }
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -79,15 +72,16 @@ public class RemoveMovieController {
                 // loop through the list and add the names to the choice box items
                 String listName = movie.getName();
                 movieName.getItems().add(listName);
+                movieName.setValue(movies.get(0).getName());
             }
         }
     }
 
     /**
      *
-     * @param status
-     * @param viewData
-     * @param pause
+     * @param status Label for status updates
+     * @param viewData TextArea for viewing data
+     * @param pause PauseTransition for label timeout
      */
     public void setup(Label status, TextArea viewData, PauseTransition pause) {
         this.status = status;

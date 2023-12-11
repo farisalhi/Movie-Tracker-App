@@ -141,27 +141,34 @@ public class MovieController {
      * Opens new stage for user to delete an existing list.
      *
      * @param event List > Delete List. Button click
-     * @throws IOException Runtime exception in case of fxml loader fail
      */
     @FXML
     void deleteList(ActionEvent event) {
-        try { // try to launch a new stage from a separate fxml file
-            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("deleteList.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(loader.load(), 200, 100); // set stage dimensions
-            stage.setResizable(false); // cannot be resized by user
+        ArrayList<List> lists = data.getLists(); // get the list of lists
+        if (!lists.isEmpty()) { // check if the user has created a list yet
+            try { // try to launch a new stage from a separate fxml file
+                FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("deleteList.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(loader.load(), 200, 100); // set stage dimensions
+                stage.setResizable(false); // cannot be resized by user
 
-            stage.setTitle("Delete a List");
-            DeleteListController deleteListController = loader.getController(); // get the controller from the fxml loader
-            deleteListController.initializeChoices(); // update all choice boxes to reflect current data
-            deleteListController.setup(status, viewData, pause); // set up labels to reflect current data in main app window
-            // set modality to disallow user from going back to main app window without finishing with the popup.
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
-            stage.showAndWait();
-            initialize(); // Update current data to reflect changes
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                stage.setTitle("Delete a List");
+                DeleteListController deleteListController = loader.getController(); // get the controller from the fxml loader
+                deleteListController.initializeChoices(); // update all choice boxes to reflect current data
+                deleteListController.setup(status, viewData, pause); // set up labels to reflect current data in main app window
+                // set modality to disallow user from going back to main app window without finishing with the popup.
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(scene);
+                stage.showAndWait();
+                initialize(); // Update current data to reflect changes
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else { // inform the user that there's no existing list to delete
+            status.setText("You haven't created any lists yet!");
+            status.setTextFill(Color.BLACK);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
         }
     }
 
@@ -197,26 +204,34 @@ public class MovieController {
      * Function to remove a previously added movie from a list.
      *
      * @param event Movie > Remove Movie
-     */
+    */
     @FXML
     void removeMovie(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("removeMovie.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 200, 100); // set stage dimensions
-            stage.setResizable(false);
+        ArrayList<Movie> movies = data.getMovies(); // get the list of movies
+        if (!movies.isEmpty()) { // check if the user has added a movie yet
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("removeMovie.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(fxmlLoader.load(), 200, 100); // set stage dimensions
+                stage.setResizable(false);
 
-            stage.setTitle("Delete a Movie"); // cannot be resized by user
-            RemoveMovieController removeMovieController = fxmlLoader.getController(); // get the controller from the fxml loader
-            removeMovieController.initializeChoices(); // update all choice boxes to reflect current data
-            removeMovieController.setup(status, viewData, pause); // set up labels to reflect current data in main app window
-            // set modality to disallow user from going back to main app window without finishing with the popup.
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
-            stage.showAndWait();
-            initialize(); // Update current data to reflect changes
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                stage.setTitle("Delete a Movie"); // cannot be resized by user
+                RemoveMovieController removeMovieController = fxmlLoader.getController(); // get the controller from the fxml loader
+                removeMovieController.initializeChoices(); // update all choice boxes to reflect current data
+                removeMovieController.setup(status, viewData, pause); // set up labels to reflect current data in main app window
+                // set modality to disallow user from going back to main app window without finishing with the popup.
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(scene);
+                stage.showAndWait();
+                initialize(); // Update current data to reflect changes
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else { // inform the user that there doesn't exist a movie to remove
+            status.setText("You haven't added any movies yet!");
+            status.setTextFill(Color.BLACK);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
         }
     }
 
