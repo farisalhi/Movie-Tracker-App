@@ -521,11 +521,18 @@ public class MovieController {
     void viewMovieInfo(ActionEvent event) {
         ArrayList<Movie> movies = data.getMovies(); // get the arraylist of movies
         String movieName = movieInfo.getValue(); // get the name of the movie from the choice box
-// Loop through every movie and check if the name is equal to the name in the choice box.
-        for (Movie movie : movies) {
-            if (movie.getName().equals(movieName)) {
-                printMovieInfo(movie); // invoke helper function to output data
+        if (!movies.isEmpty()) { // check if there are movies
+            // Loop through every movie and check if the name is equal to the name in the choice box.
+            for (Movie movie : movies) {
+                if (movie.getName().equals(movieName)) {
+                    printMovieInfo(movie); // invoke helper function to output data
+                }
             }
+        } else {
+            status.setText("You haven't added any movies.");
+            status.setTextFill(Color.BLACK);
+            pause.setOnFinished(event1 -> status.setText(null));
+            pause.play();
         }
     }
 
@@ -537,7 +544,7 @@ public class MovieController {
     public void printMovieInfo(Movie movie) {
         String textData = (""); // initialize String with blank space.
         textData += movie.toString(); // format the movie info into toString
-// output data to text area
+        // output data to text area
         viewData.setFont(Font.font("PT Mono"));
         viewData.setText(textData);
     }

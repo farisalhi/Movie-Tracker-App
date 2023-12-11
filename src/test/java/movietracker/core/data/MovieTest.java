@@ -1,8 +1,8 @@
 package movietracker.core.data;
 
-import movietracker.core.data.Genre;
-import movietracker.core.data.Movie;
 import org.junit.jupiter.api.Test;
+
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,5 +103,22 @@ class MovieTest {
                 Genre:    Action
                 """.trim();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testEquals() {
+        // create 2 movies with the same name and check if they are equal
+        Movie movie1 = new Movie(1, "Favs", "Heat", 5, Genre.movieGenre.Action);
+        Movie movie2 = new Movie(2, "Favs2", "Heat", 5, Genre.movieGenre.Action);
+        assertEquals(movie1, movie2);
+    }
+
+    @Test
+    void testHashCode() {
+        // create 2 identical movies and check if their hascodes are the same
+        Movie movie1 = new Movie(1, "Favs", "Heat", 5, Genre.movieGenre.Action);
+        Movie movie2 = new Movie(2, "Favs2", "Heat", 5, Genre.movieGenre.Action);
+        assertEquals(Objects.hash(movie1), Objects.hash(movie2));
+
     }
 }
