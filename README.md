@@ -1,3 +1,5 @@
+![Screenshot of program running on Mac](MovieTrackerScreenshot.png "Movie Tracker") <br>
+
 # Computer Science 219 Movie Tracker Project
 * Authors: Faris Salhi (30117469), Ariel Motsi (30147625)
 * Course: CPSC 219, Fall 2023
