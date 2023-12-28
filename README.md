@@ -1,10 +1,10 @@
-![Screenshot of program running on Mac](MovieTrackerScreenshot.png "Movie Tracker") <br>
-
 # Computer Science 219 Movie Tracker Project
 * Authors: Faris Salhi (30117469), Ariel Motsi (30147625)
 * Course: CPSC 219, Fall 2023
 * Instructor: Dr. Jonathan Hudson
 * Tutorial T06
+
+![Screenshot of program running on Mac](MovieTrackerScreenshot.png "Movie Tracker") <br>
 
 ## About Movie Tracker
 This program is a project where we used Java and Javafx to create an app where a user can store and keep track of different movies they have watched, want-to-watch and their favourites. The app also allows the user to view different types of data about the movies they have stored by using the GUI interface's buttons and options. Running the program allows the user to create lists, specify list name and type; add movies, specify movie name, list, genre, and rating; view all data; view sorted data.
