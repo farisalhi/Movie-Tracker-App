@@ -1,5 +1,5 @@
 # Computer Science 219 Movie Tracker Project
-* Authors: Faris Salhi (30117469), Ariel Motsi (30147625)
+* Authors: Faris Salhi, Ariel Motsi
 * Course: CPSC 219, Fall 2023
 * Instructor: Dr. Jonathan Hudson
 * Tutorial T06
